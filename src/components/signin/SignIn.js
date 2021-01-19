@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 
 import FormInput from '../forminput/FormInput';
-import CustomButton from '../customButton/CustomButton'
+import CustomButton from '../customButton/CustomButton';
 
-import './signin.scss'
+import { signInWithGoogle } from '../../firebase/firebase.utils';
+
+import './signin.scss';
 
 class SignIn extends Component {
   constructor(props) {
@@ -15,44 +17,47 @@ class SignIn extends Component {
     };
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-  }
+  handleSubmit = event => {
+    event.preventDefault();
 
-  handleChange = (e) => {
-    const { name, value } = e.target;
+    this.setState({ email: '', password: '' });
+  };
+
+  handleChange = event => {
+    const { value, name } = event.target;
+
     this.setState({ [name]: value });
-  }
+  };
 
   render() {
-    const { email, password } = this.state;
     return (
-      <div className='signIn'>
+      <div className='sign-in'>
         <h2>I already have an account</h2>
         <span>Sign in with your email and password</span>
 
         <form onSubmit={this.handleSubmit}>
           <FormInput
-            type='email'
             name='email'
-            value={email}
+            type='email'
             handleChange={this.handleChange}
+            value={this.state.email}
             label='email'
             required
           />
-
           <FormInput
-            type='password'
             name='password'
-            value={password}
+            type='password'
+            value={this.state.password}
             handleChange={this.handleChange}
             label='password'
             required
           />
-
-          <CustomButton type='submit'>
-            Sign in
-          </CustomButton>
+          <div className='buttons'>
+            <CustomButton type='submit'> Sign in </CustomButton>
+            <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+              Sign in with Google
+            </CustomButton>
+          </div>
         </form>
       </div>
     );

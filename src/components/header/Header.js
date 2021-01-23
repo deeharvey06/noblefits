@@ -1,29 +1,29 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import { auth } from '../.././firebase/firebase.utils';
+import { auth } from "../.././firebase/firebase.utils";
 
-import { ReactComponent as Logo } from '../../assets/crown.svg'
+import { ReactComponent as Logo } from "../../assets/crown.svg";
 
-import './header.scss'
+import "./header.scss";
 
 const Header = ({ currentUser }) => {
   const renderSignInAndSignOutButton = () => {
     return currentUser ? (
-        <div className="option" onClick={() => auth.signOut()}>
-          SIGN OUT
-        </div>
-      ) : (
-        <Link className="option" to="/signin">
-          SIGN IN
-        </Link>
-      )
-  }
+      <div className="option" onClick={() => auth.signOut()}>
+        SIGN OUT
+      </div>
+    ) : (
+      <Link className="option" to="/signin">
+        SIGN IN
+      </Link>
+    );
+  };
 
-  return(
+  return (
     <div className="header">
       <Link className="logo-container" to="/">
-        <Logo className="logo"/>
+        <Logo className="logo" />
       </Link>
 
       <div className="options">

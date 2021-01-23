@@ -1,27 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import CollectionItem from '../collectionItem/CollectionItem';
+import CollectionItem from "../collectionItem/CollectionItem";
 
-import './collectionPreview.scss';
+import "./collectionPreview.scss";
 
 const CollectionPreview = ({ title, items }) => {
-
-  const renderItems = () => (
+  const renderItems = () =>
     items
-      .filter((item, i) => (i < 4))
+      .filter((item, i) => i < 4)
       .map(({ id, ...otherItemProps }) => (
         <CollectionItem className="" key={id} {...otherItemProps} />
-      ))
-  );
+      ));
 
   return (
     <div className="collection-preview">
-      <h1 className="title">{ title }</h1>
-      <div className="preview">
-        { renderItems() }
-      </div>
+      <h1 className="title">{title}</h1>
+      <div className="preview">{renderItems()}</div>
     </div>
   );
-}
+};
 
 export default CollectionPreview;

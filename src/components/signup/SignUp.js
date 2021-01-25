@@ -5,7 +5,7 @@ import FormInput from "../forminput/FormInput";
 
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 
-import "./signup.scss";
+import "./signUp.scss";
 
 class SignUp extends Component {
   constructor() {

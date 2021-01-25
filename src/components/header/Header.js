@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 
 import { auth } from "../.././firebase/firebase.utils";
 
+import CartIcon from "../../components/cartIcon/CartIcon";
+import CartDropdown from "../../components/cartDropdown/CartDropdown";
+
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 
 import "./header.scss";
 
-const Header = () => {
-  const { currentUser } = this.props;
-
+const Header = ({ currentUser, hidden }) => {
   const renderSignInAndSignOutButton = () => {
     return currentUser ? (
       <div className="option" onClick={() => auth.signOut()}>
@@ -22,6 +23,8 @@ const Header = () => {
       </Link>
     );
   };
+
+  const renderCartDropdown = () => !hidden && <CartDropdown />;
 
   return (
     <div className="header">
@@ -37,13 +40,16 @@ const Header = () => {
           CONTACT
         </Link>
         {renderSignInAndSignOutButton()}
+        <CartIcon />
       </div>
+      {renderCartDropdown()}
     </div>
   );
 };
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, cart }) => ({
   currentUser: user.currentUser,
+  hidden: cart.hidden,
 });
 
 export default connect(mapStateToProps, {})(Header);

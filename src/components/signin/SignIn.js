@@ -5,7 +5,7 @@ import CustomButton from "../customButton/CustomButton";
 
 import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
 
-import "./signin.scss";
+import "./signIn.scss";
 
 class SignIn extends Component {
   constructor(props) {

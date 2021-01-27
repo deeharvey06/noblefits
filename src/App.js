@@ -3,18 +3,20 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import "./App.css";
-
 import HomePage from "./pages/homePage/HomePage";
 import ShopPage from "./pages/shop/ShopPage";
-import Header from "./components/header/Header";
 import SignInAndSignUp from "./pages/signinandsignup/SignInAndSignUp";
+import CheckoutPage from "./pages/checkout/Checkout";
+
+import Header from "./components/header/Header";
 
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 import { setCurrentUser } from "./redux/user/actions";
 
 import { selectCurrentUser } from "./redux/user/userSelector";
+
+import "./App.css";
 class App extends Component {
   unsubscribeFromAuth = null;
 
@@ -44,7 +46,6 @@ class App extends Component {
 
   renderSignInAndSignUp = () => {
     const { currentUser } = this.props;
-
     return currentUser ? <Redirect to="/" /> : <SignInAndSignUp />;
   };
 
@@ -56,6 +57,7 @@ class App extends Component {
           <Route exact path="/" component={HomePage} />
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/signin" render={this.renderSignInAndSignUp} />
+          <Route exact path="/checkout" component={CheckoutPage} />
         </Switch>
       </div>
     );

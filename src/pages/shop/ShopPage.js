@@ -8,13 +8,9 @@ import CollectionsOverview from "../../components/collectionsOverview/Collection
 import "./shopPage.scss";
 
 const ShopPage = ({ match }) => (
-  <div>
-    <Route exact path={`${match.path}/`} component={CollectionsOverview} />
-    <Route
-      exact
-      path={`${match.path}/:collectionId`}
-      component={CollectionPage}
-    />
+  <div className="shop-page">
+    <Route exact path={`${match.path}`} component={CollectionsOverview} />
+    <Route path={`${match.path}/:collectionId`} component={CollectionPage} />
   </div>
 );
 

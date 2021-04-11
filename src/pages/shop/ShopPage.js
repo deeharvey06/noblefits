@@ -1,9 +1,9 @@
 import React from "react";
 import { Route } from "react-router-dom";
 
-import CollectionPage from "../collection/collection";
+import CollectionPage from "../collection/Collection";
 
-import CollectionsOverview from "../../components/collectionsOverview/collectionsOverview";
+import CollectionsOverview from "../../components/collectionsOverview/CollectionsOverview";
 
 import "./shopPage.scss";
 

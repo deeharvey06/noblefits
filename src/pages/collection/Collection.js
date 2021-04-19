@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 import CollectionItem from "../../components/collectionItem/CollectionItem";
 
@@ -25,4 +27,7 @@ const mapStateToProps = (state, ownProps) => ({
   collection: selectCollection(ownProps.match.params.collectionId)(state)
 });
 
-export default connect(mapStateToProps)(CollectionPage);
+export default compose(
+  connect(mapStateToProps),
+  withRouter,
+)(CollectionPage);

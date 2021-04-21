@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
 import { selectIsCollectionsLoaded } from '../../redux/shop/shopSelector';
@@ -12,7 +13,8 @@ const mapStateToProps = createStructuredSelector({
 
 const CollectionPageContainer = compose(
   connect(mapStateToProps),
-  WithSpinner
+  WithSpinner,
+  withRouter
 )(CollectionPage);
 
 export default CollectionPageContainer;

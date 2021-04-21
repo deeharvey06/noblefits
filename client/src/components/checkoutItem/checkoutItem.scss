@@ -7,6 +7,10 @@
   font-size: 20px;
   align-items: center;
 
+  @media screen and (max-width: 800px) {
+    font-size: 18px;
+  }
+
   .image-container {
     width: 23%;
     padding-right: 15px;
@@ -16,10 +20,15 @@
       height: 100%;
     }
   }
+
   .name,
   .quantity,
   .price {
     width: 23%;
+
+    @media screen and (max-width: 800px) {
+      width: 22%;
+    }
   }
 
   .quantity {

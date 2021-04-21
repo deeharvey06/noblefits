@@ -7,13 +7,13 @@ import HomePage from "./pages/home/Home.js";
 import ShopPage from "./pages/shop/ShopPage";
 import SignInAndSignUpPage from "./pages/signinandsignup/SignInAndSignUp";
 import CheckoutPage from "./pages/checkout/Checkout";
-
 import Header from "./components/header/Header";
+
+import { GlobalStyle } from './global.styles';
 
 import { selectCurrentUser } from "./redux/user/userSelector";
 import { checkUserSession } from "./redux/user/actions"
 
-import "./App.css";
 
 const App = ({ checkUserSession, currentUser }) => {
   useEffect(() => {
@@ -22,6 +22,7 @@ const App = ({ checkUserSession, currentUser }) => {
 
   return (
     <div>
+      <GlobalStyle />
       <Header />
       <Switch>
         <Route exact path='/' component={HomePage} />
@@ -31,11 +32,7 @@ const App = ({ checkUserSession, currentUser }) => {
           exact
           path='/signin'
           render={() =>
-            currentUser ? (
-              <Redirect to='/' />
-            ) : (
-              <SignInAndSignUpPage />
-            )
+            currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
           }
         />
       </Switch>
@@ -49,7 +46,9 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = dispatch => ({
   checkUserSession: () => dispatch(checkUserSession())
-})
+});
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

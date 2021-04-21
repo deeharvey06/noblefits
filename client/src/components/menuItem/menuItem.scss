@@ -1,5 +1,5 @@
 .menu-item {
-  min-width: 30%;
+  min-width: 40%;
   height: 240px;
   flex: 1 1 auto;
   display: flex;
@@ -22,16 +22,16 @@
     }
   }
 
-  &.large {
-    height: 380px;
-  }
-
   &:first-child {
     margin-right: 7.5px;
   }
 
   &:last-child {
     margin-left: 7.5px;
+  }
+
+  @media screen and (max-width: 800px) {
+    height: 200px;
   }
 
   .background-image {

@@ -22,6 +22,12 @@
     }
   }
 
+  @media screen and (min-width: 800px) {
+    &.large {
+      height: 380px;
+    }
+  }
+
   &:first-child {
     margin-right: 7.5px;
   }

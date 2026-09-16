@@ -1,91 +1,107 @@
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/auth';
+import { initializeApp } from "firebase/app";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCMpJR-JkAFr0iHKH_GqnyPQMAV_YQs0Xw",
-  authDomain: "noblefit-db.firebaseapp.com",
-  projectId: "noblefit-db",
-  storageBucket: "noblefit-db.appspot.com",
-  messagingSenderId: "216957106939",
-  appId: "1:216957106939:web:d58572a326a9e739e6ce5e",
-  measurementId: "G-0KW67CNG82",
-};
+import { firebaseConfig } from "../config/clientConfig";
 
-firebase.initializeApp(firebaseConfig);
+
+export const firebaseApp = initializeApp(firebaseConfig);
+export const auth = getAuth(firebaseApp);
+export const firestore = getFirestore(firebaseApp);
+
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 export const createUserProfileDocument = async (userAuth, additionalData) => {
-  if (!userAuth) return;
+  if (!userAuth) return null;
 
-  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const userRef = doc(firestore, "users", userAuth.uid);
+  const snapshot = await getDoc(userRef);
 
-  const snapShot = await userRef.get();
-
-  if (!snapShot.exists) {
+  if (!snapshot.exists()) {
     const { displayName, email } = userAuth;
-    const createdAt = new Date();
-    try {
-      await userRef.set({
-        displayName,
-        email,
-        createdAt,
-        ...additionalData,
-      });
-    } catch (error) {
-      console.log('error creating user', error.message);
-    }
+    await setDoc(userRef, {
+      displayName,
+      email,
+      createdAt: serverTimestamp(),
+      ...additionalData,
+    });
   }
 
   return userRef;
 };
 
-export const addCollectionAndDocuments = async (
-  collectionKey,
-  objectsToAdd
-) => {
-  const collectionRef = firestore.collection(collectionKey);
-
-  const batch = firestore.batch();
-  objectsToAdd.forEach((obj) => {
-    const newDocRef = collectionRef.doc();
-    batch.set(newDocRef, obj);
-  });
-
-  return await batch.commit();
+export const getUserProfileSnapshot = async (userAuth, additionalData) => {
+  const userRef = await createUserProfileDocument(userAuth, additionalData);
+  return userRef ? getDoc(userRef) : null;
 };
 
-export const convertCollectionsSnapshotToMap = (collections) => {
-  const transformedCollection = collections.docs.map((doc) => {
-    const { title, items } = doc.data();
+export const convertCollectionsSnapshotToMap = (collectionsSnapshot) => {
+  const transformedCollections = collectionsSnapshot.docs
+    .map((collectionDoc) => {
+      const data = collectionDoc.data();
+      const title = typeof data?.title === "string" ? data.title.trim() : "";
+      const items = Array.isArray(data?.items) ? data.items : [];
 
-    return {
-      routeName: encodeURI(title.toLowerCase()),
-      id: doc.id,
-      title,
-      items,
-    };
-  });
+      if (!title) return null;
 
-  return transformedCollection.reduce((accumulator, collection) => {
-    accumulator[collection.title.toLowerCase()] = collection;
+      return {
+        routeName: encodeURIComponent(title.toLowerCase()),
+        id: collectionDoc.id,
+        title,
+        items,
+      };
+    })
+    .filter(Boolean);
+
+  return transformedCollections.reduce((accumulator, currentCollection) => {
+    accumulator[currentCollection.title.toLowerCase()] = currentCollection;
     return accumulator;
   }, {});
 };
 
-export const getCurrentUser = () => {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = auth.onAuthStateChanged(userAuth => {
-      unsubscribe();
-      resolve(userAuth);
-    }, reject);
-  });
+export const fetchCollections = async () => {
+  const snapshot = await getDocs(collection(firestore, "collections"));
+  return convertCollectionsSnapshotToMap(snapshot);
 };
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const getCurrentUser = () =>
+  new Promise((resolve, reject) => {
+    let unsubscribe = () => {};
+    unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      (error) => {
+        unsubscribe();
+        reject(error);
+      }
+    );
+  });
 
-export const googleProvider = new firebase.auth.GoogleAuthProvider();
-googleProvider.setCustomParameters({ prompt: 'select_account' });
-export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
-
-export default firebase;
+export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
+export const signInWithEmail = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
+export const signOutUser = () => signOut(auth);
+export const sendPasswordReset = (email) => sendPasswordResetEmail(auth, email);
+export const createAuthUser = (email, password) =>
+  createUserWithEmailAndPassword(auth, email, password);

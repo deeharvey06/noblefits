@@ -1,21 +1,31 @@
-import { createStore, applyMiddleware } from "redux";
-import { persistStore } from "redux-persist";
-import logger from "redux-logger";
+import { configureStore } from "@reduxjs/toolkit";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  persistStore,
+} from "redux-persist";
 import createSagaMiddleware from "redux-saga";
 
-import rootSagas from "../redux/rootSagas";
-
+import rootSagas from "./rootSagas";
 import rootReducer from "./rootReducer";
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [sagaMiddleware];
-
-if (process.env.NODE_ENV === 'development') {
-  middlewares.push(logger);
-}
-
-export const store = createStore(rootReducer, applyMiddleware(...middlewares));
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: false,
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(sagaMiddleware),
+  devTools: import.meta.env.DEV,
+});
 
 sagaMiddleware.run(rootSagas);
 

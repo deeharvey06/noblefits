@@ -1,0 +1,31 @@
+// NobleFits responsive breakpoints.
+// Sass variables are used because CSS custom properties cannot be used
+// reliably inside media-query conditions.
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 800px;
+$breakpoint-laptop: 1024px;
+$breakpoint-desktop: 1280px;
+
+@mixin mobile-down {
+  @media screen and (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet-down {
+  @media screen and (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin laptop-down {
+  @media screen and (max-width: $breakpoint-laptop) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media screen and (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}

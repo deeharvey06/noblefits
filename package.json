@@ -2,16 +2,37 @@
   "name": "noble-clothing-server",
   "version": "1.0.0",
   "engines": {
-    "node": "14.16.1",
-    "npm": "6.14.12"
+    "node": "^20.19.0 || >=22.12.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "nodemon server.js",
-    "build": "cd client && npm run build",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "doctor": "node scripts/doctor.mjs",
+    "predev": "node scripts/check-install.mjs",
+    "dev": "npm run dev --workspace=client",
+    "vite": "npm run dev --workspace=client",
+    "client": "npm run dev --workspace=client",
+    "dev:server": "node --watch server.js",
+    "server": "node --watch server.js",
+    "dev:full": "node scripts/dev-full.mjs",
+    "build": "npm run build --workspace=client",
+    "preview": "npm run preview --workspace=client",
+    "test": "npm run test --workspace=client",
+    "test:watch": "npm run test:watch --workspace=client",
+    "lint": "npm run lint:js && npm run lint:styles",
+    "lint:fix": "npm run lint:js -- --fix && npm run lint:styles -- --fix",
+    "validate": "npm run lint && npm run format:check && npm run validate --workspace=client",
     "start": "node server.js",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "npm run build --workspace=client",
+    "prepare": "husky",
+    "lint:js": "eslint . --max-warnings=0",
+    "lint:styles": "stylelint \"client/src/**/*.{css,scss}\"",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "lint:staged": "lint-staged",
+    "test:coverage": "npm run test:coverage --workspace=client",
+    "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -21,8 +42,25 @@
     "express": "^4.16.4",
     "stripe": "6.28.0"
   },
+  "private": true,
+  "workspaces": [
+    "client"
+  ],
+  "packageManager": "npm@10.9.2",
   "devDependencies": {
-    "concurrently": "^4.0.1",
-    "nodemon": "^1.19.1"
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "babel-jest": "^30.5.1",
+    "cypress": "^15.21.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jest": "^30.5.1",
+    "jest-environment-jsdom": "^30.5.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.8",
+    "start-server-and-test": "^2.1.5",
+    "stylelint": "^17.15.0",
+    "stylelint-config-standard-scss": "^17.0.0"
   }
 }

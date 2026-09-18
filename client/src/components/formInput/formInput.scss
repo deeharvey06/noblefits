@@ -1,54 +1,71 @@
-$sub-color: grey;
-$main-color: black;
-
-@mixin shrinkLabel {
-  top: -14px;
-  font-size: 12px;
-  color: $main-color;
+@mixin shrink-label {
+  top: -18px;
+  font-size: var(--font-size-caption);
+  color: var(--color-text-primary);
 }
 
 .group {
   position: relative;
-  margin: 45px 0;
+  margin: var(--space-12) 0;
 
   .form-input {
-    background: none;
-    background-color: white;
-    color: $sub-color;
-    font-size: 18px;
-    padding: 10px 10px 10px 5px;
-    display: block;
     width: 100%;
-    border: none;
-    border-radius: 0;
-    border-bottom: 1px solid $sub-color;
-    margin: 25px 0;
+    min-height: var(--control-height-md);
+    margin: var(--space-6) 0;
+    padding: var(--space-3) var(--space-1);
+    display: block;
+    border: 0;
+    border-bottom: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-none);
+    background: transparent;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-control);
+    transition:
+      border-color var(--duration-standard) var(--ease-standard),
+      box-shadow var(--duration-standard) var(--ease-standard);
+
+    &:hover:not(:disabled) {
+      border-bottom-color: var(--color-text-primary);
+    }
 
     &:focus {
       outline: none;
+      border-bottom-color: var(--color-focus);
+      box-shadow: 0 2px 0 var(--color-focus);
     }
 
     &:focus ~ .form-input-label {
-      @include shrinkLabel();
+      @include shrink-label;
+    }
+
+    &:disabled {
+      color: var(--color-disabled-text);
+      cursor: not-allowed;
     }
   }
 
-  input[type='password'] {
-    letter-spacing: 0.3em;
+  input[type="password"] {
+    letter-spacing: 0.18em;
   }
 
   .form-input-label {
-    color: $sub-color;
-    font-size: 16px;
-    font-weight: normal;
     position: absolute;
+    left: var(--space-1);
+    top: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-body);
+    font-weight: 400;
+    line-height: var(--line-height-control);
     pointer-events: none;
-    left: 5px;
-    top: 10px;
-    transition: 300ms ease all;
+    transition:
+      top var(--duration-standard) var(--ease-standard),
+      color var(--duration-standard) var(--ease-standard),
+      font-size var(--duration-standard) var(--ease-standard);
 
     &.shrink {
-      @include shrinkLabel();
+      @include shrink-label;
     }
   }
 }

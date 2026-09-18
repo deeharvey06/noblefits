@@ -1,58 +1,66 @@
 {
   "name": "noblefits",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "engines": {
-    "node": "14.x"
-  },
-  "proxy": "http://localhost:5000",
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "axios": "^0.21.1",
-    "firebase": "^8.2.3",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-redux": "^7.2.2",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
-    "react-stripe-checkout": "^2.6.3",
-    "redux": "^4.0.5",
-    "redux-logger": "^3.0.6",
-    "redux-persist": "^6.0.0",
-    "redux-saga": "^1.1.3",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0",
-    "styled-components": "^5.2.3",
-    "web-vitals": "^0.2.4"
+    "node": "^20.19.0 || >=22.12.0",
+    "npm": ">=10.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "jest --config jest.config.cjs",
+    "test:watch": "jest --config jest.config.cjs --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "design-system:validate": "node scripts/validate-design-system.js",
+    "shell:validate": "node scripts/validate-shell.js",
+    "validate": "npm run design-system:validate && npm run shell:validate && npm run modernization:validate && npm run homepage:validate && npm run listings:validate && npm run search:validate && npm run product-detail:validate && npm run cart:validate && npm run checkout:validate && npm run account:validate && npm run responsive:validate && npm run accessibility:validate && npm run micro-interactions:validate && npm run refresh:validate && npm run production:validate && npm run lint && npm run test && npm run build",
+    "modernization:validate": "node scripts/validate-modernization.js",
+    "homepage:validate": "node scripts/validate-homepage.js",
+    "listings:validate": "node scripts/validate-listings.js",
+    "search:validate": "node scripts/validate-search.js",
+    "product-detail:validate": "node scripts/validate-product-detail.js",
+    "cart:validate": "node scripts/validate-cart.js",
+    "checkout:validate": "node scripts/validate-checkout.js",
+    "account:validate": "node scripts/validate-account.js",
+    "responsive:validate": "node scripts/validate-responsive.js",
+    "accessibility:validate": "node scripts/validate-accessibility.js",
+    "micro-interactions:validate": "node scripts/validate-micro-interactions.js",
+    "production:validate": "node scripts/validate-production-readiness.js",
+    "prebuild": "npm run production:validate",
+    "refresh:validate": "node scripts/validate-refresh.js",
+    "test:coverage": "jest --config jest.config.cjs --coverage"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@reduxjs/toolkit": "2.12.0",
+    "@stripe/react-stripe-js": "6.10.0",
+    "@stripe/stripe-js": "9.16.0",
+    "axios": "1.20.0",
+    "firebase": "12.19.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-redux": "9.3.0",
+    "react-router": "8.3.1",
+    "redux-persist": "6.0.0",
+    "redux-saga": "1.5.1"
   },
   "devDependencies": {
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "node-sass": "^4.14.1"
-  }
+    "@eslint/js": "9.39.5",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.7",
+    "@vitejs/plugin-react": "6.1.1",
+    "eslint": "9.39.5",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.12.0",
+    "jsdom": "30.0.1",
+    "sass": "1.104.1",
+    "vite": "8.3.0"
+  },
+  "packageManager": "npm@10.9.2"
 }

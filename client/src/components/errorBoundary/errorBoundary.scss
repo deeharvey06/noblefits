@@ -43,7 +43,7 @@
   margin-top: var(--space-2);
 }
 
-@media (max-width: 30rem) {
+@media (width <= 30rem) {
   .error-boundary__actions {
     width: 100%;
   }

@@ -6,32 +6,34 @@ const readEnv = (value, fallback = "") =>
 export const firebaseConfig = {
   apiKey: readEnv(
     import.meta.env.VITE_FIREBASE_API_KEY,
-    "AIzaSyCMpJR-JkAFr0iHKH_GqnyPQMAV_YQs0Xw"
+    "AIzaSyCMpJR-JkAFr0iHKH_GqnyPQMAV_YQs0Xw",
   ),
   authDomain: readEnv(
     import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    "noblefit-db.firebaseapp.com"
+    "noblefit-db.firebaseapp.com",
   ),
   projectId: readEnv(import.meta.env.VITE_FIREBASE_PROJECT_ID, "noblefit-db"),
   storageBucket: readEnv(
     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    "noblefit-db.appspot.com"
+    "noblefit-db.appspot.com",
   ),
   messagingSenderId: readEnv(
     import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    "216957106939"
+    "216957106939",
   ),
   appId: readEnv(
     import.meta.env.VITE_FIREBASE_APP_ID,
-    "1:216957106939:web:d58572a326a9e739e6ce5e"
+    "1:216957106939:web:d58572a326a9e739e6ce5e",
   ),
   measurementId: readEnv(
     import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-    "G-0KW67CNG82"
+    "G-0KW67CNG82",
   ),
 };
 
-const configuredStripeKey = readEnv(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const configuredStripeKey = readEnv(
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY,
+);
 export const stripePublishableKey =
   configuredStripeKey && !configuredStripeKey.includes("replace_me")
     ? configuredStripeKey

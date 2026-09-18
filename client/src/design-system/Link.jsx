@@ -1,4 +1,3 @@
-
 const DSLink = ({
   children,
   as: Component = "a",
@@ -8,9 +7,7 @@ const DSLink = ({
   className = "",
   ...props
 }) => {
-  const disabledProps = disabled
-    ? { "aria-disabled": true, tabIndex: -1 }
-    : {};
+  const disabledProps = disabled ? { "aria-disabled": true, tabIndex: -1 } : {};
 
   return (
     <Component

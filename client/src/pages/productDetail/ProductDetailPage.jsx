@@ -39,13 +39,16 @@ const normalizeSpecifications = (specifications) => {
       .map((item) =>
         typeof item === "string"
           ? { label: "Detail", value: item }
-          : { label: item?.label, value: item?.value }
+          : { label: item?.label, value: item?.value },
       )
       .filter((item) => item.label && item.value);
   }
 
   if (typeof specifications === "object") {
-    return Object.entries(specifications).map(([label, value]) => ({ label, value }));
+    return Object.entries(specifications).map(([label, value]) => ({
+      label,
+      value,
+    }));
   }
 
   return [];
@@ -68,21 +71,24 @@ const ProductDetailPage = () => {
     }
   }, [collections, dispatch, errorMessage, isFetching]);
 
-  useEffect(() => {
+  const routeKey = `${collectionId}/${productId}`;
+  const [previousRouteKey, setPreviousRouteKey] = useState(routeKey);
+  if (previousRouteKey !== routeKey) {
+    setPreviousRouteKey(routeKey);
     setQuantity(1);
     setActiveImageIndex(0);
     setAddedMessage("");
-  }, [collectionId, productId]);
+  }
 
   const { collection, product } = useMemo(
     () => findProductByRoute(collections, collectionId, productId),
-    [collectionId, collections, productId]
+    [collectionId, collections, productId],
   );
 
   const images = useMemo(() => getProductImages(product), [product]);
   const relatedProducts = useMemo(
     () => getRelatedProducts(collection, productId, 4),
-    [collection, productId]
+    [collection, productId],
   );
 
   useEffect(() => {
@@ -115,13 +121,16 @@ const ProductDetailPage = () => {
         title="This product is unavailable."
         description="The product may have moved or no longer exists in this collection."
         actionLabel="Browse the collection"
-        onAction={() => navigate(collectionId ? `/shop/${collectionId}` : "/shop")}
+        onAction={() =>
+          navigate(collectionId ? `/shop/${collectionId}` : "/shop")
+        }
       />
     );
   }
 
   const collectionTitle = normalizeCollectionDisplayTitle(collection.title);
-  const isUnavailable = product.available === false || product.inStock === false;
+  const isUnavailable =
+    product.available === false || product.inStock === false;
   const availabilityLabel =
     product.availability ||
     (typeof product.inStock === "boolean"
@@ -145,14 +154,17 @@ const ProductDetailPage = () => {
       dispatch(addItem(cartItem));
     }
     setAddedMessage(
-      `${quantity} ${quantity === 1 ? "item" : "items"} added to your bag.`
+      `${quantity} ${quantity === 1 ? "item" : "items"} added to your bag.`,
     );
   };
 
   return (
     <article className="product-detail-page">
       <div className="product-detail-layout">
-        <section className="product-gallery" aria-label={`${product.name} product gallery`}>
+        <section
+          className="product-gallery"
+          aria-label={`${product.name} product gallery`}
+        >
           <div className="product-gallery__stage">
             {activeImage ? (
               <ResilientImage
@@ -165,19 +177,29 @@ const ProductDetailPage = () => {
                 decoding="async"
               />
             ) : (
-              <div className="product-gallery__missing" role="img" aria-label="Product image unavailable">
+              <div
+                className="product-gallery__missing"
+                role="img"
+                aria-label="Product image unavailable"
+              >
                 Image unavailable
               </div>
             )}
             {product.badge && (
-              <Badge variant={product.badgeVariant || "neutral"} className="product-gallery__badge">
+              <Badge
+                variant={product.badgeVariant || "neutral"}
+                className="product-gallery__badge"
+              >
                 {product.badge}
               </Badge>
             )}
           </div>
 
           {images.length > 1 && (
-            <div className="product-gallery__thumbnails" aria-label="Choose product image">
+            <div
+              className="product-gallery__thumbnails"
+              aria-label="Choose product image"
+            >
               {images.map((image, index) => (
                 <button
                   key={`${image.src}-${index}`}
@@ -188,7 +210,12 @@ const ProductDetailPage = () => {
                   aria-pressed={index === activeImageIndex}
                   onClick={() => setActiveImageIndex(index)}
                 >
-                  <ResilientImage src={image.src} alt="" loading="lazy" decoding="async" />
+                  <ResilientImage
+                    src={image.src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </button>
               ))}
             </div>
@@ -196,7 +223,10 @@ const ProductDetailPage = () => {
         </section>
 
         <section className="product-purchase" aria-labelledby="product-title">
-          <Link className="product-purchase__collection" to={`/shop/${collectionId}`}>
+          <Link
+            className="product-purchase__collection"
+            to={`/shop/${collectionId}`}
+          >
             {collectionTitle}
           </Link>
           <h1 id="product-title">{product.name}</h1>
@@ -220,7 +250,9 @@ const ProductDetailPage = () => {
           )}
 
           {product.description && (
-            <p className="product-purchase__description">{product.description}</p>
+            <p className="product-purchase__description">
+              {product.description}
+            </p>
           )}
 
           <div className="product-purchase__controls">
@@ -230,7 +262,9 @@ const ProductDetailPage = () => {
                 value={quantity}
                 min={1}
                 disabled={isUnavailable}
-                onDecrease={() => setQuantity((current) => Math.max(1, current - 1))}
+                onDecrease={() =>
+                  setQuantity((current) => Math.max(1, current - 1))
+                }
                 onIncrease={() => setQuantity((current) => current + 1)}
                 label={`Quantity for ${product.name}`}
               />
@@ -253,8 +287,7 @@ const ProductDetailPage = () => {
               onDismiss={() => setAddedMessage("")}
               className="product-purchase__notification"
             >
-              <span>{addedMessage}</span>{" "}
-              <Link to="/checkout">View bag</Link>
+              <span>{addedMessage}</span> <Link to="/checkout">View bag</Link>
             </Notification>
           )}
 
@@ -265,8 +298,14 @@ const ProductDetailPage = () => {
         </section>
       </div>
 
-      {(specifications.length > 0 || product.shippingInfo || product.returnsInfo || product.trustInfo) && (
-        <section className="product-information" aria-labelledby="product-information-title">
+      {(specifications.length > 0 ||
+        product.shippingInfo ||
+        product.returnsInfo ||
+        product.trustInfo) && (
+        <section
+          className="product-information"
+          aria-labelledby="product-information-title"
+        >
           <div className="product-information__heading">
             <span className="product-detail-eyebrow">Product information</span>
             <h2 id="product-information-title">Details that matter.</h2>
@@ -309,10 +348,15 @@ const ProductDetailPage = () => {
       )}
 
       {relatedProducts.length > 0 && (
-        <section className="product-related" aria-labelledby="related-products-title">
+        <section
+          className="product-related"
+          aria-labelledby="related-products-title"
+        >
           <div className="product-related__heading">
             <div>
-              <span className="product-detail-eyebrow">More from {collectionTitle}</span>
+              <span className="product-detail-eyebrow">
+                More from {collectionTitle}
+              </span>
               <h2 id="related-products-title">Continue exploring.</h2>
             </div>
             <Link to={`/shop/${collectionId}`}>View the collection</Link>
@@ -321,7 +365,8 @@ const ProductDetailPage = () => {
           <div className="product-related__grid">
             {relatedProducts.map((relatedProduct) => {
               const relatedUnavailable =
-                relatedProduct.available === false || relatedProduct.inStock === false;
+                relatedProduct.available === false ||
+                relatedProduct.inStock === false;
               return (
                 <ProductCard
                   key={relatedProduct.id}
@@ -332,7 +377,11 @@ const ProductDetailPage = () => {
                   compareAtPrice={relatedProduct.compareAtPrice}
                   badge={relatedProduct.badge}
                   badgeVariant={relatedProduct.badgeVariant}
-                  rating={typeof relatedProduct.rating === "number" ? relatedProduct.rating : undefined}
+                  rating={
+                    typeof relatedProduct.rating === "number"
+                      ? relatedProduct.rating
+                      : undefined
+                  }
                   reviewCount={
                     typeof relatedProduct.reviewCount === "number"
                       ? relatedProduct.reviewCount
@@ -340,7 +389,9 @@ const ProductDetailPage = () => {
                   }
                   productHref={getProductPath(collectionId, relatedProduct.id)}
                   disabled={relatedUnavailable}
-                  actionLabel={relatedUnavailable ? "Unavailable" : "Add to cart"}
+                  actionLabel={
+                    relatedUnavailable ? "Unavailable" : "Add to cart"
+                  }
                   onAddToCart={
                     relatedUnavailable
                       ? undefined
@@ -351,7 +402,7 @@ const ProductDetailPage = () => {
                               name: relatedProduct.name,
                               imageUrl: relatedProduct.imageUrl,
                               price: relatedProduct.price,
-                            })
+                            }),
                           )
                   }
                 />
@@ -361,10 +412,16 @@ const ProductDetailPage = () => {
         </section>
       )}
 
-      <div className="product-mobile-purchase" aria-label="Mobile purchase action">
+      <div
+        className="product-mobile-purchase"
+        aria-label="Mobile purchase action"
+      >
         <div className="product-mobile-purchase__summary">
           <strong>{product.name}</strong>
-          <PriceDisplay price={product.price} compareAtPrice={product.compareAtPrice} />
+          <PriceDisplay
+            price={product.price}
+            compareAtPrice={product.compareAtPrice}
+          />
         </div>
         <Button disabled={isUnavailable} onClick={addQuantityToCart}>
           {isUnavailable ? "Unavailable" : `Add ${quantity} to bag`}

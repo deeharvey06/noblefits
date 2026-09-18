@@ -14,7 +14,9 @@ import CustomButton from "../customButton/CustomButton";
 import "./cartDropdown.scss";
 
 const formatMoney = (value) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(value) || 0);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+    Number(value) || 0,
+  );
 
 const CartDropdown = () => {
   const dispatch = useDispatch();
@@ -28,7 +30,8 @@ const CartDropdown = () => {
     const handleKeyDown = (event) => {
       const trigger = document.getElementById("site-cart-trigger");
       const focusIsRelevant =
-        dropdownRef.current?.contains(document.activeElement) || document.activeElement === trigger;
+        dropdownRef.current?.contains(document.activeElement) ||
+        document.activeElement === trigger;
 
       if (event.key === "Escape" && focusIsRelevant) {
         dispatch(toggleCartHidden());
@@ -55,7 +58,11 @@ const CartDropdown = () => {
     >
       <div className="cart-dropdown__header">
         <span id="site-cart-dropdown-title">Shopping bag</span>
-        <span>{itemCount ? `${itemCount} item${itemCount === 1 ? "" : "s"}` : "Empty"}</span>
+        <span>
+          {itemCount
+            ? `${itemCount} item${itemCount === 1 ? "" : "s"}`
+            : "Empty"}
+        </span>
       </div>
 
       <div className="cart-items">
@@ -64,19 +71,31 @@ const CartDropdown = () => {
         ) : (
           <div className="cart-dropdown__empty">
             <p>Your bag is empty.</p>
-            <button type="button" onClick={() => navigateAndClose("/shop")}>Explore the shop</button>
+            <button type="button" onClick={() => navigateAndClose("/shop")}>
+              Explore the shop
+            </button>
           </div>
         )}
       </div>
 
       {cartItems.length > 0 && (
         <>
-          <div className="cart-dropdown__subtotal" aria-live="polite" aria-label={`Subtotal ${formatMoney(total)}`}>
+          <div
+            className="cart-dropdown__subtotal"
+            aria-live="polite"
+            aria-label={`Subtotal ${formatMoney(total)}`}
+          >
             <span>Subtotal</span>
             <strong>{formatMoney(total)}</strong>
           </div>
-          <CustomButton onClick={() => navigateAndClose("/checkout")}>REVIEW BAG & PAY</CustomButton>
-          <button type="button" className="cart-dropdown__continue" onClick={() => navigateAndClose("/shop")}>
+          <CustomButton onClick={() => navigateAndClose("/checkout")}>
+            REVIEW BAG & PAY
+          </CustomButton>
+          <button
+            type="button"
+            className="cart-dropdown__continue"
+            onClick={() => navigateAndClose("/shop")}
+          >
             Continue shopping
           </button>
         </>

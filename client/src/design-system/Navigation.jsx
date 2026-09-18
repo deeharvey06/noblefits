@@ -38,7 +38,10 @@ export const Pagination = ({
   };
 
   return (
-    <nav className={`ds-pagination ${className}`.trim()} aria-label="Pagination">
+    <nav
+      className={`ds-pagination ${className}`.trim()}
+      aria-label="Pagination"
+    >
       <IconButton
         label="Previous page"
         onClick={() => goTo(page - 1)}
@@ -87,13 +90,15 @@ export const Tabs = ({
     if (!enabledItems.length) return;
 
     const currentIndex = enabledItems.findIndex(
-      (item) => item.id === activeItem.id
+      (item) => item.id === activeItem.id,
     );
 
     let nextIndex = currentIndex;
-    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % enabledItems.length;
+    if (event.key === "ArrowRight")
+      nextIndex = (currentIndex + 1) % enabledItems.length;
     if (event.key === "ArrowLeft") {
-      nextIndex = (currentIndex - 1 + enabledItems.length) % enabledItems.length;
+      nextIndex =
+        (currentIndex - 1 + enabledItems.length) % enabledItems.length;
     }
     if (event.key === "Home") nextIndex = 0;
     if (event.key === "End") nextIndex = enabledItems.length - 1;
@@ -109,11 +114,7 @@ export const Tabs = ({
 
   return (
     <div className={`ds-tabs ${className}`.trim()}>
-      <div
-        className="ds-tabs__list"
-        role="tablist"
-        onKeyDown={handleKeyDown}
-      >
+      <div className="ds-tabs__list" role="tablist" onKeyDown={handleKeyDown}>
         {items.map((item) => {
           const selected = item.id === activeItem.id;
           return (

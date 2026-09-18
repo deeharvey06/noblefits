@@ -36,21 +36,31 @@ const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlQuery = searchParams.get("q") || "";
   const [inputValue, setInputValue] = useState(urlQuery);
-  const [recentSearches, setRecentSearches] = useState(() => getRecentSearches());
+  const [recentSearches, setRecentSearches] = useState(() =>
+    getRecentSearches(),
+  );
 
   useEffect(() => {
-    if (!collections && !isFetching && !errorMessage) dispatch(fetchCollectionsStart());
+    if (!collections && !isFetching && !errorMessage)
+      dispatch(fetchCollectionsStart());
   }, [collections, dispatch, errorMessage, isFetching]);
 
-  useEffect(() => {
+  const [previousUrlQuery, setPreviousUrlQuery] = useState(urlQuery);
+  if (previousUrlQuery !== urlQuery) {
+    setPreviousUrlQuery(urlQuery);
     setInputValue(urlQuery);
+  }
+
+  useEffect(() => {
+    // Persist the URL query and refresh the external localStorage snapshot.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (urlQuery.trim()) setRecentSearches(saveRecentSearch(urlQuery));
   }, [urlQuery]);
 
   const catalog = useMemo(() => buildSearchCatalog(collections), [collections]);
   const search = useMemo(
     () => searchCatalog({ ...catalog, query: urlQuery }),
-    [catalog, urlQuery]
+    [catalog, urlQuery],
   );
 
   const submitSearch = (value = inputValue) => {
@@ -89,7 +99,10 @@ const SearchPage = () => {
       </header>
 
       {isFetching && !collections && (
-        <LoadingState label="Searching the catalog" className="search-page__state" />
+        <LoadingState
+          label="Searching the catalog"
+          className="search-page__state"
+        />
       )}
 
       {errorMessage && !collections && (
@@ -105,17 +118,28 @@ const SearchPage = () => {
       {!isFetching && !errorMessage && !hasQuery && (
         <div className="search-page__start">
           {recentSearches.length > 0 && (
-            <section className="search-page__recent" aria-labelledby="search-recent-title">
+            <section
+              className="search-page__recent"
+              aria-labelledby="search-recent-title"
+            >
               <div className="search-page__section-heading">
                 <div>
-                  <span className="search-page__eyebrow">Pick up where you left off</span>
+                  <span className="search-page__eyebrow">
+                    Pick up where you left off
+                  </span>
                   <h2 id="search-recent-title">Recent searches</h2>
                 </div>
-                <button type="button" onClick={clearRecents}>Clear history</button>
+                <button type="button" onClick={clearRecents}>
+                  Clear history
+                </button>
               </div>
               <div className="search-page__recent-list">
                 {recentSearches.map((recent) => (
-                  <button key={recent} type="button" onClick={() => submitSearch(recent)}>
+                  <button
+                    key={recent}
+                    type="button"
+                    onClick={() => submitSearch(recent)}
+                  >
                     <span aria-hidden="true">↺</span>
                     {recent}
                   </button>
@@ -124,7 +148,10 @@ const SearchPage = () => {
             </section>
           )}
 
-          <section className="search-page__browse" aria-labelledby="search-browse-title">
+          <section
+            className="search-page__browse"
+            aria-labelledby="search-browse-title"
+          >
             <div className="search-page__section-heading">
               <div>
                 <span className="search-page__eyebrow">Browse instead</span>
@@ -133,9 +160,15 @@ const SearchPage = () => {
             </div>
             <div className="search-page__collection-grid">
               {catalog.categories.map((category) => (
-                <Link key={category.routeName} to={`/shop/${category.routeName}`}>
+                <Link
+                  key={category.routeName}
+                  to={`/shop/${category.routeName}`}
+                >
                   <span>{category.title}</span>
-                  <small>{category.itemCount} {category.itemCount === 1 ? "product" : "products"}</small>
+                  <small>
+                    {category.itemCount}{" "}
+                    {category.itemCount === 1 ? "product" : "products"}
+                  </small>
                   <span aria-hidden="true">→</span>
                 </Link>
               ))}
@@ -145,33 +178,53 @@ const SearchPage = () => {
       )}
 
       {!isFetching && !errorMessage && hasQuery && (
-        <div key={search.normalizedQuery} className="search-page__results search-page__results--updated">
-          <div className="search-page__summary" role="status" aria-live="polite">
+        <div
+          key={search.normalizedQuery}
+          className="search-page__results search-page__results--updated"
+        >
+          <div
+            className="search-page__summary"
+            role="status"
+            aria-live="polite"
+          >
             <div>
               <span className="search-page__eyebrow">Results for</span>
               <h2>“{urlQuery.trim()}”</h2>
             </div>
             <p>
-              {search.totalProducts} {search.totalProducts === 1 ? "product" : "products"}
+              {search.totalProducts}{" "}
+              {search.totalProducts === 1 ? "product" : "products"}
             </p>
           </div>
 
           {search.fuzzyOnly && (
             <div className="search-page__fuzzy-note">
               <strong>No exact match.</strong>
-              <span> Showing close catalog matches for “{urlQuery.trim()}”.</span>
+              <span>
+                {" "}
+                Showing close catalog matches for “{urlQuery.trim()}”.
+              </span>
             </div>
           )}
 
           {search.categories.length > 0 && (
-            <section className="search-page__matched-collections" aria-labelledby="matched-collections-title">
+            <section
+              className="search-page__matched-collections"
+              aria-labelledby="matched-collections-title"
+            >
               <span className="search-page__eyebrow">Collections</span>
               <h2 id="matched-collections-title">Matching collections</h2>
               <div className="search-page__collection-grid search-page__collection-grid--compact">
                 {search.categories.map((category) => (
-                  <Link key={category.routeName} to={`/shop/${category.routeName}`}>
+                  <Link
+                    key={category.routeName}
+                    to={`/shop/${category.routeName}`}
+                  >
                     <span>{category.title}</span>
-                    <small>{category.itemCount} {category.itemCount === 1 ? "product" : "products"}</small>
+                    <small>
+                      {category.itemCount}{" "}
+                      {category.itemCount === 1 ? "product" : "products"}
+                    </small>
                     <span aria-hidden="true">→</span>
                   </Link>
                 ))}
@@ -180,7 +233,10 @@ const SearchPage = () => {
           )}
 
           {search.products.length > 0 ? (
-            <section className="search-page__products" aria-labelledby="search-products-heading">
+            <section
+              className="search-page__products"
+              aria-labelledby="search-products-heading"
+            >
               <div className="search-page__section-heading">
                 <div>
                   <span className="search-page__eyebrow">Products</span>
@@ -199,8 +255,16 @@ const SearchPage = () => {
                     price={product.price}
                     compareAtPrice={product.compareAtPrice}
                     badge={product.badge}
-                    rating={typeof product.rating === "number" ? product.rating : undefined}
-                    reviewCount={typeof product.reviewCount === "number" ? product.reviewCount : undefined}
+                    rating={
+                      typeof product.rating === "number"
+                        ? product.rating
+                        : undefined
+                    }
+                    reviewCount={
+                      typeof product.reviewCount === "number"
+                        ? product.reviewCount
+                        : undefined
+                    }
                     productHref={getProductPath(product.routeName, product.id)}
                     onAddToCart={() =>
                       dispatch(
@@ -209,11 +273,14 @@ const SearchPage = () => {
                           name: product.name,
                           imageUrl: product.imageUrl,
                           price: product.price,
-                        })
+                        }),
                       )
                     }
                   >
-                    <Link className="search-page__collection-link" to={`/shop/${product.routeName}`}>
+                    <Link
+                      className="search-page__collection-link"
+                      to={`/shop/${product.routeName}`}
+                    >
                       View {product.collectionTitle}
                     </Link>
                   </ProductCard>
@@ -234,6 +301,5 @@ const SearchPage = () => {
     </div>
   );
 };
-
 
 export default SearchPage;

@@ -43,13 +43,15 @@ const SearchPanel = ({ open, onClose }) => {
   }, [collections, dispatch, errorMessage, isFetching, open]);
 
   useEffect(() => {
+    // Refresh the external localStorage snapshot whenever the panel opens.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) setRecentSearches(getRecentSearches());
   }, [open]);
 
   const catalog = useMemo(() => buildSearchCatalog(collections), [collections]);
   const search = useMemo(
     () => searchCatalog({ ...catalog, query }),
-    [catalog, query]
+    [catalog, query],
   );
   const hasQuery = Boolean(search.normalizedQuery);
   const previewProducts = search.products.slice(0, 5);
@@ -117,10 +119,20 @@ const SearchPanel = ({ open, onClose }) => {
         {!hasQuery && !isFetching && !errorMessage && (
           <div className="site-search__idle">
             {recentSearches.length > 0 && (
-              <section className="site-search__recent" aria-labelledby="recent-searches-title">
+              <section
+                className="site-search__recent"
+                aria-labelledby="recent-searches-title"
+              >
                 <div className="site-search__section-heading">
-                  <p id="recent-searches-title" className="site-search__eyebrow">Recent searches</p>
-                  <button type="button" onClick={handleClearRecent}>Clear</button>
+                  <p
+                    id="recent-searches-title"
+                    className="site-search__eyebrow"
+                  >
+                    Recent searches
+                  </p>
+                  <button type="button" onClick={handleClearRecent}>
+                    Clear
+                  </button>
                 </div>
                 <div className="site-search__recent-list">
                   {recentSearches.map((recent) => (
@@ -137,8 +149,13 @@ const SearchPanel = ({ open, onClose }) => {
               </section>
             )}
 
-            <section className="site-search__discover" aria-labelledby="browse-collections-title">
-              <p id="browse-collections-title" className="site-search__eyebrow">Browse collections</p>
+            <section
+              className="site-search__discover"
+              aria-labelledby="browse-collections-title"
+            >
+              <p id="browse-collections-title" className="site-search__eyebrow">
+                Browse collections
+              </p>
               <div className="site-search__category-links">
                 {catalog.categories.map((category) => (
                   <button
@@ -149,7 +166,8 @@ const SearchPanel = ({ open, onClose }) => {
                   >
                     <span>{category.title}</span>
                     <span className="site-search__category-count">
-                      {category.itemCount} {category.itemCount === 1 ? "product" : "products"}
+                      {category.itemCount}{" "}
+                      {category.itemCount === 1 ? "product" : "products"}
                     </span>
                     <span aria-hidden="true">↗</span>
                   </button>
@@ -160,7 +178,10 @@ const SearchPanel = ({ open, onClose }) => {
         )}
 
         {isFetching && (
-          <LoadingState label="Loading products" className="site-search__state" />
+          <LoadingState
+            label="Loading products"
+            className="site-search__state"
+          />
         )}
 
         {errorMessage && (
@@ -198,8 +219,16 @@ const SearchPanel = ({ open, onClose }) => {
             </div>
 
             {search.suggestions.length > 0 && (
-              <section className="site-search__suggestions" aria-labelledby="search-suggestions-title">
-                <p id="search-suggestions-title" className="site-search__eyebrow">Suggestions</p>
+              <section
+                className="site-search__suggestions"
+                aria-labelledby="search-suggestions-title"
+              >
+                <p
+                  id="search-suggestions-title"
+                  className="site-search__eyebrow"
+                >
+                  Suggestions
+                </p>
                 <div className="site-search__suggestion-list">
                   {search.suggestions.slice(0, 5).map((suggestion) => (
                     <button
@@ -216,8 +245,16 @@ const SearchPanel = ({ open, onClose }) => {
             )}
 
             {previewCategories.length > 0 && (
-              <section className="site-search__category-results" aria-labelledby="search-categories-title">
-                <p id="search-categories-title" className="site-search__eyebrow">Collections</p>
+              <section
+                className="site-search__category-results"
+                aria-labelledby="search-categories-title"
+              >
+                <p
+                  id="search-categories-title"
+                  className="site-search__eyebrow"
+                >
+                  Collections
+                </p>
                 <div className="site-search__category-chips">
                   {previewCategories.map((category) => (
                     <button
@@ -235,7 +272,9 @@ const SearchPanel = ({ open, onClose }) => {
 
             {previewProducts.length > 0 ? (
               <section aria-labelledby="search-products-title">
-                <p id="search-products-title" className="site-search__eyebrow">Products</p>
+                <p id="search-products-title" className="site-search__eyebrow">
+                  Products
+                </p>
                 <ul className="site-search__result-list">
                   {previewProducts.map((result) => (
                     <li key={`${result.routeName}-${result.id}`}>
@@ -244,13 +283,28 @@ const SearchPanel = ({ open, onClose }) => {
                         className="site-search__result"
                         onClick={() => openProduct(result)}
                       >
-                        <ResilientImage className="site-search__result-image" src={result.imageUrl} alt="" loading="lazy" decoding="async" />
+                        <ResilientImage
+                          className="site-search__result-image"
+                          src={result.imageUrl}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                        />
                         <span className="site-search__result-copy">
-                          <span className="site-search__result-name">{result.name}</span>
-                          <span className="site-search__result-meta">{result.collectionTitle}</span>
+                          <span className="site-search__result-name">
+                            {result.name}
+                          </span>
+                          <span className="site-search__result-meta">
+                            {result.collectionTitle}
+                          </span>
                           <PriceDisplay price={result.price} />
                         </span>
-                        <span className="site-search__result-arrow" aria-hidden="true">→</span>
+                        <span
+                          className="site-search__result-arrow"
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
                       </button>
                     </li>
                   ))}
@@ -258,7 +312,10 @@ const SearchPanel = ({ open, onClose }) => {
               </section>
             ) : (
               <div className="site-search__empty">
-                <p>No products match “{query.trim()}”. Check the spelling or browse a collection.</p>
+                <p>
+                  No products match “{query.trim()}”. Check the spelling or
+                  browse a collection.
+                </p>
                 <div className="site-search__empty-actions">
                   <button type="button" onClick={() => submitSearch()}>
                     Search anyway
@@ -275,6 +332,5 @@ const SearchPanel = ({ open, onClose }) => {
     </Drawer>
   );
 };
-
 
 export default SearchPanel;

@@ -359,7 +359,8 @@
 }
 
 .catalog-product-grid--updated {
-  animation: catalog-results-refresh var(--duration-standard) var(--ease-standard);
+  animation: catalog-results-refresh var(--duration-standard)
+    var(--ease-standard);
 }
 
 @keyframes catalog-results-refresh {
@@ -367,6 +368,7 @@
     opacity: 0.65;
     transform: translateY(var(--motion-distance-xs));
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

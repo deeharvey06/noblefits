@@ -8,7 +8,7 @@ const fail = (message) => {
   process.exit(1);
 };
 
-const checkout = read("src/pages/checkout/Checkout.jsx");
+const checkout = read("src/pages/checkout/Checkout.jsx").replace(/\s+/g, " ");
 const checkoutStyles = read("src/pages/checkout/checkout.scss");
 const stripe = read("src/components/stripeButton/StripeButton.jsx");
 const stripeStyles = read("src/components/stripeButton/stripeButton.scss");
@@ -26,14 +26,22 @@ const requiredCheckoutCopy = [
 ];
 
 for (const text of requiredCheckoutCopy) {
-  if (!checkout.includes(text)) fail(`missing checkout hierarchy copy: ${text}`);
+  if (!checkout.includes(text))
+    fail(`missing checkout hierarchy copy: ${text}`);
 }
 
-if (!checkout.includes('grid-template-areas') && !checkoutStyles.includes("grid-template-areas")) {
+if (
+  !checkout.includes("grid-template-areas") &&
+  !checkoutStyles.includes("grid-template-areas")
+) {
   fail("checkout does not define intentional responsive flow areas");
 }
 
-if (!checkout.includes("does not collect contact information, shipping addresses, or a")) {
+if (
+  !checkout.includes(
+    "does not collect contact information, shipping addresses, or a",
+  )
+) {
   fail("unsupported contact/shipping capabilities are not disclosed");
 }
 
@@ -83,10 +91,17 @@ for (const [file, source] of [
 }
 
 for (const marker of ["laptop-down", "tablet-down", "mobile-down"]) {
-  if (!checkoutStyles.includes(marker)) fail(`missing responsive checkout behavior: ${marker}`);
+  if (!checkoutStyles.includes(marker))
+    fail(`missing responsive checkout behavior: ${marker}`);
 }
 
 console.log("Checkout validation passed.");
-console.log("Two-step hierarchy, payment validation, Stripe trust cue, and mobile flow verified.");
-console.log("Unsupported contact, shipping, tax, discount, and order capabilities are not fabricated.");
-console.log("Existing /payment endpoint and amount/token payload are preserved.");
+console.log(
+  "Two-step hierarchy, payment validation, Stripe trust cue, and mobile flow verified.",
+);
+console.log(
+  "Unsupported contact, shipping, tax, discount, and order capabilities are not fabricated.",
+);
+console.log(
+  "Existing /payment endpoint and amount/token payload are preserved.",
+);

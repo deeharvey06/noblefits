@@ -1,4 +1,3 @@
-
 export const Badge = ({
   children,
   variant = "neutral",
@@ -33,7 +32,9 @@ export const PriceDisplay = ({
 
   return (
     <span className={`ds-price ${className}`.trim()}>
-      <span className="sr-only">{hasDiscount ? `Sale ${label.toLowerCase()}: ` : `${label}: `}</span>
+      <span className="sr-only">
+        {hasDiscount ? `Sale ${label.toLowerCase()}: ` : `${label}: `}
+      </span>
       <span className="ds-price__current">
         {currency}
         {price}
@@ -51,12 +52,7 @@ export const PriceDisplay = ({
   );
 };
 
-export const RatingDisplay = ({
-  value,
-  max = 5,
-  count,
-  className = "",
-}) => {
+export const RatingDisplay = ({ value, max = 5, count, className = "" }) => {
   const safeValue = Math.max(0, Math.min(value, max));
   const rounded = Math.round(safeValue);
 

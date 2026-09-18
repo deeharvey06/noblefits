@@ -11,8 +11,8 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "jest --config jest.config.cjs",
+    "test:watch": "jest --config jest.config.cjs --watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "design-system:validate": "node scripts/validate-design-system.js",
@@ -31,7 +31,8 @@
     "micro-interactions:validate": "node scripts/validate-micro-interactions.js",
     "production:validate": "node scripts/validate-production-readiness.js",
     "prebuild": "npm run production:validate",
-    "refresh:validate": "node scripts/validate-refresh.js"
+    "refresh:validate": "node scripts/validate-refresh.js",
+    "test:coverage": "jest --config jest.config.cjs --coverage"
   },
   "dependencies": {
     "@reduxjs/toolkit": "2.12.0",
@@ -59,8 +60,7 @@
     "globals": "17.12.0",
     "jsdom": "30.0.1",
     "sass": "1.104.1",
-    "vite": "8.3.0",
-    "vitest": "5.0.1"
+    "vite": "8.3.0"
   },
   "packageManager": "npm@10.9.2"
 }

@@ -1,4 +1,3 @@
-
 import Button from "./Button";
 import IconButton from "./IconButton";
 
@@ -25,12 +24,7 @@ export const Notification = ({
   </div>
 );
 
-export const Skeleton = ({
-  shape = "text",
-  width,
-  height,
-  className = "",
-}) => (
+export const Skeleton = ({ shape = "text", width, height, className = "" }) => (
   <span
     className={`ds-skeleton ds-skeleton--${shape} ${className}`.trim()}
     style={{ width, height }}

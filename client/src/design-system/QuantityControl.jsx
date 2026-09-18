@@ -1,4 +1,3 @@
-
 import IconButton from "./IconButton";
 
 const QuantityControl = ({
@@ -15,7 +14,11 @@ const QuantityControl = ({
   const canIncrease = !disabled && value < max;
 
   return (
-    <div className={`ds-quantity ${className}`.trim()} role="group" aria-label={label}>
+    <div
+      className={`ds-quantity ${className}`.trim()}
+      role="group"
+      aria-label={label}
+    >
       <IconButton
         label={`Decrease ${label.toLowerCase()}`}
         size="sm"
@@ -24,7 +27,11 @@ const QuantityControl = ({
       >
         <span aria-hidden="true">−</span>
       </IconButton>
-      <output className="ds-quantity__value" aria-live="polite" aria-label={`${label}: ${value}`}>
+      <output
+        className="ds-quantity__value"
+        aria-live="polite"
+        aria-label={`${label}: ${value}`}
+      >
         {value}
       </output>
       <IconButton

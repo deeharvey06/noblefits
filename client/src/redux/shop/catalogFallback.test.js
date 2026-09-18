@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import { mergeCatalogWithFallback } from "./catalogFallback";
 
 describe("mergeCatalogWithFallback", () => {
@@ -16,7 +14,9 @@ describe("mergeCatalogWithFallback", () => {
       hats: {
         title: "Hats",
         routeName: "hats",
-        items: [{ id: 999, name: "Remote hat", imageUrl: "/hat.jpg", price: 42 }],
+        items: [
+          { id: 999, name: "Remote hat", imageUrl: "/hat.jpg", price: 42 },
+        ],
       },
     });
 
@@ -26,7 +26,9 @@ describe("mergeCatalogWithFallback", () => {
   });
 
   it("falls back when a remote collection exists but contains no products", () => {
-    const catalog = mergeCatalogWithFallback({ hats: { title: "Hats", items: [] } });
+    const catalog = mergeCatalogWithFallback({
+      hats: { title: "Hats", items: [] },
+    });
     expect(catalog.hats.items.length).toBeGreaterThan(0);
   });
 });

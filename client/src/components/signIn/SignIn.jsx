@@ -26,7 +26,8 @@ const SignIn = () => {
 
   const { email, password } = credentials;
   const isSubmitting = status === "submitting";
-  const errorMessage = errorContext === "sign-in" ? getSignInErrorMessage(authError) : "";
+  const errorMessage =
+    errorContext === "sign-in" ? getSignInErrorMessage(authError) : "";
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,7 +40,10 @@ const SignIn = () => {
   };
 
   return (
-    <section className="auth-panel auth-panel--signin" aria-labelledby="sign-in-title">
+    <section
+      className="auth-panel auth-panel--signin"
+      aria-labelledby="sign-in-title"
+    >
       <div className="auth-panel__heading">
         <p className="auth-panel__eyebrow">Welcome back</p>
         <h2 id="sign-in-title">Sign in to Noble Fits</h2>
@@ -71,13 +75,24 @@ const SignIn = () => {
           <Link to="/forgot-password">Forgot password?</Link>
         </div>
 
-        {errorMessage && <p className="auth-form__error" role="alert">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="auth-form__error" role="alert">
+            {errorMessage}
+          </p>
+        )}
 
-        <Button type="submit" fullWidth loading={isSubmitting} disabled={!email || !password}>
+        <Button
+          type="submit"
+          fullWidth
+          loading={isSubmitting}
+          disabled={!email || !password}
+        >
           Sign in
         </Button>
 
-        <div className="auth-form__separator" aria-hidden="true"><span>or</span></div>
+        <div className="auth-form__separator" aria-hidden="true">
+          <span>or</span>
+        </div>
 
         <Button
           type="button"

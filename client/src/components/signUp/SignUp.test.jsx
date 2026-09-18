@@ -20,7 +20,7 @@ const renderSignUp = () => {
   return render(
     <Provider store={store}>
       <SignUp />
-    </Provider>
+    </Provider>,
   );
 };
 
@@ -36,7 +36,9 @@ describe("SignUp", () => {
     });
 
     expect(screen.getByLabelText(/display name/i)).toHaveValue("Alex");
-    expect(screen.getByLabelText(/email address/i)).toHaveValue("alex@example.com");
+    expect(screen.getByLabelText(/email address/i)).toHaveValue(
+      "alex@example.com",
+    );
   });
 
   it("shows an accessible error when passwords do not match", () => {
@@ -48,7 +50,7 @@ describe("SignUp", () => {
     fireEvent.change(screen.getByLabelText(/email address/i), {
       target: { value: "alex@example.com", name: "email" },
     });
-    fireEvent.change(screen.getByLabelText(/^password$/i), {
+    fireEvent.change(screen.getByLabelText(/^password(?:\s*\*)?$/i), {
       target: { value: "one-password", name: "password" },
     });
     fireEvent.change(screen.getByLabelText(/confirm password/i), {
@@ -57,8 +59,13 @@ describe("SignUp", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /create account/i }));
     const confirmPassword = screen.getByLabelText(/confirm password/i);
-    expect(screen.getByRole("alert")).toHaveTextContent(/passwords must match/i);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      /passwords must match/i,
+    );
     expect(confirmPassword).toHaveAttribute("aria-invalid", "true");
-    expect(confirmPassword).toHaveAttribute("aria-errormessage", "confirmPassword-message");
+    expect(confirmPassword).toHaveAttribute(
+      "aria-errormessage",
+      "confirmPassword-message",
+    );
   });
 });

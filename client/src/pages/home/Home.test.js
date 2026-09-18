@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import SHOP_DATA from "../../redux/shop/shopData";
 import { buildHomepageMedia, getHomepageImageUrls } from "./homeMedia";
 

@@ -71,7 +71,7 @@ const Home = () => {
         name: product.name,
         imageUrl: product.imageUrl,
         price: product.price,
-      })
+      }),
     );
   };
 
@@ -82,20 +82,37 @@ const Home = () => {
           <span className="home-eyebrow">Noble Fits / The Edit</span>
           <h1 id="home-hero-title">Build your everyday rotation.</h1>
           <p>
-            A visual way into the catalog—clothing, outerwear, sneakers, and accessories,
-            with every image leading somewhere useful.
+            A visual way into the catalog—clothing, outerwear, sneakers, and
+            accessories, with every image leading somewhere useful.
           </p>
           <div className="home-hero__actions">
-            <Button size="lg" onClick={() => navigate("/shop")}>Shop all</Button>
-            <Button size="lg" variant="secondary" onClick={() => navigate("/shop/womens")}>Shop women</Button>
+            <Button size="lg" onClick={() => navigate("/shop")}>
+              Shop all
+            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              onClick={() => navigate("/shop/womens")}
+            >
+              Shop women
+            </Button>
           </div>
         </div>
 
         <div className="home-hero__media" aria-label="Featured products">
-          <ProductMediaLink product={heroPrimary} className="home-hero-card home-hero-card--primary" />
+          <ProductMediaLink
+            product={heroPrimary}
+            className="home-hero-card home-hero-card--primary"
+          />
           <div className="home-hero__side-stack">
-            <ProductMediaLink product={heroSecondary} className="home-hero-card home-hero-card--secondary" />
-            <ProductMediaLink product={heroAccent} className="home-hero-card home-hero-card--accent" />
+            <ProductMediaLink
+              product={heroSecondary}
+              className="home-hero-card home-hero-card--secondary"
+            />
+            <ProductMediaLink
+              product={heroAccent}
+              className="home-hero-card home-hero-card--accent"
+            />
           </div>
         </div>
       </section>
@@ -106,20 +123,35 @@ const Home = () => {
             <span className="home-eyebrow">Shop by category</span>
             <h2 id="home-categories-title">Find your lane.</h2>
           </div>
-          <p>Five collections, each with its own product mix. Pick a category and move straight into the merchandise.</p>
+          <p>
+            Five collections, each with its own product mix. Pick a category and
+            move straight into the merchandise.
+          </p>
         </div>
         <Directory />
       </section>
 
-      <section className="home-section home-product-edit" aria-labelledby="home-edit-title">
+      <section
+        className="home-section home-product-edit"
+        aria-labelledby="home-edit-title"
+      >
         <div className="home-section__header home-section__header--with-action">
           <div>
             <span className="home-eyebrow">Across the catalog</span>
             <h2 id="home-edit-title">The Noble Edit.</h2>
           </div>
           <div className="home-section__header-copy">
-            <p>Four real products, each pulled from a different current collection.</p>
-            <Button variant="tertiary" size="sm" onClick={() => navigate("/shop")}>View all</Button>
+            <p>
+              Four real products, each pulled from a different current
+              collection.
+            </p>
+            <Button
+              variant="tertiary"
+              size="sm"
+              onClick={() => navigate("/shop")}
+            >
+              View all
+            </Button>
           </div>
         </div>
 
@@ -134,17 +166,25 @@ const Home = () => {
               productHref={getProductPath(product.collectionRoute, product.id)}
               onAddToCart={() => handleAddToCart(product)}
             >
-              <span className="home-product-card__collection">{product.collectionTitle}</span>
+              <span className="home-product-card__collection">
+                {product.collectionTitle}
+              </span>
             </ProductCard>
           ))}
         </div>
       </section>
 
-      <section className="home-visual-journal" aria-labelledby="home-journal-title">
+      <section
+        className="home-visual-journal"
+        aria-labelledby="home-journal-title"
+      >
         <div className="home-visual-journal__intro">
           <span className="home-eyebrow">More ways in</span>
           <h2 id="home-journal-title">A closer look at the catalog.</h2>
-          <p>Use the imagery to move between accessories, footwear, and everyday layers without repeating the same campaign shots.</p>
+          <p>
+            Use the imagery to move between accessories, footwear, and everyday
+            layers without repeating the same campaign shots.
+          </p>
         </div>
         <div className="home-visual-journal__grid">
           {media.visualJournal.map((product, index) => (
@@ -158,9 +198,16 @@ const Home = () => {
       </section>
 
       {outerwearPrimary && (
-        <section className="home-editorial" aria-labelledby="home-editorial-title">
+        <section
+          className="home-editorial"
+          aria-labelledby="home-editorial-title"
+        >
           <div className="home-editorial__media">
-            <ResilientImage src={outerwearPrimary.imageUrl} alt={outerwearPrimary.name} loading="lazy" />
+            <ResilientImage
+              src={outerwearPrimary.imageUrl}
+              alt={outerwearPrimary.name}
+              loading="lazy"
+            />
             {outerwearSecondary && (
               <ResilientImage
                 className="home-editorial__inset"
@@ -173,8 +220,16 @@ const Home = () => {
           <div className="home-editorial__copy">
             <span className="home-eyebrow">Collection focus</span>
             <h2 id="home-editorial-title">Outerwear, up close.</h2>
-            <p>Move from denim layers to trenches and shearling pieces already in the Noble Fits jacket collection.</p>
-            <Button variant="secondary" onClick={() => navigate("/shop/jackets")}>Shop jackets</Button>
+            <p>
+              Move from denim layers to trenches and shearling pieces already in
+              the Noble Fits jacket collection.
+            </p>
+            <Button
+              variant="secondary"
+              onClick={() => navigate("/shop/jackets")}
+            >
+              Shop jackets
+            </Button>
           </div>
         </section>
       )}
@@ -182,8 +237,13 @@ const Home = () => {
       <section className="home-closing" aria-labelledby="home-closing-title">
         <span className="home-eyebrow">All collections</span>
         <h2 id="home-closing-title">Keep exploring.</h2>
-        <p>Browse the complete catalog across Men, Women, Jackets, Sneakers, and Hats.</p>
-        <Button size="lg" onClick={() => navigate("/shop")}>Shop the catalog</Button>
+        <p>
+          Browse the complete catalog across Men, Women, Jackets, Sneakers, and
+          Hats.
+        </p>
+        <Button size="lg" onClick={() => navigate("/shop")}>
+          Shop the catalog
+        </Button>
       </section>
     </div>
   );

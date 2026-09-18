@@ -18,28 +18,31 @@ const requiredFiles = [
   "src/styles/design-system.scss",
 ];
 for (const file of requiredFiles) {
-  if (!fs.existsSync(path.join(root, file))) fail(`missing accessibility file: ${file}`);
+  if (!fs.existsSync(path.join(root, file)))
+    fail(`missing accessibility file: ${file}`);
 }
 
 const app = read("src/App.jsx");
 for (const marker of [
   'className="skip-link"',
   'href="#main-content"',
-  '<RouteAccessibility />',
+  "<RouteAccessibility />",
   'id="main-content"',
   'tabIndex="-1"',
 ]) {
-  if (!app.includes(marker)) fail(`application shell missing accessibility marker: ${marker}`);
+  if (!app.includes(marker))
+    fail(`application shell missing accessibility marker: ${marker}`);
 }
 
 const routeA11y = read("src/components/accessibility/RouteAccessibility.jsx");
 for (const marker of [
   'role="status"',
   'aria-live="polite"',
-  'document.title',
-  'main.focus({ preventScroll: true })',
+  "document.title",
+  "main.focus({ preventScroll: true })",
 ]) {
-  if (!routeA11y.includes(marker)) fail(`route accessibility behavior missing: ${marker}`);
+  if (!routeA11y.includes(marker))
+    fail(`route accessibility behavior missing: ${marker}`);
 }
 
 const overlays = read("src/design-system/Overlays.jsx");
@@ -49,19 +52,30 @@ for (const marker of [
   'setAttribute("aria-hidden", "true")',
   'aria-modal="true"',
   'event.key === "Escape"',
-  'aria-describedby',
+  "aria-describedby",
   'role="tooltip"',
 ]) {
-  if (!overlays.includes(marker)) fail(`overlay accessibility behavior missing: ${marker}`);
+  if (!overlays.includes(marker))
+    fail(`overlay accessibility behavior missing: ${marker}`);
 }
 
 const forms = read("src/design-system/FormControls.jsx");
-for (const marker of ["htmlFor={id}", "aria-invalid", "aria-describedby", "aria-errormessage", "required={required}"]) {
-  if (!forms.includes(marker)) fail(`form-control accessibility behavior missing: ${marker}`);
+for (const marker of [
+  "htmlFor={id}",
+  "aria-invalid",
+  "aria-describedby",
+  "aria-errormessage",
+  "required={required}",
+]) {
+  if (!forms.includes(marker))
+    fail(`form-control accessibility behavior missing: ${marker}`);
 }
 
 const quantity = read("src/design-system/QuantityControl.jsx");
-if (!quantity.includes('role="group"') || !quantity.includes("aria-live=\"polite\"")) {
+if (
+  !quantity.includes('role="group"') ||
+  !quantity.includes('aria-live="polite"')
+) {
   fail("quantity control is not exposed as a named group with a live value");
 }
 
@@ -69,21 +83,35 @@ const commerce = read("src/design-system/CommerceDisplay.jsx");
 if (/ds-price[^\n]*aria-label=/.test(commerce)) {
   fail("price output still replaces visible pricing content with aria-label");
 }
-if (!commerce.includes('role="img"') || !commerce.includes('className="sr-only"')) {
+if (
+  !commerce.includes('role="img"') ||
+  !commerce.includes('className="sr-only"')
+) {
   fail("price/rating screen-reader semantics are incomplete");
 }
 
 const header = read("src/components/header/Header.jsx");
-for (const marker of ['aria-haspopup="dialog"', 'aria-controls="mobile-site-navigation"', 'aria-controls="site-search-drawer"']) {
-  if (!header.includes(marker)) fail(`header disclosure semantics missing: ${marker}`);
+for (const marker of [
+  'aria-haspopup="dialog"',
+  'aria-controls="mobile-site-navigation"',
+  'aria-controls="site-search-drawer"',
+]) {
+  if (!header.includes(marker))
+    fail(`header disclosure semantics missing: ${marker}`);
 }
 
 const cartIcon = read("src/components/cartIcon/CartIcon.jsx");
 const cartDropdown = read("src/components/cartDropdown/CartDropdown.jsx");
-if (!cartIcon.includes('id="site-cart-trigger"') || !cartIcon.includes("aria-expanded")) {
+if (
+  !cartIcon.includes('id="site-cart-trigger"') ||
+  !cartIcon.includes("aria-expanded")
+) {
   fail("cart trigger does not expose disclosure state");
 }
-if (!cartDropdown.includes("trigger?.focus()") || !cartDropdown.includes('role="region"')) {
+if (
+  !cartDropdown.includes("trigger?.focus()") ||
+  !cartDropdown.includes('role="region"')
+) {
   fail("cart preview does not restore focus or expose a labelled region");
 }
 
@@ -108,7 +136,8 @@ for (const marker of [
   "@media (forced-colors: active)",
   '.ds-tooltip[data-visible="true"]',
 ]) {
-  if (!componentStyles.includes(marker)) fail(`shared component accessibility styling missing: ${marker}`);
+  if (!componentStyles.includes(marker))
+    fail(`shared component accessibility styling missing: ${marker}`);
 }
 
 const globalStyles = read("src/styles/design-system.scss");
@@ -118,20 +147,31 @@ for (const marker of [
   "@media (prefers-reduced-motion: reduce)",
   "@media (forced-colors: active)",
 ]) {
-  if (!globalStyles.includes(marker)) fail(`global accessibility styling missing: ${marker}`);
+  if (!globalStyles.includes(marker))
+    fail(`global accessibility styling missing: ${marker}`);
 }
 
 const parseHex = (value) => {
   const hex = value.replace("#", "");
   if (![3, 6].includes(hex.length)) return null;
-  const expanded = hex.length === 3 ? hex.split("").map((char) => char + char).join("") : hex;
-  return [0, 2, 4].map((index) => parseInt(expanded.slice(index, index + 2), 16) / 255);
+  const expanded =
+    hex.length === 3
+      ? hex
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : hex;
+  return [0, 2, 4].map(
+    (index) => parseInt(expanded.slice(index, index + 2), 16) / 255,
+  );
 };
 const luminance = (hex) => {
   const rgb = parseHex(hex);
   if (!rgb) fail(`cannot parse contrast color ${hex}`);
   const adjusted = rgb.map((channel) =>
-    channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4)
+    channel <= 0.04045
+      ? channel / 12.92
+      : Math.pow((channel + 0.055) / 1.055, 2.4),
   );
   return 0.2126 * adjusted[0] + 0.7152 * adjusted[1] + 0.0722 * adjusted[2];
 };
@@ -141,7 +181,9 @@ const contrast = (a, b) => {
   return (Math.max(one, two) + 0.05) / (Math.min(one, two) + 0.05);
 };
 const token = (name) => {
-  const match = globalStyles.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{3,6})`));
+  const match = globalStyles.match(
+    new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{3,6})`),
+  );
   if (!match) fail(`missing hex token --${name}`);
   return match[1];
 };
@@ -158,7 +200,10 @@ const textPairs = [
 ];
 for (const [foreground, background] of textPairs) {
   const ratio = contrast(token(foreground), token(background));
-  if (ratio < 4.5) fail(`${foreground} / ${background} contrast is ${ratio.toFixed(2)}:1; expected >= 4.5:1`);
+  if (ratio < 4.5)
+    fail(
+      `${foreground} / ${background} contrast is ${ratio.toFixed(2)}:1; expected >= 4.5:1`,
+    );
 }
 for (const [foreground, background] of [
   ["color-focus", "color-background"],
@@ -167,7 +212,10 @@ for (const [foreground, background] of [
   ["color-border-strong", "color-surface"],
 ]) {
   const ratio = contrast(token(foreground), token(background));
-  if (ratio < 3) fail(`${foreground} / ${background} non-text contrast is ${ratio.toFixed(2)}:1; expected >= 3:1`);
+  if (ratio < 3)
+    fail(
+      `${foreground} / ${background} non-text contrast is ${ratio.toFixed(2)}:1; expected >= 3:1`,
+    );
 }
 
 const jsFiles = [];
@@ -189,11 +237,13 @@ for (const file of jsFiles) {
   }
 
   for (const match of source.matchAll(/<img\b[\s\S]*?>/g)) {
-    if (!/\balt\s*=/.test(match[0])) fail(`image without alt attribute in ${relative}`);
+    if (!/\balt\s*=/.test(match[0]))
+      fail(`image without alt attribute in ${relative}`);
   }
 
   for (const match of source.matchAll(/<button\b[\s\S]*?>/g)) {
-    if (!/\btype\s*=/.test(match[0])) fail(`button without explicit type in ${relative}`);
+    if (!/\btype\s*=/.test(match[0]))
+      fail(`button without explicit type in ${relative}`);
   }
 
   for (const match of source.matchAll(/tabIndex\s*=\s*["'{]?([1-9]\d*)/g)) {
@@ -213,8 +263,11 @@ for (const section of [
   "Reduced motion and high contrast",
   "Known limitations / follow-up",
 ]) {
-  if (!docs.includes(section)) fail(`accessibility audit documentation missing: ${section}`);
+  if (!docs.includes(section))
+    fail(`accessibility audit documentation missing: ${section}`);
 }
 
 console.log("Accessibility validation passed.");
-console.log("Semantic controls, image alternatives, focus management, modal isolation, form errors, route announcements, contrast, touch targets, reduced motion, and non-color state cues verified.");
+console.log(
+  "Semantic controls, image alternatives, focus management, modal isolation, form errors, route announcements, contrast, touch targets, reduced motion, and non-color state cues verified.",
+);

@@ -44,7 +44,7 @@
   margin-top: var(--space-3);
 }
 
-@media (max-width: 30rem) {
+@media (width <= 30rem) {
   .not-found-page__actions {
     width: 100%;
   }

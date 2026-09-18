@@ -16,10 +16,4 @@ export default defineConfig({
     sourcemap: false,
     reportCompressedSize: true,
   },
-  test: {
-    environment: "jsdom",
-    setupFiles: "./src/setupTests.js",
-    globals: true,
-    css: true,
-  },
 });

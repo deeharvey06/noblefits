@@ -1,12 +1,18 @@
 import { useDispatch } from "react-redux";
 
 import { QuantityControl, ResilientImage } from "../../design-system";
-import { addItem, clearItemFromCart, removeItem } from "../../redux/cart/actions";
+import {
+  addItem,
+  clearItemFromCart,
+  removeItem,
+} from "../../redux/cart/actions";
 
 import "./checkoutItem.scss";
 
 const formatMoney = (value) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Number(value) || 0);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+    Number(value) || 0,
+  );
 
 const getVariantDetails = (cartItem) =>
   [cartItem.variant, cartItem.size, cartItem.color].filter(Boolean);
@@ -18,15 +24,28 @@ const CheckoutItem = ({ cartItem }) => {
   const lineTotal = Number(price) * quantity;
 
   return (
-    <article className="checkout-item" aria-label={`${name}, quantity ${quantity}`}>
+    <article
+      className="checkout-item"
+      aria-label={`${name}, quantity ${quantity}`}
+    >
       <div className="checkout-item__image-wrap">
-        <ResilientImage className="checkout-item__image" src={imageUrl} alt={name} loading="lazy" decoding="async" />
+        <ResilientImage
+          className="checkout-item__image"
+          src={imageUrl}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
 
       <div className="checkout-item__details">
         <div className="checkout-item__identity">
           <h3 className="checkout-item__name">{name}</h3>
-          {variantDetails.length > 0 && <p className="checkout-item__variant">{variantDetails.join(" · ")}</p>}
+          {variantDetails.length > 0 && (
+            <p className="checkout-item__variant">
+              {variantDetails.join(" · ")}
+            </p>
+          )}
           <p className="checkout-item__unit-price">{formatMoney(price)} each</p>
         </div>
 

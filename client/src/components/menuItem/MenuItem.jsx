@@ -6,7 +6,8 @@ import "./menuItem.scss";
 
 const MenuItem = ({ title, imageUrl, size, linkUrl }) => {
   const destination = linkUrl.startsWith("/") ? linkUrl : `/${linkUrl}`;
-  const displayTitle = title === "womens" ? "Women" : title === "mens" ? "Men" : title;
+  const displayTitle =
+    title === "womens" ? "Women" : title === "mens" ? "Men" : title;
 
   return (
     <Link

@@ -1,0 +1,9 @@
+node_modules/
+client/node_modules/
+client/build/
+coverage/
+client/coverage/
+package-lock.json
+.husky/_/
+cypress/screenshots/
+cypress/videos/

@@ -2,12 +2,12 @@
 
 Phase 12 treats responsiveness as a layout system rather than a final CSS cleanup. The application keeps the existing four responsive ranges defined by the design system:
 
-| Range | Width | Intent |
-| --- | --- | --- |
-| Large desktop | 1280px+ | Full merchandising density, desktop navigation, persistent side rails/sticky summaries |
-| Laptop | 801–1279px | Reduced grid density and spacing while preserving desktop discovery where space allows |
-| Tablet | 481–800px | Purpose-built mobile header/drawers, stacked commerce layouts, two-column merchandise grids |
-| Mobile | 320–480px | Compact typography/spacing, touch-first controls, safe-area-aware overlays/sticky actions |
+| Range         | Width      | Intent                                                                                      |
+| ------------- | ---------- | ------------------------------------------------------------------------------------------- |
+| Large desktop | 1280px+    | Full merchandising density, desktop navigation, persistent side rails/sticky summaries      |
+| Laptop        | 801–1279px | Reduced grid density and spacing while preserving desktop discovery where space allows      |
+| Tablet        | 481–800px  | Purpose-built mobile header/drawers, stacked commerce layouts, two-column merchandise grids |
+| Mobile        | 320–480px  | Compact typography/spacing, touch-first controls, safe-area-aware overlays/sticky actions   |
 
 The application declares a 320px minimum viewport. No page depends on viewport-level horizontal scrolling.
 

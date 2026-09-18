@@ -19,7 +19,10 @@ const CollectionContainer = () => {
   const collections = useSelector(selectCollections);
   const isLoading = useSelector(selectIsCollectionFetching);
   const errorMessage = useSelector(selectShopError);
-  const collectionSelector = useMemo(() => selectCollection(collectionId), [collectionId]);
+  const collectionSelector = useMemo(
+    () => selectCollection(collectionId),
+    [collectionId],
+  );
   const collection = useSelector(collectionSelector);
 
   if (isLoading && !collections) return <Spinner />;
@@ -31,12 +34,23 @@ const CollectionContainer = () => {
         title="We could not load this collection."
         description="Try loading the catalog again."
       >
-        <Button variant="secondary" onClick={() => dispatch(fetchCollectionsStart())}>Try again</Button>
+        <Button
+          variant="secondary"
+          onClick={() => dispatch(fetchCollectionsStart())}
+        >
+          Try again
+        </Button>
       </ErrorState>
     );
   }
 
-  return <CollectionPage collection={collection} collectionKey={collectionId} collections={collections} />;
+  return (
+    <CollectionPage
+      collection={collection}
+      collectionKey={collectionId}
+      collections={collections}
+    />
+  );
 };
 
 export default CollectionContainer;

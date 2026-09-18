@@ -1,4 +1,3 @@
-
 import IconButton from "./IconButton";
 
 const SearchField = ({

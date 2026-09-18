@@ -25,7 +25,10 @@ const CollectionsOverviewContainer = () => {
         title="We could not load the shop."
         description="Try loading the catalog again."
       >
-        <Button variant="secondary" onClick={() => dispatch(fetchCollectionsStart())}>
+        <Button
+          variant="secondary"
+          onClick={() => dispatch(fetchCollectionsStart())}
+        >
           Try again
         </Button>
       </ErrorState>

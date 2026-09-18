@@ -517,7 +517,7 @@
   margin-top: var(--space-3);
 }
 
-@media (max-width: 30rem) {
+@media (width <= 30rem) {
   .checkout-complete__actions {
     width: 100%;
   }

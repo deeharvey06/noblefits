@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import { addItemToCart, decrementItemInCart } from "./cartUtils";
 
 const item = { id: 1, name: "Sneakers", price: 90 };

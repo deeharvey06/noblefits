@@ -14,10 +14,7 @@ class ErrorBoundary extends Component {
   }
 
   componentDidUpdate(previousProps) {
-    if (
-      this.state.hasError &&
-      previousProps.resetKey !== this.props.resetKey
-    ) {
+    if (this.state.hasError && previousProps.resetKey !== this.props.resetKey) {
       this.setState({ hasError: false });
     }
   }
@@ -29,18 +26,31 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <section className="error-boundary" role="alert" aria-labelledby="error-boundary-title">
-          <div className="error-boundary__mark" aria-hidden="true">!</div>
+        <section
+          className="error-boundary"
+          role="alert"
+          aria-labelledby="error-boundary-title"
+        >
+          <div className="error-boundary__mark" aria-hidden="true">
+            !
+          </div>
           <h2 id="error-boundary-title">Something went wrong</h2>
           <p>
-            This part of Noble Fits could not load. Try again, or return to the shop and continue
-            browsing.
+            This part of Noble Fits could not load. Try again, or return to the
+            shop and continue browsing.
           </p>
           <div className="error-boundary__actions">
-            <button type="button" className="ds-button ds-button--primary ds-button--md" onClick={this.handleRetry}>
+            <button
+              type="button"
+              className="ds-button ds-button--primary ds-button--md"
+              onClick={this.handleRetry}
+            >
               <span className="ds-button__label">Try again</span>
             </button>
-            <a href="/shop" className="ds-button ds-button--secondary ds-button--md">
+            <a
+              href="/shop"
+              className="ds-button ds-button--secondary ds-button--md"
+            >
               <span className="ds-button__label">Return to shop</span>
             </a>
           </div>

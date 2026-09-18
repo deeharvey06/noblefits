@@ -1,16 +1,27 @@
-import { cloneElement, isValidElement, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 
 import IconButton from "./IconButton";
 
-
 const overlayExitDuration = 220;
 
 const requestFrame = (callback) =>
-  window.requestAnimationFrame ? window.requestAnimationFrame(callback) : window.setTimeout(callback, 0);
+  window.requestAnimationFrame
+    ? window.requestAnimationFrame(callback)
+    : window.setTimeout(callback, 0);
 
 const cancelFrame = (frameId) =>
-  window.cancelAnimationFrame ? window.cancelAnimationFrame(frameId) : window.clearTimeout(frameId);
+  window.cancelAnimationFrame
+    ? window.cancelAnimationFrame(frameId)
+    : window.clearTimeout(frameId);
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
@@ -20,19 +31,23 @@ const useOverlayPresence = (open) => {
   const [present, setPresent] = useState(open);
   const [state, setState] = useState(open ? "opening" : "closed");
 
+  const [previousOpen, setPreviousOpen] = useState(open);
+  if (previousOpen !== open) {
+    setPreviousOpen(open);
+    if (open) setPresent(true);
+    setState(open ? "opening" : "closed");
+  }
+
   useEffect(() => {
     let frameId;
     let timeoutId;
 
     if (open) {
-      setPresent(true);
-      setState("opening");
       frameId = requestFrame(() => setState("open"));
     } else if (present) {
-      setState("closed");
       timeoutId = window.setTimeout(
         () => setPresent(false),
-        prefersReducedMotion() ? 0 : overlayExitDuration
+        prefersReducedMotion() ? 0 : overlayExitDuration,
       );
     }
 
@@ -97,7 +112,7 @@ const useModalBehavior = (open, onClose, containerRef) => {
       if (event.key !== "Tab" || !container) return;
 
       const activeFocusable = Array.from(
-        container.querySelectorAll(focusableSelector)
+        container.querySelectorAll(focusableSelector),
       );
 
       if (!activeFocusable.length) {
@@ -157,7 +172,12 @@ export const Dialog = ({
 
   return (
     <OverlayPortal>
-      <div className="ds-overlay" data-state={state} role="presentation" onMouseDown={open ? onClose : undefined}>
+      <div
+        className="ds-overlay"
+        data-state={state}
+        role="presentation"
+        onMouseDown={open ? onClose : undefined}
+      >
         <section
           id={id}
           ref={dialogRef}
@@ -211,7 +231,12 @@ export const Drawer = ({
 
   return (
     <OverlayPortal>
-      <div className="ds-overlay" data-state={state} role="presentation" onMouseDown={open ? onClose : undefined}>
+      <div
+        className="ds-overlay"
+        data-state={state}
+        role="presentation"
+        onMouseDown={open ? onClose : undefined}
+      >
         <aside
           id={id}
           ref={drawerRef}
@@ -250,17 +275,17 @@ export const Tooltip = ({
   const tooltipId = `tooltip-${generatedId.replace(/:/g, "")}`;
   const [visible, setVisible] = useState(false);
 
-  const child = isValidElement(children)
-    ? cloneElement(children, {
-        "aria-describedby": [children.props["aria-describedby"], tooltipId]
-          .filter(Boolean)
-          .join(" "),
-      })
-    : (
-      <span tabIndex="0" aria-describedby={tooltipId}>
-        {children}
-      </span>
-    );
+  const child = isValidElement(children) ? (
+    cloneElement(children, {
+      "aria-describedby": [children.props["aria-describedby"], tooltipId]
+        .filter(Boolean)
+        .join(" "),
+    })
+  ) : (
+    <span tabIndex="0" aria-describedby={tooltipId}>
+      {children}
+    </span>
+  );
 
   return (
     <span

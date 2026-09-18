@@ -9,12 +9,15 @@ const NotFoundPage = () => {
   }, []);
 
   return (
-    <section className="not-found-page ds-container" aria-labelledby="not-found-title">
+    <section
+      className="not-found-page ds-container"
+      aria-labelledby="not-found-title"
+    >
       <p className="not-found-page__eyebrow">404</p>
       <h1 id="not-found-title">We couldn’t find that page.</h1>
       <p className="not-found-page__copy">
-        The address may have changed, or the page may no longer exist. Continue browsing from the
-        shop or return home.
+        The address may have changed, or the page may no longer exist. Continue
+        browsing from the shop or return home.
       </p>
       <div className="not-found-page__actions">
         <Link to="/shop" className="ds-button ds-button--primary ds-button--md">

@@ -12,12 +12,22 @@ import {
 import { lazyWithRetry } from "../../utils/lazyWithRetry";
 
 const CollectionsOverviewContainer = lazyWithRetry(
-  () => import("../../components/collectionsOverview/CollectionsOverviewContainer"),
-  "shop-overview"
+  () =>
+    import("../../components/collectionsOverview/CollectionsOverviewContainer"),
+  "shop-overview",
 );
-const CollectionPageContainer = lazyWithRetry(() => import("../collection/CollectionContainer"), "collection");
-const ProductDetailPage = lazyWithRetry(() => import("../productDetail/ProductDetailPage"), "product-detail");
-const NotFoundPage = lazyWithRetry(() => import("../notFound/NotFoundPage"), "shop-not-found");
+const CollectionPageContainer = lazyWithRetry(
+  () => import("../collection/CollectionContainer"),
+  "collection",
+);
+const ProductDetailPage = lazyWithRetry(
+  () => import("../productDetail/ProductDetailPage"),
+  "product-detail",
+);
+const NotFoundPage = lazyWithRetry(
+  () => import("../notFound/NotFoundPage"),
+  "shop-not-found",
+);
 
 const ShopPage = () => {
   const dispatch = useDispatch();
@@ -36,7 +46,10 @@ const ShopPage = () => {
       <Suspense fallback={<Spinner />}>
         <Routes>
           <Route index element={<CollectionsOverviewContainer />} />
-          <Route path=":collectionId/:productId" element={<ProductDetailPage />} />
+          <Route
+            path=":collectionId/:productId"
+            element={<ProductDetailPage />}
+          />
           <Route path=":collectionId" element={<CollectionPageContainer />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -28,7 +28,7 @@ export const cartPersistTransform = createTransform(
     hidden: true,
     cartItems: sanitizeCartItems(outboundState?.cartItems),
   }),
-  { whitelist: ["cart"] }
+  { whitelist: ["cart"] },
 );
 
 const persistConfig = {

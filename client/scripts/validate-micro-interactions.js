@@ -26,7 +26,8 @@ const requiredFiles = [
 ];
 
 for (const file of requiredFiles) {
-  if (!fs.existsSync(path.join(root, file))) fail(`missing Phase 14 file: ${file}`);
+  if (!fs.existsSync(path.join(root, file)))
+    fail(`missing Phase 14 file: ${file}`);
 }
 
 const globalStyles = read("src/styles/design-system.scss");
@@ -38,7 +39,8 @@ for (const marker of [
   "--motion-distance-sm: 0.5rem",
   "@media (prefers-reduced-motion: reduce)",
 ]) {
-  if (!globalStyles.includes(marker)) fail(`missing motion-system marker: ${marker}`);
+  if (!globalStyles.includes(marker))
+    fail(`missing motion-system marker: ${marker}`);
 }
 
 const overlays = read("src/design-system/Overlays.jsx");
@@ -49,7 +51,8 @@ for (const marker of [
   "data-state={state}",
   "useModalBehavior(present",
 ]) {
-  if (!overlays.includes(marker)) fail(`overlay motion behavior missing: ${marker}`);
+  if (!overlays.includes(marker))
+    fail(`overlay motion behavior missing: ${marker}`);
 }
 
 const components = read("src/design-system/components.scss");
@@ -61,40 +64,61 @@ for (const marker of [
   "animation: ds-feedback-in var(--duration-standard)",
   "@keyframes ds-feedback-pop",
 ]) {
-  if (!components.includes(marker)) fail(`shared micro-interaction missing: ${marker}`);
+  if (!components.includes(marker))
+    fail(`shared micro-interaction missing: ${marker}`);
 }
 
 const productCard = read("src/design-system/ProductCard.jsx");
-if (!productCard.includes('added ? "Added to bag" : actionLabel') || !productCard.includes("data-success={added")) {
+if (
+  !productCard.includes('added ? "Added to bag" : actionLabel') ||
+  !productCard.includes("data-success={added")
+) {
   fail("product-card Add to Bag success feedback is missing");
 }
 
 const cartIcon = read("src/components/cartIcon/CartIcon.jsx");
 const cartIconStyles = read("src/components/cartIcon/cartIcon.scss");
-if (!cartIcon.includes("key={itemCount}") || !cartIconStyles.includes("cart-count-feedback")) {
+if (
+  !cartIcon.includes("key={itemCount}") ||
+  !cartIconStyles.includes("cart-count-feedback")
+) {
   fail("cart-count change feedback is missing");
 }
 
-const cartDropdownStyles = read("src/components/cartDropdown/cartDropdown.scss");
-if (!cartDropdownStyles.includes("cart-dropdown-enter") || !cartDropdownStyles.includes("var(--duration-standard)")) {
+const cartDropdownStyles = read(
+  "src/components/cartDropdown/cartDropdown.scss",
+);
+if (
+  !cartDropdownStyles.includes("cart-dropdown-enter") ||
+  !cartDropdownStyles.includes("var(--duration-standard)")
+) {
   fail("mini-cart entrance feedback is missing");
 }
 
 const listing = read("src/components/productListing/ProductListing.jsx");
 const listingStyles = read("src/components/productListing/productListing.scss");
-if (!listing.includes("resultMotionKey") || !listingStyles.includes("catalog-results-refresh")) {
+if (
+  !listing.includes("resultMotionKey") ||
+  !listingStyles.includes("catalog-results-refresh")
+) {
   fail("catalog filter/sort result refresh motion is missing");
 }
 
 const search = read("src/pages/search/SearchPage.jsx");
 const searchStyles = read("src/pages/search/searchPage.scss");
-if (!search.includes("search-page__results--updated") || !searchStyles.includes("search-results-refresh")) {
+if (
+  !search.includes("search-page__results--updated") ||
+  !searchStyles.includes("search-results-refresh")
+) {
   fail("submitted search-result feedback is missing");
 }
 
 const pdp = read("src/pages/productDetail/ProductDetailPage.jsx");
 const pdpStyles = read("src/pages/productDetail/productDetailPage.scss");
-if (!pdp.includes("key={activeImage.src}") || !pdpStyles.includes("product-gallery-image-enter")) {
+if (
+  !pdp.includes("key={activeImage.src}") ||
+  !pdpStyles.includes("product-gallery-image-enter")
+) {
   fail("PDP image transition is missing");
 }
 
@@ -103,7 +127,8 @@ const walk = (directory) => {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const full = path.join(directory, entry.name);
     if (entry.isDirectory()) walk(full);
-    else if (entry.isFile() && entry.name.endsWith(".scss")) scssFiles.push(full);
+    else if (entry.isFile() && entry.name.endsWith(".scss"))
+      scssFiles.push(full);
   }
 };
 walk(path.join(root, "src"));
@@ -111,9 +136,14 @@ walk(path.join(root, "src"));
 for (const file of scssFiles) {
   const source = fs.readFileSync(file, "utf8");
   const relative = path.relative(root, file).replace(/\\/g, "/");
-  const transitionMs = [...source.matchAll(/transition(?:-duration)?:[^;]*?(\d+)ms/g)].map((match) => Number(match[1]));
+  const transitionMs = [
+    ...source.matchAll(/transition(?:-duration)?:[^;]*?(\d+)ms/g),
+  ].map((match) => Number(match[1]));
   for (const duration of transitionMs) {
-    if (duration > 220) fail(`interaction transition longer than 220ms (${duration}ms) in ${relative}`);
+    if (duration > 220)
+      fail(
+        `interaction transition longer than 220ms (${duration}ms) in ${relative}`,
+      );
   }
 }
 
@@ -131,8 +161,11 @@ for (const section of [
   "Reduced motion",
   "Intentionally not animated",
 ]) {
-  if (!docs.includes(section)) fail(`Phase 14 documentation missing: ${section}`);
+  if (!docs.includes(section))
+    fail(`Phase 14 documentation missing: ${section}`);
 }
 
 console.log("Micro-interactions validation passed.");
-console.log("120–220ms interaction timing, restrained state feedback, overlay presence, cart/product/search feedback, and reduced-motion behavior verified.");
+console.log(
+  "120–220ms interaction timing, restrained state feedback, overlay presence, cart/product/search feedback, and reduced-motion behavior verified.",
+);

@@ -15,21 +15,21 @@ const requiredFiles = [
 ];
 
 const missingFiles = requiredFiles.filter(
-  (file) => !fs.existsSync(path.join(sourceRoot, file))
+  (file) => !fs.existsSync(path.join(sourceRoot, file)),
 );
 
 const header = fs.readFileSync(
   path.join(sourceRoot, "components/header/Header.jsx"),
-  "utf8"
+  "utf8",
 );
 const app = fs.readFileSync(path.join(sourceRoot, "App.jsx"), "utf8");
 const search = fs.readFileSync(
   path.join(sourceRoot, "components/searchPanel/SearchPanel.jsx"),
-  "utf8"
+  "utf8",
 );
 const cartIcon = fs.readFileSync(
   path.join(sourceRoot, "components/cartIcon/CartIcon.jsx"),
-  "utf8"
+  "utf8",
 );
 
 const shellStyles = [
@@ -47,23 +47,31 @@ const shellStyles = [
 
 const failures = [];
 
-if (missingFiles.length) failures.push(`Missing files: ${missingFiles.join(", ")}`);
-if (header.includes('/contact')) failures.push("Dead /contact navigation is still present.");
+if (missingFiles.length)
+  failures.push(`Missing files: ${missingFiles.join(", ")}`);
+if (header.includes("/contact"))
+  failures.push("Dead /contact navigation is still present.");
 if (!header.includes('aria-label="Primary navigation"')) {
   failures.push("Primary navigation is missing its accessible label.");
 }
-if (!header.includes("SearchPanel")) failures.push("Search is not exposed in the global header.");
+if (!header.includes("SearchPanel"))
+  failures.push("Search is not exposed in the global header.");
 if (!search.includes("fetchCollectionsStart")) {
   failures.push("Search does not reuse the existing collection-fetch flow.");
 }
-if (!cartIcon.includes("<button")) failures.push("Cart trigger is not a semantic button.");
-if (!cartIcon.includes("aria-expanded")) failures.push("Cart trigger does not expose expanded state.");
-if (!app.includes('id="main-content"')) failures.push("App shell is missing the main-content target.");
-if (!app.includes("<Footer")) failures.push("App shell is missing the global footer.");
+if (!cartIcon.includes("<button"))
+  failures.push("Cart trigger is not a semantic button.");
+if (!cartIcon.includes("aria-expanded"))
+  failures.push("Cart trigger does not expose expanded state.");
+if (!app.includes('id="main-content"'))
+  failures.push("App shell is missing the main-content target.");
+if (!app.includes("<Footer"))
+  failures.push("App shell is missing the global footer.");
 
 const rawColorPattern = /#[0-9a-fA-F]{3,8}|rgba?\s*\(/g;
 const rawColors = shellStyles.match(rawColorPattern) || [];
-if (rawColors.length) failures.push(`Hard-coded shell colors found: ${rawColors.join(", ")}`);
+if (rawColors.length)
+  failures.push(`Hard-coded shell colors found: ${rawColors.join(", ")}`);
 
 if (failures.length) {
   failures.forEach((failure) => console.error(failure));
@@ -72,5 +80,7 @@ if (failures.length) {
 
 console.log("Global shell validation passed.");
 console.log(`${requiredFiles.length} required shell modules found.`);
-console.log("Dead Contact navigation removed; search and cart are exposed globally.");
+console.log(
+  "Dead Contact navigation removed; search and cart are exposed globally.",
+);
 console.log("No hard-coded colors found in Phase 4 shell styles.");

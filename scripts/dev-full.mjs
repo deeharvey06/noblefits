@@ -28,7 +28,9 @@ const client = start(npm, ["run", "dev", "--workspace=client"], "client");
 for (const child of [server, client]) {
   child.on("exit", (code, signal) => {
     if (shuttingDown) return;
-    console.error(`\n[dev] ${child.__label} exited (${signal || code || 0}). Stopping the other process.`);
+    console.error(
+      `\n[dev] ${child.__label} exited (${signal || code || 0}). Stopping the other process.`,
+    );
     stopAll();
     process.exitCode = code ?? 1;
   });

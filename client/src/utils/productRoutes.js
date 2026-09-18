@@ -13,7 +13,9 @@ export const findCollectionByRoute = (collections, collectionRoute) => {
   return (
     collections[collectionRoute] ||
     Object.values(collections).find(
-      (collection) => (collection.routeName || collection.title?.toLowerCase()) === collectionRoute
+      (collection) =>
+        (collection.routeName || collection.title?.toLowerCase()) ===
+        collectionRoute,
     ) ||
     null
   );
@@ -24,7 +26,7 @@ export const findProductByRoute = (collections, collectionRoute, productId) => {
   if (!collection) return { collection: null, product: null };
 
   const product = (collection.items || []).find(
-    (item) => String(item.id) === String(productId)
+    (item) => String(item.id) === String(productId),
   );
 
   return { collection, product: product || null };
@@ -38,7 +40,10 @@ export const getProductImages = (product) => {
         .map((image) =>
           typeof image === "string"
             ? { src: image, alt: product.name }
-            : { src: image?.src || image?.url, alt: image?.alt || product.name }
+            : {
+                src: image?.src || image?.url,
+                alt: image?.alt || product.name,
+              },
         )
         .filter((image) => Boolean(image.src))
     : [];

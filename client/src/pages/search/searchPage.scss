@@ -292,7 +292,8 @@
 }
 
 .search-page__results--updated {
-  animation: search-results-refresh var(--duration-standard) var(--ease-standard);
+  animation: search-results-refresh var(--duration-standard)
+    var(--ease-standard);
 }
 
 @keyframes search-results-refresh {
@@ -300,6 +301,7 @@
     opacity: 0.65;
     transform: translateY(var(--motion-distance-xs));
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

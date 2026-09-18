@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import {
   applyCatalogControls,
   collectionsToArray,
@@ -56,7 +54,9 @@ describe("product listing catalog controls", () => {
     });
 
     expect(result.map((product) => product.price)).toEqual([18, 25]);
-    expect(result.every((product) => product.collectionKey === "hats")).toBe(true);
+    expect(result.every((product) => product.collectionKey === "hats")).toBe(
+      true,
+    );
   });
 
   it("sorts by name and price without mutating catalog order", () => {
@@ -83,9 +83,8 @@ describe("product listing catalog controls", () => {
   });
 
   it("keeps the preferred customer-facing collection order", () => {
-    expect(collectionsToArray(collections).map((collection) => collection.key)).toEqual([
-      "mens",
-      "hats",
-    ]);
+    expect(
+      collectionsToArray(collections).map((collection) => collection.key),
+    ).toEqual(["mens", "hats"]);
   });
 });

@@ -21,8 +21,16 @@ const COLLECTION_ORDER = ["mens", "womens", "jackets", "sneakers", "hats"];
 export const PRICE_FILTERS = [
   { id: "all", label: "All prices", matches: () => true },
   { id: "under-50", label: "Under $50", matches: (price) => price < 50 },
-  { id: "50-99", label: "$50–$99", matches: (price) => price >= 50 && price < 100 },
-  { id: "100-199", label: "$100–$199", matches: (price) => price >= 100 && price < 200 },
+  {
+    id: "50-99",
+    label: "$50–$99",
+    matches: (price) => price >= 50 && price < 100,
+  },
+  {
+    id: "100-199",
+    label: "$100–$199",
+    matches: (price) => price >= 100 && price < 200,
+  },
   { id: "200-plus", label: "$200+", matches: (price) => price >= 200 },
 ];
 
@@ -58,7 +66,7 @@ export const flattenCatalog = (collections) =>
       collectionKey: collection.key,
       collectionTitle: collection.displayTitle,
       collectionRoute: collection.routeName || collection.key,
-    }))
+    })),
   );
 
 export const applyCatalogControls = ({
@@ -67,16 +75,21 @@ export const applyCatalogControls = ({
   priceFilter = "all",
   sortBy = "catalog",
 }) => {
-  const priceRule = PRICE_FILTERS.find((filter) => filter.id === priceFilter) || PRICE_FILTERS[0];
+  const priceRule =
+    PRICE_FILTERS.find((filter) => filter.id === priceFilter) ||
+    PRICE_FILTERS[0];
 
   const filtered = products.filter((product) => {
     const collectionMatches =
-      selectedCollections.length === 0 || selectedCollections.includes(product.collectionKey);
+      selectedCollections.length === 0 ||
+      selectedCollections.includes(product.collectionKey);
     return collectionMatches && priceRule.matches(product.price);
   });
 
-  if (sortBy === "price-asc") return [...filtered].sort((a, b) => a.price - b.price);
-  if (sortBy === "price-desc") return [...filtered].sort((a, b) => b.price - a.price);
+  if (sortBy === "price-asc")
+    return [...filtered].sort((a, b) => a.price - b.price);
+  if (sortBy === "price-desc")
+    return [...filtered].sort((a, b) => b.price - a.price);
   if (sortBy === "name-asc") {
     return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
   }
@@ -98,12 +111,17 @@ const FilterControls = ({
 }) => {
   const priceCountProducts =
     showCollectionFilters && selectedCollections.length > 0
-      ? products.filter((product) => selectedCollections.includes(product.collectionKey))
+      ? products.filter((product) =>
+          selectedCollections.includes(product.collectionKey),
+        )
       : products;
   const currentPriceRule =
-    PRICE_FILTERS.find((filter) => filter.id === priceFilter) || PRICE_FILTERS[0];
+    PRICE_FILTERS.find((filter) => filter.id === priceFilter) ||
+    PRICE_FILTERS[0];
   const availablePriceFilters = PRICE_FILTERS.filter((filter) => {
-    const count = priceCountProducts.filter((product) => filter.matches(product.price)).length;
+    const count = priceCountProducts.filter((product) =>
+      filter.matches(product.price),
+    ).length;
     return filter.id === "all" || filter.id === priceFilter || count > 0;
   });
 
@@ -112,7 +130,11 @@ const FilterControls = ({
       <div className="catalog-filters__heading">
         <h2>Filters</h2>
         {hasActiveFilters && (
-          <button type="button" className="catalog-filters__clear" onClick={onClear}>
+          <button
+            type="button"
+            className="catalog-filters__clear"
+            onClick={onClear}
+          >
             Clear all
           </button>
         )}
@@ -126,7 +148,7 @@ const FilterControls = ({
               const collectionCount = products.filter(
                 (product) =>
                   product.collectionKey === collection.key &&
-                  currentPriceRule.matches(product.price)
+                  currentPriceRule.matches(product.price),
               ).length;
               const isSelected = selectedCollections.includes(collection.key);
 
@@ -150,7 +172,7 @@ const FilterControls = ({
         <div className="catalog-filter-group__options">
           {availablePriceFilters.map((filter) => {
             const count = priceCountProducts.filter((product) =>
-              filter.matches(product.price)
+              filter.matches(product.price),
             ).length;
             return (
               <Radio
@@ -177,7 +199,10 @@ const ProductListing = ({
   description,
 }) => {
   const dispatch = useDispatch();
-  const collectionList = useMemo(() => collectionsToArray(collections), [collections]);
+  const collectionList = useMemo(
+    () => collectionsToArray(collections),
+    [collections],
+  );
   const allProducts = useMemo(() => flattenCatalog(collections), [collections]);
   const isCollectionView = Boolean(collectionKey);
   const collectionProducts = isCollectionView
@@ -198,7 +223,9 @@ const ProductListing = ({
 
   const toggleCollection = (key) => {
     setSelectedCollections((current) =>
-      current.includes(key) ? current.filter((item) => item !== key) : [...current, key]
+      current.includes(key)
+        ? current.filter((item) => item !== key)
+        : [...current, key],
     );
   };
 
@@ -208,7 +235,8 @@ const ProductListing = ({
   };
 
   const activeFilterCount =
-    (isCollectionView ? 0 : selectedCollections.length) + (priceFilter === "all" ? 0 : 1);
+    (isCollectionView ? 0 : selectedCollections.length) +
+    (priceFilter === "all" ? 0 : 1);
   const hasActiveFilters = activeFilterCount > 0;
 
   const resultLabel = `${visibleProducts.length} ${visibleProducts.length === 1 ? "product" : "products"}`;
@@ -246,16 +274,28 @@ const ProductListing = ({
           All
         </NavLink>
         {collectionList.map((collection) => (
-          <NavLink key={collection.key} to={`/shop/${collection.collectionRoute || collection.key}`}>
+          <NavLink
+            key={collection.key}
+            to={`/shop/${collection.collectionRoute || collection.key}`}
+          >
             {collection.displayTitle}
           </NavLink>
         ))}
       </nav>
 
       <div className="catalog-toolbar">
-        <div className="catalog-toolbar__summary" role="status" aria-live="polite">
+        <div
+          className="catalog-toolbar__summary"
+          role="status"
+          aria-live="polite"
+        >
           <strong>{resultLabel}</strong>
-          {hasActiveFilters && <span>{activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}</span>}
+          {hasActiveFilters && (
+            <span>
+              {activeFilterCount} active{" "}
+              {activeFilterCount === 1 ? "filter" : "filters"}
+            </span>
+          )}
         </div>
 
         <div className="catalog-toolbar__controls">
@@ -286,16 +326,23 @@ const ProductListing = ({
 
       <div className="catalog-layout">
         <aside className="catalog-sidebar" aria-label="Product filters">
-          <FilterControls idPrefix={`desktop-${collectionKey || "all"}`} {...filterProps} />
+          <FilterControls
+            idPrefix={`desktop-${collectionKey || "all"}`}
+            {...filterProps}
+          />
         </aside>
 
         <div className="catalog-results">
           {visibleProducts.length > 0 ? (
-            <div key={resultMotionKey} className="catalog-product-grid catalog-product-grid--updated">
+            <div
+              key={resultMotionKey}
+              className="catalog-product-grid catalog-product-grid--updated"
+            >
               {visibleProducts.map((product) => {
                 const isUnavailable =
                   product.available === false || product.inStock === false;
-                const availabilityLabel = product.availability ||
+                const availabilityLabel =
+                  product.availability ||
                   (typeof product.inStock === "boolean"
                     ? product.inStock
                       ? "In stock"
@@ -306,7 +353,9 @@ const ProductListing = ({
                   <ProductCard
                     key={`${product.collectionKey}-${product.id}`}
                     className="catalog-product-card"
-                    eyebrow={isCollectionView ? undefined : product.collectionTitle}
+                    eyebrow={
+                      isCollectionView ? undefined : product.collectionTitle
+                    }
                     name={product.name}
                     headingLevel={2}
                     imageUrl={product.imageUrl}
@@ -315,9 +364,20 @@ const ProductListing = ({
                     compareAtPrice={product.compareAtPrice}
                     badge={product.badge}
                     badgeVariant={product.badgeVariant}
-                    rating={typeof product.rating === "number" ? product.rating : undefined}
-                    reviewCount={typeof product.reviewCount === "number" ? product.reviewCount : undefined}
-                    productHref={getProductPath(product.collectionRoute, product.id)}
+                    rating={
+                      typeof product.rating === "number"
+                        ? product.rating
+                        : undefined
+                    }
+                    reviewCount={
+                      typeof product.reviewCount === "number"
+                        ? product.reviewCount
+                        : undefined
+                    }
+                    productHref={getProductPath(
+                      product.collectionRoute,
+                      product.id,
+                    )}
                     disabled={isUnavailable}
                     actionLabel={isUnavailable ? "Unavailable" : "Add to cart"}
                     onAddToCart={
@@ -330,7 +390,7 @@ const ProductListing = ({
                                 name: product.name,
                                 imageUrl: product.imageUrl,
                                 price: product.price,
-                              })
+                              }),
                             )
                     }
                   >
@@ -363,7 +423,10 @@ const ProductListing = ({
         id={`catalog-filters-${collectionKey || "all"}`}
         className="catalog-filter-drawer"
       >
-        <FilterControls idPrefix={`mobile-${collectionKey || "all"}`} {...filterProps} />
+        <FilterControls
+          idPrefix={`mobile-${collectionKey || "all"}`}
+          {...filterProps}
+        />
         <div className="catalog-filter-drawer__action">
           <Button fullWidth onClick={() => setMobileFiltersOpen(false)}>
             View {resultLabel}

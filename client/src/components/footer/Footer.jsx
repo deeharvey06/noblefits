@@ -30,17 +30,24 @@ const Footer = () => {
 
         <nav className="site-footer__links" aria-label="Footer shop navigation">
           {shopLinks.map(([label, href]) => (
-            <Link key={href} to={href}>{label}</Link>
+            <Link key={href} to={href}>
+              {label}
+            </Link>
           ))}
         </nav>
 
-        <nav className="site-footer__account" aria-label="Footer account navigation">
+        <nav
+          className="site-footer__account"
+          aria-label="Footer account navigation"
+        >
           <Link to={currentUser ? "/account" : "/signin"}>
             {currentUser ? "Account" : "Sign in"}
           </Link>
           <Link to="/checkout">Bag</Link>
           {currentUser && (
-            <button type="button" onClick={() => dispatch(signOutStart())}>Sign out</button>
+            <button type="button" onClick={() => dispatch(signOutStart())}>
+              Sign out
+            </button>
           )}
         </nav>
       </div>

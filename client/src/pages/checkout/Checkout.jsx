@@ -35,20 +35,33 @@ const CheckoutPage = () => {
 
   if (paymentReceipt) {
     return (
-      <section className="checkout-complete ds-container" aria-labelledby="checkout-complete-title">
+      <section
+        className="checkout-complete ds-container"
+        aria-labelledby="checkout-complete-title"
+      >
         <p className="checkout-complete__eyebrow">Payment complete</p>
         <h1 id="checkout-complete-title">Thanks. Your payment was received.</h1>
         <p className="checkout-complete__summary">
-          {formatMoney(paymentReceipt.amount)} was submitted for {paymentReceipt.itemCount} item{paymentReceipt.itemCount === 1 ? "" : "s"}.
+          {formatMoney(paymentReceipt.amount)} was submitted for{" "}
+          {paymentReceipt.itemCount} item
+          {paymentReceipt.itemCount === 1 ? "" : "s"}.
         </p>
         <p className="checkout-complete__note">
-          Your bag has been cleared to prevent an accidental repeat purchase. This storefront does not currently persist order history or fulfillment records.
+          Your bag has been cleared to prevent an accidental repeat purchase.
+          This storefront does not currently persist order history or
+          fulfillment records.
         </p>
         <div className="checkout-complete__actions">
-          <Link to="/shop" className="ds-button ds-button--primary ds-button--md">
+          <Link
+            to="/shop"
+            className="ds-button ds-button--primary ds-button--md"
+          >
             <span className="ds-button__label">Continue shopping</span>
           </Link>
-          <Link to="/account" className="ds-button ds-button--secondary ds-button--md">
+          <Link
+            to="/account"
+            className="ds-button ds-button--secondary ds-button--md"
+          >
             <span className="ds-button__label">View account</span>
           </Link>
         </div>
@@ -92,7 +105,9 @@ const CheckoutPage = () => {
 
       <ol className="checkout-progress" aria-label="Checkout progress">
         <li className="checkout-progress__step checkout-progress__step--complete">
-          <span className="checkout-progress__number" aria-hidden="true">✓</span>
+          <span className="checkout-progress__number" aria-hidden="true">
+            ✓
+          </span>
           <span>
             <strong>Bag</strong>
             <small>Reviewed</small>
@@ -142,7 +157,10 @@ const CheckoutPage = () => {
           </a>
         </section>
 
-        <aside className="cart-summary checkout-summary" aria-labelledby="cart-summary-title">
+        <aside
+          className="cart-summary checkout-summary"
+          aria-labelledby="cart-summary-title"
+        >
           <div className="cart-summary__panel">
             <div className="cart-summary__heading">
               <p className="cart-summary__eyebrow">Order summary</p>
@@ -161,14 +179,17 @@ const CheckoutPage = () => {
             </dl>
 
             <p className="cart-summary__scope-note">
-              This storefront does not currently calculate shipping, taxes, discounts, or promo codes.
+              This storefront does not currently calculate shipping, taxes,
+              discounts, or promo codes.
             </p>
 
             <div className="checkout-summary__trust" role="note">
-              <span className="checkout-summary__trust-mark" aria-hidden="true">S</span>
+              <span className="checkout-summary__trust-mark" aria-hidden="true">
+                S
+              </span>
               <p>
-                Card details are collected by Stripe Elements and exchanged for a token before the
-                payment request is sent.
+                Card details are collected by Stripe Elements and exchanged for
+                a token before the payment request is sent.
               </p>
             </div>
 
@@ -187,16 +208,22 @@ const CheckoutPage = () => {
             <p className="checkout-section__step-label">Step 2</p>
             <h2 id="payment-title">Secure card payment</h2>
             <p>
-              Enter your card details and review the amount on the button before submitting payment.
+              Enter your card details and review the amount on the button before
+              submitting payment.
             </p>
           </div>
 
-          <div className="checkout-scope" role="note" aria-label="Checkout scope">
+          <div
+            className="checkout-scope"
+            role="note"
+            aria-label="Checkout scope"
+          >
             <strong>Payment-only checkout</strong>
             <p>
-              The current application does not collect contact information, shipping addresses, or a
-              separate billing address. Those capabilities require commerce and order infrastructure
-              that is not part of the existing checkout.
+              The current application does not collect contact information,
+              shipping addresses, or a separate billing address. Those
+              capabilities require commerce and order infrastructure that is not
+              part of the existing checkout.
             </p>
           </div>
 
@@ -209,6 +236,5 @@ const CheckoutPage = () => {
     </div>
   );
 };
-
 
 export default CheckoutPage;

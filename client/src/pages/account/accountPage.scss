@@ -149,7 +149,7 @@
     font-size: var(--type-h3-size);
   }
 
-  > p:not(.account-section__eyebrow):not(.account-session__error) {
+  > p:not(.account-section__eyebrow, .account-session__error) {
     margin: 0 0 var(--space-6);
     color: var(--color-text-secondary);
     font-size: var(--type-body-sm-size);
@@ -179,7 +179,6 @@
     }
   }
 }
-
 
 @include tablet-down {
   .account-page__layout {

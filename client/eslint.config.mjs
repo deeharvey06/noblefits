@@ -2,6 +2,7 @@ import js from "@eslint/js";
 import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
+import prettier from "eslint-config-prettier/flat";
 
 export default [
   {
@@ -34,11 +35,11 @@ export default [
       ...reactHooks.configs.flat.recommended.rules,
       "react/prop-types": "off",
       "react/no-unescaped-entities": "off",
-      "no-console": ["warn", { "allow": ["warn", "error"] }]
+      "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
   {
-    files: ["scripts/**/*.js"],
+    files: ["scripts/**/*.js", "**/*.cjs"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "commonjs",
@@ -56,8 +57,9 @@ export default [
         test: "readonly",
         beforeEach: "readonly",
         afterEach: "readonly",
-        vi: "readonly"
-      }
-    }
-  }
+        jest: "readonly",
+      },
+    },
+  },
+  prettier,
 ];

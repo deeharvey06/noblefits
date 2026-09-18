@@ -25,10 +25,15 @@ for (const route of ['path="/account"', 'path="/forgot-password"']) {
 }
 
 if (!app.includes("selectSessionChecked") || !app.includes("!sessionChecked")) {
-  fail("protected account routing does not wait for Firebase session restoration");
+  fail(
+    "protected account routing does not wait for Firebase session restoration",
+  );
 }
 
-if (!firebase.includes("sendPasswordResetEmail") || !firebase.includes("sendPasswordReset")) {
+if (
+  !firebase.includes("sendPasswordResetEmail") ||
+  !firebase.includes("sendPasswordReset")
+) {
   fail("Firebase-native password recovery is missing");
 }
 
@@ -37,7 +42,8 @@ if (!reset.includes("If an account exists for")) {
 }
 
 for (const field of ["Display name", "Email address", "Member since"]) {
-  if (!account.includes(field)) fail(`missing supported profile field: ${field}`);
+  if (!account.includes(field))
+    fail(`missing supported profile field: ${field}`);
 }
 
 for (const unsupported of [
@@ -45,7 +51,8 @@ for (const unsupported of [
   "does not currently store payment methods",
   "not currently synchronized to your account",
 ]) {
-  if (!account.includes(unsupported)) fail(`missing unsupported-capability boundary: ${unsupported}`);
+  if (!account.includes(unsupported))
+    fail(`missing unsupported-capability boundary: ${unsupported}`);
 }
 
 if (!header.includes('to="/account"') || !account.includes("signOutStart")) {
@@ -56,8 +63,13 @@ if (!signIn.includes('to="/forgot-password"')) {
   fail("sign in does not expose password recovery");
 }
 
-if (!signIn.includes("getSignInErrorMessage") || !signUp.includes("getSignUpErrorMessage")) {
-  fail("authentication errors are not presented through controlled user-facing messages");
+if (
+  !signIn.includes("getSignInErrorMessage") ||
+  !signUp.includes("getSignUpErrorMessage")
+) {
+  fail(
+    "authentication errors are not presented through controlled user-facing messages",
+  );
 }
 
 if (!reducer.includes("sessionChecked") || !reducer.includes("errorContext")) {
@@ -75,7 +87,8 @@ const forbiddenRoutes = [
   'path="/tracking"',
 ];
 for (const route of forbiddenRoutes) {
-  if (app.includes(route)) fail(`unsupported account capability was fabricated: ${route}`);
+  if (app.includes(route))
+    fail(`unsupported account capability was fabricated: ${route}`);
 }
 
 const rawColor = /#[0-9a-fA-F]{3,8}\b|\brgba?\s*\(/;
@@ -87,10 +100,15 @@ for (const [file, source] of [
 }
 
 for (const marker of ["laptop-down", "mobile-down"]) {
-  if (!accountStyles.includes(marker)) fail(`missing responsive account behavior: ${marker}`);
+  if (!accountStyles.includes(marker))
+    fail(`missing responsive account behavior: ${marker}`);
 }
 
 console.log("Account validation passed.");
-console.log("Sign-in, registration, Firebase password recovery, protected account routing, and logout verified.");
-console.log("Profile presentation is limited to existing user data; orders, addresses, payment methods, and tracking are not fabricated.");
+console.log(
+  "Sign-in, registration, Firebase password recovery, protected account routing, and logout verified.",
+);
+console.log(
+  "Profile presentation is limited to existing user data; orders, addresses, payment methods, and tracking are not fabricated.",
+);
 console.log("Existing Firebase authentication remains the source of truth.");

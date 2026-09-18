@@ -1,14 +1,24 @@
 import { useMemo, useState } from "react";
 import axios from "axios";
-import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import {
+  CardElement,
+  Elements,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { Button } from "../../design-system";
-import { isStripeTestMode, stripePublishableKey } from "../../config/clientConfig";
+import {
+  isStripeTestMode,
+  stripePublishableKey,
+} from "../../config/clientConfig";
 
 import "./stripeButton.scss";
 
-const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
+const stripePromise = stripePublishableKey
+  ? loadStripe(stripePublishableKey)
+  : null;
 
 const CARD_OPTIONS = {
   hidePostalCode: false,
@@ -35,8 +45,14 @@ const PaymentForm = ({ price, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [cardState, setCardState] = useState({ complete: false, error: "" });
-  const [paymentState, setPaymentState] = useState({ status: "idle", message: "" });
-  const priceForStripe = useMemo(() => Math.round(Number(price) * 100), [price]);
+  const [paymentState, setPaymentState] = useState({
+    status: "idle",
+    message: "",
+  });
+  const priceForStripe = useMemo(
+    () => Math.round(Number(price) * 100),
+    [price],
+  );
   const formattedPrice = useMemo(() => formatMoney(price), [price]);
 
   if (!Number.isFinite(priceForStripe) || priceForStripe <= 0) {
@@ -57,7 +73,12 @@ const PaymentForm = ({ price, onSuccess }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !elements || paymentState.status === "loading" || paymentState.status === "success") {
+    if (
+      !stripe ||
+      !elements ||
+      paymentState.status === "loading" ||
+      paymentState.status === "success"
+    ) {
       return;
     }
 
@@ -73,7 +94,8 @@ const PaymentForm = ({ price, onSuccess }) => {
     if (!cardElement) {
       setPaymentState({
         status: "error",
-        message: "Card details are unavailable. Refresh the page and try again.",
+        message:
+          "Card details are unavailable. Refresh the page and try again.",
       });
       return;
     }
@@ -85,7 +107,9 @@ const PaymentForm = ({ price, onSuccess }) => {
     if (tokenError || !token) {
       setPaymentState({
         status: "error",
-        message: tokenError?.message || "Please check your card details and try again.",
+        message:
+          tokenError?.message ||
+          "Please check your card details and try again.",
       });
       return;
     }
@@ -97,21 +121,28 @@ const PaymentForm = ({ price, onSuccess }) => {
       });
       cardElement.clear();
       setCardState({ complete: false, error: "" });
-      setPaymentState({ status: "success", message: "Payment completed successfully." });
+      setPaymentState({
+        status: "success",
+        message: "Payment completed successfully.",
+      });
       onSuccess?.();
     } catch (error) {
       console.error("Payment request failed", error);
       setPaymentState({
         status: "error",
-        message: "There was an issue with your payment. Check your details and try again.",
+        message:
+          "There was an issue with your payment. Check your details and try again.",
       });
     }
   };
 
   const isLoading = paymentState.status === "loading";
   const isComplete = paymentState.status === "success";
-  const paymentDisabled = !stripe || !cardState.complete || isLoading || isComplete;
-  const visibleError = cardState.error || (paymentState.status === "error" ? paymentState.message : "");
+  const paymentDisabled =
+    !stripe || !cardState.complete || isLoading || isComplete;
+  const visibleError =
+    cardState.error ||
+    (paymentState.status === "error" ? paymentState.message : "");
 
   return (
     <form className="stripe-payment" onSubmit={handleSubmit} noValidate>
@@ -131,7 +162,9 @@ const PaymentForm = ({ price, onSuccess }) => {
             onChange={handleCardChange}
           />
         </div>
-        <p className="stripe-payment__hint">Card number · expiry · CVC · postal code</p>
+        <p className="stripe-payment__hint">
+          Card number · expiry · CVC · postal code
+        </p>
       </div>
 
       {visibleError && (
@@ -162,12 +195,16 @@ const PaymentForm = ({ price, onSuccess }) => {
       )}
 
       <p className="stripe-payment__security-note">
-        Card details are collected by Stripe Elements. The payment request sends a Stripe token,
-        not the raw card number.
+        Card details are collected by Stripe Elements. The payment request sends
+        a Stripe token, not the raw card number.
       </p>
 
       {isStripeTestMode && (
-        <div className="stripe-payment__test-card" role="note" aria-label="Test payment details">
+        <div
+          className="stripe-payment__test-card"
+          role="note"
+          aria-label="Test payment details"
+        >
           <strong>Stripe test mode</strong>
           <span>Use 4242 4242 4242 4242</span>
           <span>Any future expiry · any 3-digit CVC</span>

@@ -1,4 +1,3 @@
-
 const IconButton = ({
   children,
   label,

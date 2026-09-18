@@ -30,9 +30,13 @@ const ProductCard = ({
   const [added, setAdded] = useState(false);
   const feedbackTimerRef = useRef(null);
 
-  useEffect(() => () => {
-    if (feedbackTimerRef.current) window.clearTimeout(feedbackTimerRef.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (feedbackTimerRef.current)
+        window.clearTimeout(feedbackTimerRef.current);
+    },
+    [],
+  );
 
   const handleAddToCart = () => {
     if (!onAddToCart || disabled) return;
@@ -44,8 +48,14 @@ const ProductCard = ({
 
   if (loading) {
     return (
-      <article className={`ds-product-card ds-product-card--loading ${className}`.trim()} aria-busy="true">
-        <div className="ds-skeleton ds-product-card__image" aria-hidden="true" />
+      <article
+        className={`ds-product-card ds-product-card--loading ${className}`.trim()}
+        aria-busy="true"
+      >
+        <div
+          className="ds-skeleton ds-product-card__image"
+          aria-hidden="true"
+        />
         <div className="ds-product-card__body">
           <div className="ds-skeleton ds-skeleton--text ds-skeleton--wide" />
           <div className="ds-skeleton ds-skeleton--text ds-skeleton--short" />
@@ -101,7 +111,11 @@ const ProductCard = ({
       <div className="ds-product-card__body">
         {eyebrow && <span className="ds-product-card__eyebrow">{eyebrow}</span>}
         <Heading className="ds-product-card__title">
-          {productHref ? <RouterLink to={productHref}>{name}</RouterLink> : name}
+          {productHref ? (
+            <RouterLink to={productHref}>{name}</RouterLink>
+          ) : (
+            name
+          )}
         </Heading>
         <PriceDisplay price={price} compareAtPrice={compareAtPrice} />
         {typeof rating === "number" && (

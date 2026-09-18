@@ -34,7 +34,11 @@ const BreadcrumbTrail = () => {
       });
     }
     if (collectionId && productId) {
-      const { product } = findProductByRoute(collections, collectionId, productId);
+      const { product } = findProductByRoute(
+        collections,
+        collectionId,
+        productId,
+      );
       items.push({
         label: product?.name || "Product",
         href: pathname,

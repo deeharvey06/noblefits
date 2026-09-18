@@ -27,9 +27,12 @@ const SignUp = () => {
 
   const { displayName, email, password, confirmPassword } = credentials;
   const isSubmitting = status === "submitting";
-  const authMessage = errorContext === "sign-up" ? getSignUpErrorMessage(authError) : "";
-  const confirmPasswordError = formError === "Passwords must match." ? formError : "";
-  const errorMessage = authMessage || (formError && !confirmPasswordError ? formError : "");
+  const authMessage =
+    errorContext === "sign-up" ? getSignUpErrorMessage(authError) : "";
+  const confirmPasswordError =
+    formError === "Passwords must match." ? formError : "";
+  const errorMessage =
+    authMessage || (formError && !confirmPasswordError ? formError : "");
 
   const handleChange = ({ target: { name, value } }) => {
     setCredentials((current) => ({ ...current, [name]: value }));
@@ -45,11 +48,20 @@ const SignUp = () => {
       return;
     }
 
-    dispatch(signUpStart({ displayName: displayName.trim(), email: email.trim(), password }));
+    dispatch(
+      signUpStart({
+        displayName: displayName.trim(),
+        email: email.trim(),
+        password,
+      }),
+    );
   };
 
   return (
-    <section className="auth-panel auth-panel--signup" aria-labelledby="sign-up-title">
+    <section
+      className="auth-panel auth-panel--signup"
+      aria-labelledby="sign-up-title"
+    >
       <div className="auth-panel__heading">
         <p className="auth-panel__eyebrow">New here?</p>
         <h2 id="sign-up-title">Create your account</h2>
@@ -97,7 +109,11 @@ const SignUp = () => {
           required
         />
 
-        {errorMessage && <p className="auth-form__error" role="alert">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="auth-form__error" role="alert">
+            {errorMessage}
+          </p>
+        )}
 
         <Button
           type="submit"

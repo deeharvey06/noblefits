@@ -18,11 +18,21 @@
     "preview": "npm run preview --workspace=client",
     "test": "npm run test --workspace=client",
     "test:watch": "npm run test:watch --workspace=client",
-    "lint": "npm run lint --workspace=client",
-    "lint:fix": "npm run lint:fix --workspace=client",
-    "validate": "npm run validate --workspace=client",
+    "lint": "npm run lint:js && npm run lint:styles",
+    "lint:fix": "npm run lint:js -- --fix && npm run lint:styles -- --fix",
+    "validate": "npm run lint && npm run format:check && npm run validate --workspace=client",
     "start": "node server.js",
-    "heroku-postbuild": "npm run build --workspace=client"
+    "heroku-postbuild": "npm run build --workspace=client",
+    "prepare": "husky",
+    "lint:js": "eslint . --max-warnings=0",
+    "lint:styles": "stylelint \"client/src/**/*.{css,scss}\"",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "lint:staged": "lint-staged",
+    "test:coverage": "npm run test:coverage --workspace=client",
+    "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -36,5 +46,21 @@
   "workspaces": [
     "client"
   ],
-  "packageManager": "npm@10.9.2"
+  "packageManager": "npm@10.9.2",
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "babel-jest": "^30.5.1",
+    "cypress": "^15.21.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jest": "^30.5.1",
+    "jest-environment-jsdom": "^30.5.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.8",
+    "start-server-and-test": "^2.1.5",
+    "stylelint": "^17.15.0",
+    "stylelint-config-standard-scss": "^17.0.0"
+  }
 }

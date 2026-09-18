@@ -49,7 +49,9 @@ const requiredTokens = [
   "--layout-grid-card-min",
 ];
 
-const missing = requiredTokens.filter((token) => !tokenSource.includes(`${token}:`));
+const missing = requiredTokens.filter(
+  (token) => !tokenSource.includes(`${token}:`),
+);
 
 const rawColorPattern = /#[0-9a-fA-F]{3,8}|rgba?\s*\(/g;
 const componentRawColors = componentSource.match(rawColorPattern) || [];
@@ -70,18 +72,25 @@ const componentFiles = [
 ];
 
 const missingFiles = componentFiles.filter(
-  (file) => !fs.existsSync(path.join(root, "src/design-system", file))
+  (file) => !fs.existsSync(path.join(root, "src/design-system", file)),
 );
 
 if (missing.length || componentRawColors.length || missingFiles.length) {
-  if (missing.length) console.error("Missing semantic tokens:", missing.join(", "));
+  if (missing.length)
+    console.error("Missing semantic tokens:", missing.join(", "));
   if (componentRawColors.length) {
-    console.error("Hard-coded colors found in component styles:", componentRawColors.join(", "));
+    console.error(
+      "Hard-coded colors found in component styles:",
+      componentRawColors.join(", "),
+    );
   }
-  if (missingFiles.length) console.error("Missing component files:", missingFiles.join(", "));
+  if (missingFiles.length)
+    console.error("Missing component files:", missingFiles.join(", "));
   process.exit(1);
 }
 
-console.log(`Design system validation passed: ${requiredTokens.length} required tokens found.`);
+console.log(
+  `Design system validation passed: ${requiredTokens.length} required tokens found.`,
+);
 console.log(`${componentFiles.length} component modules found.`);
 console.log("No hard-coded colors found in design-system component styles.");

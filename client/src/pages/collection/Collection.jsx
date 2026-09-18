@@ -1,4 +1,3 @@
-
 import ProductListing, {
   normalizeCollectionTitle,
 } from "../../components/productListing/ProductListing";

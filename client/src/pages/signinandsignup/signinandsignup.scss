@@ -38,7 +38,11 @@
 .auth-story__shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, color-mix(in srgb, var(--color-brand) 76%, transparent), transparent 62%);
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-brand) 76%, transparent),
+    transparent 62%
+  );
 }
 
 .auth-story__copy {
@@ -91,8 +95,7 @@
 
 .auth-workspace {
   width: min(100%, 35rem);
-  align-self: center;
-  justify-self: center;
+  place-self: center center;
 }
 
 .auth-workspace__header {

@@ -57,18 +57,22 @@ const editDistance = (left = "", right = "") => {
   if (!left.length) return right.length;
   if (!right.length) return left.length;
 
-  const previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+  const previous = Array.from(
+    { length: right.length + 1 },
+    (_, index) => index,
+  );
   const current = new Array(right.length + 1);
 
   for (let leftIndex = 1; leftIndex <= left.length; leftIndex += 1) {
     current[0] = leftIndex;
 
     for (let rightIndex = 1; rightIndex <= right.length; rightIndex += 1) {
-      const substitutionCost = left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1;
+      const substitutionCost =
+        left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1;
       current[rightIndex] = Math.min(
         current[rightIndex - 1] + 1,
         previous[rightIndex] + 1,
-        previous[rightIndex - 1] + substitutionCost
+        previous[rightIndex - 1] + substitutionCost,
       );
     }
 
@@ -97,8 +101,10 @@ const scoreText = (query, candidate) => {
   if (normalizedCandidate === query) return { score: 120, exact: true };
   if (normalizedCandidate.startsWith(query)) return { score: 105, exact: true };
   if (compactCandidate === compactQuery) return { score: 102, exact: true };
-  if (query.length >= 4 && normalizedCandidate.includes(query)) return { score: 95, exact: true };
-  if (compactQuery.length >= 4 && compactCandidate.includes(compactQuery)) return { score: 92, exact: true };
+  if (query.length >= 4 && normalizedCandidate.includes(query))
+    return { score: 95, exact: true };
+  if (compactQuery.length >= 4 && compactCandidate.includes(compactQuery))
+    return { score: 92, exact: true };
 
   const queryTokens = query.split(" ").filter(Boolean);
   const candidateTokens = normalizedCandidate.split(" ").filter(Boolean);
@@ -108,8 +114,8 @@ const scoreText = (query, candidate) => {
       (candidateToken) =>
         candidateToken === queryToken ||
         candidateToken.startsWith(queryToken) ||
-        (queryToken.length >= 4 && candidateToken.includes(queryToken))
-    )
+        (queryToken.length >= 4 && candidateToken.includes(queryToken)),
+    ),
   );
 
   if (directTokenMatch) return { score: 82, exact: true };
@@ -119,14 +125,20 @@ const scoreText = (query, candidate) => {
     if (!threshold) return false;
 
     return candidateTokens.some(
-      (candidateToken) => editDistance(queryToken, candidateToken) <= threshold
+      (candidateToken) => editDistance(queryToken, candidateToken) <= threshold,
     );
   });
 
-  return fuzzyTokenMatch ? { score: 55, exact: false } : { score: 0, exact: false };
+  return fuzzyTokenMatch
+    ? { score: 55, exact: false }
+    : { score: 0, exact: false };
 };
 
-export const searchCatalog = ({ products = [], categories = [], query = "" }) => {
+export const searchCatalog = ({
+  products = [],
+  categories = [],
+  query = "",
+}) => {
   const normalizedQuery = normalizeSearchText(query);
 
   if (!normalizedQuery) {
@@ -145,26 +157,52 @@ export const searchCatalog = ({ products = [], categories = [], query = "" }) =>
     .map((category, index) => {
       const titleMatch = scoreText(normalizedQuery, category.title);
       const routeMatch = scoreText(normalizedQuery, category.routeName);
-      const best = titleMatch.score >= routeMatch.score ? titleMatch : routeMatch;
+      const best =
+        titleMatch.score >= routeMatch.score ? titleMatch : routeMatch;
 
-      return { ...category, searchScore: best.score + 5, exactMatch: best.exact, catalogIndex: index };
+      return {
+        ...category,
+        searchScore: best.score + 5,
+        exactMatch: best.exact,
+        catalogIndex: index,
+      };
     })
     .filter((category) => category.searchScore > 5)
-    .sort((left, right) => right.searchScore - left.searchScore || left.catalogIndex - right.catalogIndex);
+    .sort(
+      (left, right) =>
+        right.searchScore - left.searchScore ||
+        left.catalogIndex - right.catalogIndex,
+    );
 
   const rankedProducts = products
     .map((product, index) => {
       const nameMatch = scoreText(normalizedQuery, product.name);
-      const collectionMatch = scoreText(normalizedQuery, product.collectionTitle);
-      const bestScore = Math.max(nameMatch.score, collectionMatch.score ? collectionMatch.score - 18 : 0);
-      const exactMatch = nameMatch.score >= collectionMatch.score - 18
-        ? nameMatch.exact
-        : collectionMatch.exact;
+      const collectionMatch = scoreText(
+        normalizedQuery,
+        product.collectionTitle,
+      );
+      const bestScore = Math.max(
+        nameMatch.score,
+        collectionMatch.score ? collectionMatch.score - 18 : 0,
+      );
+      const exactMatch =
+        nameMatch.score >= collectionMatch.score - 18
+          ? nameMatch.exact
+          : collectionMatch.exact;
 
-      return { ...product, searchScore: bestScore, exactMatch, catalogIndex: index };
+      return {
+        ...product,
+        searchScore: bestScore,
+        exactMatch,
+        catalogIndex: index,
+      };
     })
     .filter((product) => product.searchScore > 0)
-    .sort((left, right) => right.searchScore - left.searchScore || left.catalogIndex - right.catalogIndex);
+    .sort(
+      (left, right) =>
+        right.searchScore - left.searchScore ||
+        left.catalogIndex - right.catalogIndex,
+    );
 
   const suggestionCandidates = [
     ...rankedCategories.map((category) => category.title),
@@ -182,7 +220,9 @@ export const searchCatalog = ({ products = [], categories = [], query = "" }) =>
     suggestions,
     totalProducts: rankedProducts.length,
     hasExactMatch,
-    fuzzyOnly: !hasExactMatch && (rankedProducts.length > 0 || rankedCategories.length > 0),
+    fuzzyOnly:
+      !hasExactMatch &&
+      (rankedProducts.length > 0 || rankedCategories.length > 0),
   };
 };
 
@@ -202,7 +242,9 @@ export const getRecentSearches = () => {
   try {
     const stored = JSON.parse(storage.getItem(RECENT_SEARCHES_KEY) || "[]");
     return Array.isArray(stored)
-      ? stored.filter((item) => typeof item === "string" && item.trim()).slice(0, MAX_RECENT_SEARCHES)
+      ? stored
+          .filter((item) => typeof item === "string" && item.trim())
+          .slice(0, MAX_RECENT_SEARCHES)
       : [];
   } catch {
     return [];
@@ -217,7 +259,9 @@ export const saveRecentSearch = (query) => {
   const normalized = normalizeSearchText(trimmed);
   const next = [
     trimmed,
-    ...getRecentSearches().filter((item) => normalizeSearchText(item) !== normalized),
+    ...getRecentSearches().filter(
+      (item) => normalizeSearchText(item) !== normalized,
+    ),
   ].slice(0, MAX_RECENT_SEARCHES);
 
   try {

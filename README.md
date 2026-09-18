@@ -111,8 +111,39 @@ On Windows PowerShell, delete `node_modules` folders manually (or use `Remove-It
 
 ### Lockfile
 
-The previous ZIP contained an old npm-v6 `package-lock.json` from the pre-Vite project. It was removed because it did not describe the modern frontend workspace. A fresh `npm install` with npm 10 will generate the correct workspace-aware lockfile; commit that new lockfile for reproducible CI/deployments.
+Commit `package-lock.json` with dependency changes. Use `npm ci` for reproducible installs in CI.
 
 ### Vite 8 + JSX
 
 React files that contain JSX use the `.jsx` extension. This is intentional: Vite 8 uses Oxc for JavaScript parsing and dependency scanning, and `.js` files are treated as plain JavaScript. The project validator will fail if JSX is added back into a `.js` source file.
+
+### Code quality and tests
+
+Run all commands from the repository root:
+
+| Command                 | Purpose                                                      |
+| ----------------------- | ------------------------------------------------------------ |
+| `npm run lint`          | Check JavaScript/JSX with ESLint and SCSS/CSS with Stylelint |
+| `npm run lint:fix`      | Apply available lint fixes                                   |
+| `npm run format`        | Format supported project files with Prettier                 |
+| `npm run format:check`  | Check formatting without changing files                      |
+| `npm test`              | Run Jest unit and component tests with Testing Library       |
+| `npm run test:watch`    | Watch unit tests during development                          |
+| `npm run test:coverage` | Generate unit-test coverage in `client/coverage`             |
+| `npm run test:e2e`      | Start Vite, run Cypress headlessly, and stop Vite            |
+| `npm run cypress:open`  | Open Cypress (start `npm run dev` separately)                |
+
+`npm install` / `npm ci` runs Husky's `prepare` script to activate the
+pre-commit hook. On commit, lint-staged runs ESLint and Stylelint autofixes
+and Prettier on staged files, then includes the fixes in the commit. Unresolved
+lint errors or warnings stop the commit. Tests run separately to keep commits
+fast. Local hooks can be bypassed; CI should run the checks independently.
+
+Jest uses jsdom, Babel for JSX, and Testing Library's DOM matchers. Unit tests
+live next to source files as `*.test.js` or `*.test.jsx`. Cypress browser tests
+live in `cypress/e2e`. If the Cypress binary is missing, run `npx cypress install`.
+Cypress needs a supported desktop/browser environment. If it reports `bad option: --smoke-test`, unset `ELECTRON_RUN_AS_NODE` before running Cypress.
+
+For CI, run `npm ci`, `npm run lint`, `npm run format:check`, `npm test`,
+`npm run build`, and `npm run test:e2e`. Set `HUSKY=0` in CI to skip installing
+local Git hooks.

@@ -20,7 +20,12 @@ export const getRouteLabel = (pathname) => {
   const parts = pathname.split("/").filter(Boolean);
   if (parts[0] === "shop" && parts.length >= 3) return "Product details";
   if (parts[0] === "shop" && parts[1]) {
-    const normalized = parts[1] === "mens" ? "Men" : parts[1] === "womens" ? "Women" : titleCase(parts[1]);
+    const normalized =
+      parts[1] === "mens"
+        ? "Men"
+        : parts[1] === "womens"
+          ? "Women"
+          : titleCase(parts[1]);
     return `${normalized} collection`;
   }
 
@@ -34,7 +39,8 @@ const RouteAccessibility = () => {
 
   useEffect(() => {
     const routeLabel = getRouteLabel(location.pathname);
-    document.title = routeLabel === "Home" ? "Noble Fits" : `${routeLabel} | Noble Fits`;
+    document.title =
+      routeLabel === "Home" ? "Noble Fits" : `${routeLabel} | Noble Fits`;
 
     if (firstRender.current) {
       firstRender.current = false;
@@ -52,7 +58,12 @@ const RouteAccessibility = () => {
   }, [location.pathname]);
 
   return (
-    <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+    <div
+      className="sr-only"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       {announcement}
     </div>
   );

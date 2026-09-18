@@ -27,27 +27,27 @@ Runtime tokens live in `src/styles/design-system.scss`. Responsive Sass variable
 
 Required semantic colors:
 
-| Purpose | Token |
-| --- | --- |
-| Background | `--color-background` |
-| Surface | `--color-surface` |
+| Purpose          | Token                      |
+| ---------------- | -------------------------- |
+| Background       | `--color-background`       |
+| Surface          | `--color-surface`          |
 | Elevated surface | `--color-surface-elevated` |
-| Border | `--color-border` |
-| Divider | `--color-divider` |
-| Primary text | `--color-text-primary` |
-| Secondary text | `--color-text-secondary` |
-| Muted text | `--color-text-muted` |
-| Brand | `--color-brand` |
-| Accent | `--color-accent` |
-| Success | `--color-success` |
-| Warning | `--color-warning` |
-| Error | `--color-error` |
-| Informational | `--color-informational` |
-| Focus | `--color-focus` |
-| Disabled | `--color-disabled` |
-| Sale | `--color-sale` |
-| Price | `--color-price` |
-| Discount | `--color-discount` |
+| Border           | `--color-border`           |
+| Divider          | `--color-divider`          |
+| Primary text     | `--color-text-primary`     |
+| Secondary text   | `--color-text-secondary`   |
+| Muted text       | `--color-text-muted`       |
+| Brand            | `--color-brand`            |
+| Accent           | `--color-accent`           |
+| Success          | `--color-success`          |
+| Warning          | `--color-warning`          |
+| Error            | `--color-error`            |
+| Informational    | `--color-informational`    |
+| Focus            | `--color-focus`            |
+| Disabled         | `--color-disabled`         |
+| Sale             | `--color-sale`             |
+| Price            | `--color-price`            |
+| Discount         | `--color-discount`         |
 
 Supporting surface, overlay, provider, skeleton, and contrast tokens are also centralized there. Hard-coded color values should not be introduced in component/page styles.
 

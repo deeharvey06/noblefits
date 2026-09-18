@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 
 const ResilientImage = ({
   src,
@@ -9,9 +9,11 @@ const ResilientImage = ({
 }) => {
   const [failed, setFailed] = useState(!src);
 
-  useEffect(() => {
+  const [previousSrc, setPreviousSrc] = useState(src);
+  if (previousSrc !== src) {
+    setPreviousSrc(src);
     setFailed(!src);
-  }, [src]);
+  }
 
   if (failed) {
     return (

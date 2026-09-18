@@ -26,7 +26,11 @@ const normalizeAuthError = (error) => ({
 });
 
 export function* getUserProfile(userAuth, additionalData) {
-  const userSnapshot = yield call(getUserProfileSnapshot, userAuth, additionalData);
+  const userSnapshot = yield call(
+    getUserProfileSnapshot,
+    userAuth,
+    additionalData,
+  );
 
   if (!userSnapshot || !userSnapshot.exists()) {
     throw new Error("The user profile could not be loaded.");

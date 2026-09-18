@@ -8,7 +8,7 @@ const fail = (message) => {
   process.exit(1);
 };
 
-const checkout = read("src/pages/checkout/Checkout.jsx");
+const checkout = read("src/pages/checkout/Checkout.jsx").replace(/\s+/g, " ");
 const checkoutStyles = read("src/pages/checkout/checkout.scss");
 const item = read("src/components/checkoutItem/CheckoutItem.jsx");
 const dropdown = read("src/components/cartDropdown/CartDropdown.jsx");
@@ -27,19 +27,28 @@ for (const text of requiredCheckoutCopy) {
   if (!checkout.includes(text)) fail(`missing cart hierarchy copy: ${text}`);
 }
 
-if (!checkout.includes("selectCartItemsCount")) fail("cart item count is not surfaced");
-if (!checkout.includes("StripeCheckoutButton")) fail("existing Stripe checkout path is not preserved");
-if (!checkout.includes("does not currently calculate shipping, taxes, discounts, or promo codes")) {
+if (!checkout.includes("selectCartItemsCount"))
+  fail("cart item count is not surfaced");
+if (!checkout.includes("StripeCheckoutButton"))
+  fail("existing Stripe checkout path is not preserved");
+if (
+  !checkout.includes(
+    "does not currently calculate shipping, taxes, discounts, or promo codes",
+  )
+) {
   fail("unsupported cart capabilities are not disclosed accurately");
 }
 
-if (!item.includes("QuantityControl")) fail("standard quantity control is not used");
+if (!item.includes("QuantityControl"))
+  fail("standard quantity control is not used");
 if (!item.includes("Item total")) fail("line-item total is not visible");
-if (!item.includes("variantDetails")) fail("optional variant information is not supported conditionally");
+if (!item.includes("variantDetails"))
+  fail("optional variant information is not supported conditionally");
 if (!item.includes("Remove")) fail("remove action is not explicit");
 
 if (!dropdown.includes("Subtotal")) fail("mini-cart subtotal is not visible");
-if (!dropdown.includes("REVIEW BAG & PAY")) fail("mini-cart next action is unclear");
+if (!dropdown.includes("REVIEW BAG & PAY"))
+  fail("mini-cart next action is unclear");
 
 if (!cartUtils.includes("quantity: cartItem.quantity - 1")) {
   fail("cart decrement behavior is not preserved");
@@ -72,10 +81,13 @@ for (const file of phase9Styles) {
 
 const requiredResponsiveMarkers = ["laptop-down", "tablet-down", "mobile-down"];
 for (const marker of requiredResponsiveMarkers) {
-  if (!checkoutStyles.includes(marker)) fail(`missing responsive cart behavior: ${marker}`);
+  if (!checkoutStyles.includes(marker))
+    fail(`missing responsive cart behavior: ${marker}`);
 }
 
 console.log("Cart validation passed.");
-console.log("Cart hierarchy, subtotal, quantity, remove, empty state, and payment path verified.");
+console.log(
+  "Cart hierarchy, subtotal, quantity, remove, empty state, and payment path verified.",
+);
 console.log("Unsupported shipping/discount/promo claims are not fabricated.");
 console.log("No hard-coded colors found in Phase 9 cart styles.");

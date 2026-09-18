@@ -30,5 +30,5 @@ createRoot(rootElement).render(
         </PersistGate>
       </BrowserRouter>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

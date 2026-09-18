@@ -1,7 +1,7 @@
-import { all, call, takeLatest, put } from 'redux-saga/effects';
+import { all, call, takeLatest, put } from "redux-saga/effects";
 
-import UserActionTypes from '../user/types';
-import { clearCart } from './actions';
+import UserActionTypes from "../user/types";
+import { clearCart } from "./actions";
 
 export function* clearCartOnSignOut() {
   yield put(clearCart());

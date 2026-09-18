@@ -14,19 +14,19 @@ The homepage is designed around product discovery and merchandising using only c
 
 ## Supported vs intentionally omitted content
 
-| Homepage idea | Decision | Reason |
-| --- | --- | --- |
-| Hero / campaign | Included | Existing collection imagery supports an editorial campaign-style entry point. |
-| Featured products | Included as an editorial edit | Real catalog items are available. No popularity claim is made. |
-| Featured categories | Included | Five real categories already exist. |
-| Collections | Included | Existing routes and directory data support direct collection navigation. |
-| New arrivals | Omitted | The product model has no arrival/published timestamp. |
-| Best sellers | Omitted | No sales-ranking or order-volume data exists on the frontend. |
-| Promotions | Omitted | No supported promotion/coupon campaign data is present. |
-| Recommendations | Omitted | No recommendation capability or customer-affinity data exists. |
-| Editorial content | Included | Category/catalog facts support restrained collection storytelling. |
-| Trust messaging | Omitted | No shipping, returns, guarantee, or service policy data was provided. |
-| Social proof | Omitted | No review, rating, testimonial, or customer-count data exists. |
+| Homepage idea       | Decision                      | Reason                                                                        |
+| ------------------- | ----------------------------- | ----------------------------------------------------------------------------- |
+| Hero / campaign     | Included                      | Existing collection imagery supports an editorial campaign-style entry point. |
+| Featured products   | Included as an editorial edit | Real catalog items are available. No popularity claim is made.                |
+| Featured categories | Included                      | Five real categories already exist.                                           |
+| Collections         | Included                      | Existing routes and directory data support direct collection navigation.      |
+| New arrivals        | Omitted                       | The product model has no arrival/published timestamp.                         |
+| Best sellers        | Omitted                       | No sales-ranking or order-volume data exists on the frontend.                 |
+| Promotions          | Omitted                       | No supported promotion/coupon campaign data is present.                       |
+| Recommendations     | Omitted                       | No recommendation capability or customer-affinity data exists.                |
+| Editorial content   | Included                      | Category/catalog facts support restrained collection storytelling.            |
+| Trust messaging     | Omitted                       | No shipping, returns, guarantee, or service policy data was provided.         |
+| Social proof        | Omitted                       | No review, rating, testimonial, or customer-count data exists.                |
 
 ## UX decisions
 

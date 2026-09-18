@@ -9,11 +9,17 @@ const [major, minor] = process.versions.node.split(".").map(Number);
 const nodeSupported = (major === 20 && minor >= 19) || major >= 22;
 let npmVersion = "unknown";
 try {
-  npmVersion = execFileSync(process.platform === "win32" ? "npm.cmd" : "npm", ["--version"], {
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "ignore"],
-  }).trim();
-} catch {}
+  npmVersion = execFileSync(
+    process.platform === "win32" ? "npm.cmd" : "npm",
+    ["--version"],
+    {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    },
+  ).trim();
+} catch {
+  // Keep the fallback when npm is unavailable.
+}
 
 const viteInstalled = [
   path.join(root, "node_modules", "vite", "package.json"),
@@ -23,11 +29,17 @@ const viteInstalled = [
 console.log("Noble Fits local-development doctor\n");
 console.log(`Node: ${process.versions.node} ${nodeSupported ? "✓" : "✗"}`);
 console.log(`npm:  ${npmVersion}`);
-console.log(`Frontend dependencies installed: ${viteInstalled ? "yes ✓" : "no ✗"}`);
-console.log(`Workspace configured: ${fs.existsSync(path.join(root, "client", "package.json")) ? "yes ✓" : "no ✗"}`);
+console.log(
+  `Frontend dependencies installed: ${viteInstalled ? "yes ✓" : "no ✗"}`,
+);
+console.log(
+  `Workspace configured: ${fs.existsSync(path.join(root, "client", "package.json")) ? "yes ✓" : "no ✗"}`,
+);
 
 if (!nodeSupported) {
-  console.error("\nNode is not supported by Vite 8. Use Node 20.19+ or Node 22.12+.");
+  console.error(
+    "\nNode is not supported by Vite 8. Use Node 20.19+ or Node 22.12+.",
+  );
   process.exitCode = 1;
 }
 

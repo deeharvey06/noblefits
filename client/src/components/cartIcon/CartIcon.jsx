@@ -2,7 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import shoppingBagUrl from "../../assets/shopping-bag.svg";
 import { toggleCartHidden } from "../../redux/cart/actions";
-import { selectCartHidden, selectCartItemsCount } from "../../redux/cart/cartSelectors";
+import {
+  selectCartHidden,
+  selectCartItemsCount,
+} from "../../redux/cart/cartSelectors";
 
 import "./cartIcon.scss";
 
@@ -21,8 +24,15 @@ const CartIcon = () => {
       aria-expanded={!hidden}
       aria-controls="site-cart-dropdown"
     >
-      <img className="shopping-icon" src={shoppingBagUrl} alt="" aria-hidden="true" />
-      <span key={itemCount} className="item-count" aria-hidden="true">{itemCount}</span>
+      <img
+        className="shopping-icon"
+        src={shoppingBagUrl}
+        alt=""
+        aria-hidden="true"
+      />
+      <span key={itemCount} className="item-count" aria-hidden="true">
+        {itemCount}
+      </span>
     </button>
   );
 };

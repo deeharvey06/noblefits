@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import {
   findCollectionByRoute,
   findProductByRoute,
@@ -26,9 +24,9 @@ describe("product route utilities", () => {
   });
 
   it("finds a product using string route params", () => {
-    expect(findProductByRoute(collections, "sneakers", "10").product?.name).toBe(
-      "Adidas NMD"
-    );
+    expect(
+      findProductByRoute(collections, "sneakers", "10").product?.name,
+    ).toBe("Adidas NMD");
   });
 
   it("falls back to the primary product image", () => {
@@ -39,7 +37,10 @@ describe("product route utilities", () => {
 
   it("preserves real multi-image data when supplied", () => {
     expect(
-      getProductImages({ name: "Test", images: ["/one.jpg", { url: "/two.jpg", alt: "Back" }] })
+      getProductImages({
+        name: "Test",
+        images: ["/one.jpg", { url: "/two.jpg", alt: "Back" }],
+      }),
     ).toEqual([
       { src: "/one.jpg", alt: "Test" },
       { src: "/two.jpg", alt: "Back" },
@@ -57,6 +58,8 @@ describe("product route utilities", () => {
   });
 
   it("can resolve a collection by routeName", () => {
-    expect(findCollectionByRoute(collections, "sneakers")?.title).toBe("Sneakers");
+    expect(findCollectionByRoute(collections, "sneakers")?.title).toBe(
+      "Sneakers",
+    );
   });
 });

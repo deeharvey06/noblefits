@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import SHOP_DATA from "../../redux/shop/shopData";
 import {
   buildSearchCatalog,
@@ -27,7 +25,9 @@ describe("search utilities", () => {
 
   it("finds products by exact product terms", () => {
     const result = searchCatalog({ ...catalog, query: "Nike" });
-    expect(result.products.some((product) => product.name === "Nike Red High Tops")).toBe(true);
+    expect(
+      result.products.some((product) => product.name === "Nike Red High Tops"),
+    ).toBe(true);
     expect(result.hasExactMatch).toBe(true);
   });
 
@@ -40,21 +40,29 @@ describe("search utilities", () => {
   it("tolerates a small typo without claiming an exact match", () => {
     const result = searchCatalog({ ...catalog, query: "sneker" });
     expect(result.products.length).toBeGreaterThan(0);
-    expect(result.products.every((product) => product.collectionTitle === "Sneakers")).toBe(true);
+    expect(
+      result.products.every(
+        (product) => product.collectionTitle === "Sneakers",
+      ),
+    ).toBe(true);
     expect(result.fuzzyOnly).toBe(true);
   });
 
-
-
   it("matches common spacing and punctuation variants", () => {
     const result = searchCatalog({ ...catalog, query: "tshirt" });
-    expect(result.products.some((product) => product.name === "Floral T-shirt")).toBe(true);
+    expect(
+      result.products.some((product) => product.name === "Floral T-shirt"),
+    ).toBe(true);
   });
 
   it("keeps short category terms precise", () => {
     const result = searchCatalog({ ...catalog, query: "men" });
-    expect(result.categories.map((category) => category.title)).toEqual(["Men"]);
-    expect(result.products.every((product) => product.collectionTitle === "Men")).toBe(true);
+    expect(result.categories.map((category) => category.title)).toEqual([
+      "Men",
+    ]);
+    expect(
+      result.products.every((product) => product.collectionTitle === "Men"),
+    ).toBe(true);
   });
 
   it("does not invent matches for unrelated terms", () => {

@@ -1,4 +1,4 @@
-@mixin shrinkLabel {
+@mixin shrink-label {
   top: -18px;
   font-size: var(--font-size-caption);
   color: var(--color-text-primary);
@@ -37,7 +37,7 @@
     }
 
     &:focus ~ .form-input-label {
-      @include shrinkLabel();
+      @include shrink-label;
     }
 
     &:disabled {
@@ -65,7 +65,7 @@
       font-size var(--duration-standard) var(--ease-standard);
 
     &.shrink {
-      @include shrinkLabel();
+      @include shrink-label;
     }
   }
 }

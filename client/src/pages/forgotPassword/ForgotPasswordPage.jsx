@@ -1,36 +1,12 @@
-import { useState } from "react";
-import { Link } from "react-router";
-
-import { Button, InputField } from "../../design-system";
-import { sendPasswordReset } from "../../firebase/firebase.utils";
-import { getPasswordResetErrorMessage } from "../../utils/authMessages";
-
+import { ROUTES } from "@/config/routes";
+import { AppLink as Link } from "@/components/navigation/AppLink";
+import { Button, InputField } from "@/design-system";
+import { usePasswordReset } from "@/pages/forgotPassword/usePasswordReset";
 import "./forgotPasswordPage.scss";
 
 const ForgotPasswordPage = () => {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle");
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setError("");
-    setStatus("submitting");
-
-    try {
-      await sendPasswordReset(email.trim());
-      setStatus("success");
-    } catch (requestError) {
-      // Avoid confirming whether an account exists for a submitted address.
-      if (requestError?.code === "auth/user-not-found") {
-        setStatus("success");
-        return;
-      }
-
-      setError(getPasswordResetErrorMessage(requestError));
-      setStatus("idle");
-    }
-  };
+  const { email, status, error, handleSubmit, handleChange } =
+    usePasswordReset();
 
   return (
     <div className="password-reset-page ds-container">
@@ -48,7 +24,7 @@ const ForgotPasswordPage = () => {
               If an account exists for <strong>{email.trim()}</strong>, Firebase
               will send password reset instructions to that address.
             </p>
-            <Link className="password-reset-card__back-link" to="/signin">
+            <Link className="password-reset-card__back-link" to={ROUTES.signIn}>
               Return to sign in
             </Link>
           </div>
@@ -70,10 +46,7 @@ const ForgotPasswordPage = () => {
                 name="resetEmail"
                 value={email}
                 label="Email address"
-                onChange={(event) => {
-                  setEmail(event.target.value);
-                  if (error) setError("");
-                }}
+                onChange={handleChange}
                 autoComplete="email"
                 inputMode="email"
                 error={error}
@@ -90,7 +63,7 @@ const ForgotPasswordPage = () => {
               </Button>
             </form>
 
-            <Link className="password-reset-card__back-link" to="/signin">
+            <Link className="password-reset-card__back-link" to={ROUTES.signIn}>
               Back to sign in
             </Link>
           </>

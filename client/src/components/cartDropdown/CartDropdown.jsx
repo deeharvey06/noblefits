@@ -1,3 +1,5 @@
+import { formatMoney } from "@/utils/formatMoney";
+import { ROUTES } from "@/config/routes";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -6,17 +8,12 @@ import {
   selectCartItems,
   selectCartItemsCount,
   selectCartTotal,
-} from "../../redux/cart/cartSelectors";
-import { toggleCartHidden } from "../../redux/cart/actions";
-import CartItem from "../cartItem/CartItem";
-import CustomButton from "../customButton/CustomButton";
+} from "@/redux/cart/cartSelectors";
+import { toggleCartHidden } from "@/redux/cart/actions";
+import CartItem from "@/components/cartItem/CartItem";
+import CustomButton from "@/components/customButton/CustomButton";
 
 import "./cartDropdown.scss";
-
-const formatMoney = (value) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    Number(value) || 0,
-  );
 
 const CartDropdown = () => {
   const dispatch = useDispatch();
@@ -71,7 +68,7 @@ const CartDropdown = () => {
         ) : (
           <div className="cart-dropdown__empty">
             <p>Your bag is empty.</p>
-            <button type="button" onClick={() => navigateAndClose("/shop")}>
+            <button type="button" onClick={() => navigateAndClose(ROUTES.shop)}>
               Explore the shop
             </button>
           </div>
@@ -88,13 +85,13 @@ const CartDropdown = () => {
             <span>Subtotal</span>
             <strong>{formatMoney(total)}</strong>
           </div>
-          <CustomButton onClick={() => navigateAndClose("/checkout")}>
+          <CustomButton onClick={() => navigateAndClose(ROUTES.checkout)}>
             REVIEW BAG & PAY
           </CustomButton>
           <button
             type="button"
             className="cart-dropdown__continue"
-            onClick={() => navigateAndClose("/shop")}
+            onClick={() => navigateAndClose(ROUTES.shop)}
           >
             Continue shopping
           </button>

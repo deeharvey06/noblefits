@@ -1,6 +1,6 @@
-import { Link } from "react-router";
+import { AppLink as Link } from "@/components/navigation/AppLink";
 
-import { ResilientImage } from "../../design-system";
+import { ResilientImage } from "@/design-system";
 
 import "./menuItem.scss";
 

@@ -17,7 +17,7 @@
     "lint:fix": "eslint . --fix",
     "design-system:validate": "node scripts/validate-design-system.js",
     "shell:validate": "node scripts/validate-shell.js",
-    "validate": "npm run design-system:validate && npm run shell:validate && npm run modernization:validate && npm run homepage:validate && npm run listings:validate && npm run search:validate && npm run product-detail:validate && npm run cart:validate && npm run checkout:validate && npm run account:validate && npm run responsive:validate && npm run accessibility:validate && npm run micro-interactions:validate && npm run refresh:validate && npm run production:validate && npm run lint && npm run test && npm run build",
+    "validate": "npm run design-system:validate && npm run shell:validate && npm run modernization:validate && npm run homepage:validate && npm run listings:validate && npm run search:validate && npm run product-detail:validate && npm run cart:validate && npm run checkout:validate && npm run account:validate && npm run responsive:validate && npm run accessibility:validate && npm run micro-interactions:validate && npm run refresh:validate && npm run production:validate && npm run lint && npm run test:coverage && npm run build",
     "modernization:validate": "node scripts/validate-modernization.js",
     "homepage:validate": "node scripts/validate-homepage.js",
     "listings:validate": "node scripts/validate-listings.js",

@@ -5,7 +5,7 @@ import {
   getProductPath,
   getRelatedProducts,
   normalizeCollectionDisplayTitle,
-} from "./productRoutes";
+} from "@/utils/productRoutes";
 
 const collections = {
   sneakers: {

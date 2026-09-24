@@ -1,5 +1,8 @@
-import SHOP_DATA from "../../redux/shop/shopData";
-import { buildHomepageMedia, getHomepageImageUrls } from "./homeMedia";
+import SHOP_DATA from "@/redux/shop/shopData";
+import {
+  buildHomepageMedia,
+  getHomepageImageUrls,
+} from "@/pages/home/homeMedia";
 
 describe("buildHomepageMedia", () => {
   it("selects only unique product images across homepage merchandising regions", () => {

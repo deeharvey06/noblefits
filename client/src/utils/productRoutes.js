@@ -4,8 +4,7 @@ export const normalizeCollectionDisplayTitle = (title = "") => {
   return title;
 };
 
-export const getProductPath = (collectionRoute, productId) =>
-  `/shop/${encodeURIComponent(collectionRoute)}/${encodeURIComponent(productId)}`;
+export { productPath as getProductPath } from "@/config/routes";
 
 export const findCollectionByRoute = (collections, collectionRoute) => {
   if (!collections || !collectionRoute) return null;

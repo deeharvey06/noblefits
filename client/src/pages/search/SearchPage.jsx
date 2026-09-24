@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { useSearchPage } from "@/pages/search/useSearchPage";
+import { ROUTES, collectionPath } from "@/config/routes";
+import { useCartActions } from "@/hooks/useCartActions";
+import { AppLink as Link } from "@/components/navigation/AppLink";
 
 import {
   EmptyState,
@@ -8,74 +9,29 @@ import {
   LoadingState,
   ProductCard,
   SearchField,
-} from "../../design-system";
-import { addItem } from "../../redux/cart/actions";
-import { fetchCollectionsStart } from "../../redux/shop/actions";
-import {
-  selectCollections,
-  selectIsCollectionFetching,
-  selectShopError,
-} from "../../redux/shop/shopSelector";
-import { getProductPath } from "../../utils/productRoutes";
-import {
-  buildSearchCatalog,
-  clearRecentSearches,
-  getRecentSearches,
-  saveRecentSearch,
-  searchCatalog,
-} from "../../components/searchPanel/searchUtils";
+} from "@/design-system";
+import { getProductPath } from "@/utils/productRoutes";
 
 import "./searchPage.scss";
 
 const SearchPage = () => {
-  const dispatch = useDispatch();
-  const collections = useSelector(selectCollections);
-  const isFetching = useSelector(selectIsCollectionFetching);
-  const errorMessage = useSelector(selectShopError);
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const urlQuery = searchParams.get("q") || "";
-  const [inputValue, setInputValue] = useState(urlQuery);
-  const [recentSearches, setRecentSearches] = useState(() =>
-    getRecentSearches(),
-  );
-
-  useEffect(() => {
-    if (!collections && !isFetching && !errorMessage)
-      dispatch(fetchCollectionsStart());
-  }, [collections, dispatch, errorMessage, isFetching]);
-
-  const [previousUrlQuery, setPreviousUrlQuery] = useState(urlQuery);
-  if (previousUrlQuery !== urlQuery) {
-    setPreviousUrlQuery(urlQuery);
-    setInputValue(urlQuery);
-  }
-
-  useEffect(() => {
-    // Persist the URL query and refresh the external localStorage snapshot.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (urlQuery.trim()) setRecentSearches(saveRecentSearch(urlQuery));
-  }, [urlQuery]);
-
-  const catalog = useMemo(() => buildSearchCatalog(collections), [collections]);
-  const search = useMemo(
-    () => searchCatalog({ ...catalog, query: urlQuery }),
-    [catalog, urlQuery],
-  );
-
-  const submitSearch = (value = inputValue) => {
-    const trimmed = value.trim();
-    if (!trimmed) {
-      setSearchParams({});
-      return;
-    }
-
-    setRecentSearches(saveRecentSearch(trimmed));
-    setSearchParams({ q: trimmed });
-  };
-
-  const clearRecents = () => setRecentSearches(clearRecentSearches());
-  const hasQuery = Boolean(search.normalizedQuery);
+  const {
+    inputValue,
+    setInputValue,
+    recentSearches,
+    collections,
+    isFetching,
+    errorMessage,
+    retry,
+    catalog,
+    search,
+    hasQuery,
+    submitSearch,
+    clearRecents,
+    urlQuery,
+    navigate,
+  } = useSearchPage();
+  const { addToCart } = useCartActions();
 
   return (
     <div className="search-page">
@@ -110,7 +66,7 @@ const SearchPage = () => {
           title="Search is unavailable"
           description="We could not load the product catalog. Try again."
           actionLabel="Try again"
-          onAction={fetchCollectionsStart}
+          onAction={retry}
           className="search-page__state"
         />
       )}
@@ -162,7 +118,7 @@ const SearchPage = () => {
               {catalog.categories.map((category) => (
                 <Link
                   key={category.routeName}
-                  to={`/shop/${category.routeName}`}
+                  to={collectionPath(category.routeName)}
                 >
                   <span>{category.title}</span>
                   <small>
@@ -218,7 +174,7 @@ const SearchPage = () => {
                 {search.categories.map((category) => (
                   <Link
                     key={category.routeName}
-                    to={`/shop/${category.routeName}`}
+                    to={collectionPath(category.routeName)}
                   >
                     <span>{category.title}</span>
                     <small>
@@ -266,20 +222,11 @@ const SearchPage = () => {
                         : undefined
                     }
                     productHref={getProductPath(product.routeName, product.id)}
-                    onAddToCart={() =>
-                      dispatch(
-                        addItem({
-                          id: product.id,
-                          name: product.name,
-                          imageUrl: product.imageUrl,
-                          price: product.price,
-                        }),
-                      )
-                    }
+                    onAddToCart={() => addToCart(product)}
                   >
                     <Link
                       className="search-page__collection-link"
-                      to={`/shop/${product.routeName}`}
+                      to={collectionPath(product.routeName)}
                     >
                       View {product.collectionTitle}
                     </Link>
@@ -293,7 +240,7 @@ const SearchPage = () => {
               title={`Nothing matched “${urlQuery.trim()}”.`}
               description="Check the spelling, try a shorter product term, or browse the existing collections."
               actionLabel="Browse all products"
-              onAction={() => navigate("/shop")}
+              onAction={() => navigate(ROUTES.shop)}
             />
           )}
         </div>

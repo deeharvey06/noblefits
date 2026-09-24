@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -8,7 +9,7 @@ const fail = (message) => {
   process.exit(1);
 };
 
-const checkout = read("src/pages/checkout/Checkout.jsx").replace(/\s+/g, " ");
+const checkout = readFeature("src/pages/checkout").replace(/\s+/g, " ");
 const checkoutStyles = read("src/pages/checkout/checkout.scss");
 const item = read("src/components/checkoutItem/CheckoutItem.jsx");
 const dropdown = read("src/components/cartDropdown/CartDropdown.jsx");

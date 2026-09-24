@@ -9,7 +9,7 @@ const fail = (message) => {
 };
 
 const requiredFiles = [
-  "ACCESSIBILITY.md",
+  "md/ACCESSIBILITY.md",
   "src/components/accessibility/RouteAccessibility.jsx",
   "src/design-system/Overlays.jsx",
   "src/design-system/FormControls.jsx",
@@ -251,7 +251,7 @@ for (const file of jsFiles) {
   }
 }
 
-const docs = read("ACCESSIBILITY.md");
+const docs = read("md/ACCESSIBILITY.md");
 for (const section of [
   "Semantic structure",
   "Keyboard navigation and focus",

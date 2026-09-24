@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -9,18 +10,18 @@ const fail = (message) => {
 };
 
 const app = read("src/App.jsx");
-const signIn = read("src/components/signIn/SignIn.jsx");
-const signUp = read("src/components/signUp/SignUp.jsx");
-const account = read("src/pages/account/AccountPage.jsx");
+const signIn = readFeature("src/components/signIn");
+const signUp = readFeature("src/components/signUp");
+const account = read("src/pages/account/AccountPage.jsx").replace(/\s+/g, " ");
 const accountStyles = read("src/pages/account/accountPage.scss");
 const reset = read("src/pages/forgotPassword/ForgotPasswordPage.jsx");
 const resetStyles = read("src/pages/forgotPassword/forgotPasswordPage.scss");
-const firebase = read("src/firebase/firebase.utils.js");
+const firebase = read("src/api/firebaseClient.js");
 const reducer = read("src/redux/user/userReducer.js");
-const sagas = read("src/redux/user/sagas.js");
+const authApi = read("src/api/authApi.js");
 const header = read("src/components/header/Header.jsx");
 
-for (const route of ['path="/account"', 'path="/forgot-password"']) {
+for (const route of ["path={ROUTES.account}", "path={ROUTES.forgotPassword}"]) {
   if (!app.includes(route)) fail(`missing account route: ${route}`);
 }
 
@@ -55,11 +56,14 @@ for (const unsupported of [
     fail(`missing unsupported-capability boundary: ${unsupported}`);
 }
 
-if (!header.includes('to="/account"') || !account.includes("signOutStart")) {
+if (
+  !header.includes("to={ROUTES.account}") ||
+  !account.includes("signOutStart")
+) {
   fail("account destination or explicit logout is missing");
 }
 
-if (!signIn.includes('to="/forgot-password"')) {
+if (!signIn.includes("to={ROUTES.forgotPassword}")) {
   fail("sign in does not expose password recovery");
 }
 
@@ -76,7 +80,7 @@ if (!reducer.includes("sessionChecked") || !reducer.includes("errorContext")) {
   fail("authentication UI state is incomplete");
 }
 
-if (!sagas.includes("toISOString()")) {
+if (!authApi.includes("toISOString()")) {
   fail("Firestore profile timestamp is not normalized before Redux storage");
 }
 

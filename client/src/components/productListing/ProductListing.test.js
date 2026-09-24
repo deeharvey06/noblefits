@@ -3,7 +3,7 @@ import {
   collectionsToArray,
   flattenCatalog,
   normalizeCollectionTitle,
-} from "./ProductListing";
+} from "@/components/productListing/catalogControls";
 
 const collections = {
   hats: {

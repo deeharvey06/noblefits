@@ -1,4 +1,4 @@
-import UserActionTypes from "./types";
+import UserActionTypes from "@/redux/user/types";
 
 export const googleSignInStart = () => ({
   type: UserActionTypes.GOOGLE_SIGN_IN_START,
@@ -50,9 +50,9 @@ export const signUpStart = (userCredentials) => ({
   payload: userCredentials,
 });
 
-export const signUpSuccess = ({ user, additionalData }) => ({
+export const signUpSuccess = (profile) => ({
   type: UserActionTypes.SIGN_UP_SUCCESS,
-  payload: { user, additionalData },
+  payload: profile,
 });
 
 export const signUpFailure = (error) => ({

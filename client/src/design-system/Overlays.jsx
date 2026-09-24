@@ -9,7 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
-import IconButton from "./IconButton";
+import IconButton from "@/design-system/IconButton";
 
 const overlayExitDuration = 220;
 

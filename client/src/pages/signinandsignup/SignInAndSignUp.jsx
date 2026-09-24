@@ -1,9 +1,9 @@
 import { useSearchParams } from "react-router";
 
-import SignIn from "../../components/signIn/SignIn";
-import SignUp from "../../components/signUp/SignUp";
-import { ResilientImage, Tabs } from "../../design-system";
-import SHOP_DATA from "../../redux/shop/shopData";
+import SignIn from "@/components/signIn/SignIn";
+import SignUp from "@/components/signUp/SignUp";
+import { ResilientImage, Tabs } from "@/design-system";
+import SHOP_DATA from "@/redux/shop/shopData";
 
 import "./signinandsignup.scss";
 

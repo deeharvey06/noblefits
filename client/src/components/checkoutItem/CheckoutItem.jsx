@@ -1,18 +1,10 @@
+import { formatMoney } from "@/utils/formatMoney";
 import { useDispatch } from "react-redux";
 
-import { QuantityControl, ResilientImage } from "../../design-system";
-import {
-  addItem,
-  clearItemFromCart,
-  removeItem,
-} from "../../redux/cart/actions";
+import { QuantityControl, ResilientImage } from "@/design-system";
+import { addItem, clearItemFromCart, removeItem } from "@/redux/cart/actions";
 
 import "./checkoutItem.scss";
-
-const formatMoney = (value) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
-    Number(value) || 0,
-  );
 
 const getVariantDetails = (cartItem) =>
   [cartItem.variant, cartItem.size, cartItem.color].filter(Boolean);

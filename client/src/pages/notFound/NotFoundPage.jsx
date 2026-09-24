@@ -1,12 +1,11 @@
-import { useEffect } from "react";
-import { Link } from "react-router";
+import { ROUTES } from "@/config/routes";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
+import { AppLink as Link } from "@/components/navigation/AppLink";
 
 import "./notFoundPage.scss";
 
 const NotFoundPage = () => {
-  useEffect(() => {
-    document.title = "Page not found | Noble Fits";
-  }, []);
+  useDocumentTitle("Page not found | Noble Fits");
 
   return (
     <section
@@ -20,10 +19,16 @@ const NotFoundPage = () => {
         browsing from the shop or return home.
       </p>
       <div className="not-found-page__actions">
-        <Link to="/shop" className="ds-button ds-button--primary ds-button--md">
+        <Link
+          to={ROUTES.shop}
+          className="ds-button ds-button--primary ds-button--md"
+        >
           <span className="ds-button__label">Browse the shop</span>
         </Link>
-        <Link to="/" className="ds-button ds-button--secondary ds-button--md">
+        <Link
+          to={ROUTES.home}
+          className="ds-button ds-button--secondary ds-button--md"
+        >
           <span className="ds-button__label">Return home</span>
         </Link>
       </div>

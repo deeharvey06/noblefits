@@ -40,3 +40,6 @@ export const stripePublishableKey =
     : "";
 
 export const isStripeTestMode = stripePublishableKey.startsWith("pk_test_");
+
+// Useful for a deterministic portfolio demo and browser tests without a catalog service.
+export const useLocalCatalog = import.meta.env.VITE_CATALOG_SOURCE === "local";

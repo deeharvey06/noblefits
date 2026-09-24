@@ -61,5 +61,57 @@ export default [
       },
     },
   },
+  {
+    files: ["src/**/*.{js,jsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              regex: "^\\.\\.?/(?!.*\\.(?:css|scss)$)",
+              message:
+                "Use @/ absolute imports; keep colocated stylesheet imports relative.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["src/**/*.{js,jsx}"],
+    ignores: [
+      "src/api/**",
+      "src/components/stripeButton/PaymentProvider.jsx",
+      "src/components/navigation/AppLink.jsx",
+    ],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            { name: "axios", message: "Use a domain service in @/api." },
+            {
+              name: "react-router",
+              importNames: ["Link", "NavLink"],
+              message: "Use the app-owned navigation wrappers.",
+            },
+          ],
+          patterns: [
+            {
+              regex: "^\\.\\.?/(?!.*\\.(?:css|scss)$)",
+              message:
+                "Use @/ absolute imports; keep colocated stylesheet imports relative.",
+            },
+            {
+              group: ["firebase", "firebase/*", "@stripe/*", "@/firebase/*"],
+              message:
+                "Use the API layer or the shared payment wrapper instead of a vendor SDK.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   prettier,
 ];

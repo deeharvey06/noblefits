@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -7,15 +8,13 @@ const requiredFiles = [
   "src/pages/productDetail/productDetailPage.scss",
   "src/utils/productRoutes.js",
   "src/utils/productRoutes.test.js",
-  "PRODUCT_DETAIL.md",
+  "md/PRODUCT_DETAIL.md",
 ];
 
 const missing = requiredFiles.filter(
   (file) => !fs.existsSync(path.join(root, file)),
 );
-const page = fs.existsSync(path.join(root, requiredFiles[0]))
-  ? fs.readFileSync(path.join(root, requiredFiles[0]), "utf8")
-  : "";
+const page = readFeature("src/pages/productDetail");
 const styles = fs.existsSync(path.join(root, requiredFiles[1]))
   ? fs.readFileSync(path.join(root, requiredFiles[1]), "utf8")
   : "";
@@ -33,7 +32,7 @@ const packageJson = JSON.parse(
 
 const checks = [
   [
-    shopPage.includes('path=":collectionId/:productId"'),
+    shopPage.includes("path={ROUTES.productPattern}"),
     "Product detail route is missing",
   ],
   [page.includes("product-gallery"), "Product gallery is missing"],

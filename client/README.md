@@ -25,3 +25,7 @@ For all setup, environment, build, test, lint, and full-stack instructions, see 
 ## Vite 8 JSX convention
 
 React modules that contain JSX use the `.jsx` extension. Do not put JSX in `.js` files: Vite 8 uses Oxc for dependency scanning/transforms and parses `.js` as JavaScript. The modernization validator enforces this convention.
+
+## Frontend conventions
+
+Follow the [frontend architecture and style guide](md/FRONTEND_STYLE_GUIDE.md) for module boundaries, absolute imports, hooks, routes, API services, and testing.

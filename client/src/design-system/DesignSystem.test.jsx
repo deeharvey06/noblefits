@@ -8,7 +8,7 @@ import {
   Tabs,
   Dialog,
   Tooltip,
-} from "./index";
+} from "@/design-system/index";
 
 test("Button exposes loading state and disables interaction", () => {
   render(<Button loading>Save</Button>);

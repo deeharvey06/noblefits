@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Link as RouterLink } from "react-router";
+import { AppLink as RouterLink } from "@/components/navigation/AppLink";
 
-import Button from "./Button";
-import ResilientImage from "./ResilientImage";
-import { Badge, PriceDisplay, RatingDisplay } from "./CommerceDisplay";
+import Button from "@/design-system/Button";
+import ResilientImage from "@/design-system/ResilientImage";
+import {
+  Badge,
+  PriceDisplay,
+  RatingDisplay,
+} from "@/design-system/CommerceDisplay";
 
 const ProductCard = ({
   name,

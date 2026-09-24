@@ -9,7 +9,7 @@ const fail = (message) => {
 };
 
 const requiredFiles = [
-  "RESPONSIVE.md",
+  "md/RESPONSIVE.md",
   "src/styles/_tokens.scss",
   "src/styles/design-system.scss",
   "src/design-system/components.scss",
@@ -169,7 +169,7 @@ for (const file of horizontalScrollFiles) {
   }
 }
 
-const docs = read("RESPONSIVE.md");
+const docs = read("md/RESPONSIVE.md");
 for (const section of [
   "Large desktop",
   "Laptop",

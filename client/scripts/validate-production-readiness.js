@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -20,7 +21,7 @@ const errorBoundary = read("src/components/errorBoundary/errorBoundary.jsx");
 const errorBoundaryStyles = read(
   "src/components/errorBoundary/errorBoundary.scss",
 );
-const checkout = read("src/pages/checkout/Checkout.jsx");
+const checkout = readFeature("src/pages/checkout");
 const rootReducer = read("src/redux/rootReducer.js");
 const config = read("src/config/clientConfig.js");
 const lazyRetry = read("src/utils/lazyWithRetry.js");
@@ -30,16 +31,16 @@ const viteConfig = read("vite.config.mjs");
 const packageJson = JSON.parse(read("package.json"));
 
 assert(
-  app.includes('path="*" element={<NotFoundPage />}'),
+  app.includes("path={ROUTES.notFound} element={<NotFoundPage />}"),
   "Top-level 404 route is missing.",
 );
 assert(
-  shopPage.includes('path="*" element={<NotFoundPage />}'),
+  shopPage.includes("path={ROUTES.notFound} element={<NotFoundPage />}"),
   "Nested shop 404 route is missing.",
 );
 assert(
-  !app.includes('<Navigate to="/" replace />') ||
-    app.includes('path="/account"'),
+  !app.includes("<Navigate to={ROUTES.home} replace />") ||
+    app.includes("path={ROUTES.account}"),
   "Wildcard routing still redirects unknown URLs to Home.",
 );
 assert(

@@ -1,6 +1,6 @@
 # Noble Fits — Frontend Production Readiness
 
-This pass hardens the Phase 14 frontend without changing backend commerce contracts.
+This document describes frontend safeguards and the boundary between this portfolio demo and a production commerce system. See [TESTING.md](TESTING.md) for current automated checks.
 
 ## Production hardening completed
 
@@ -23,7 +23,7 @@ This pass hardens the Phase 14 frontend without changing backend commerce contra
 
 Copy `.env.example` to the appropriate Vite environment file or configure the same variables in the hosting platform.
 
-Required for real checkout:
+Required for Stripe test checkout:
 
 - `VITE_STRIPE_PUBLISHABLE_KEY`
 
@@ -41,7 +41,7 @@ Never expose `STRIPE_SECRET_KEY` or other server credentials through `VITE_*` va
 
 ## Production blockers outside the frontend boundary
 
-The frontend can be hardened independently, but the storefront should **not process real money** until the backend payment architecture is upgraded. The current server trusts a client-supplied amount and creates legacy Stripe Charges without an order record or idempotency strategy. A production payment backend should calculate the amount from server-trusted product/order data, create one server-owned payment object per checkout, use idempotency, and persist the resulting order/payment state.
+The frontend can be hardened independently, but the storefront should **not process real money** until the backend payment architecture is upgraded. The server now rejects live Stripe keys, validates input, and returns controlled errors. Its test-mode Charges flow still accepts a client-supplied amount and has no order record or idempotency strategy. A production payment backend should calculate the amount from server-trusted product/order data, create one server-owned payment object per checkout, use idempotency, and persist the resulting order/payment state.
 
 Firebase Security Rules also need to be reviewed in the Firebase project itself; they are not present in this repository.
 
@@ -54,6 +54,6 @@ npm install
 npm run validate
 ```
 
-`npm run validate` executes every custom design/UX/accessibility validator, production-readiness validation, ESLint, Vitest, and the Vite production build.
+`npm run validate` executes every custom design/UX/accessibility validator, production-readiness validation, ESLint, Jest with coverage thresholds, server tests, and the Vite production build.
 
-A committed `client/package-lock.json` should be generated and reviewed from a networked development/CI environment. This execution environment could not reach npm long enough to resolve the dependency tree, so the lockfile and full toolchain run could not be produced here.
+The root `package-lock.json` is the workspace lockfile; use `npm ci` from the project root. `npm run test:e2e` verifies a production build in Cypress. The GitHub Actions workflow runs both validation and browser journeys.

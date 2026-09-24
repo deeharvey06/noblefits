@@ -1,10 +1,10 @@
-import SHOP_DATA from "../../redux/shop/shopData";
+import SHOP_DATA from "@/redux/shop/shopData";
 import {
   buildSearchCatalog,
   displayCollectionTitle,
   normalizeSearchText,
   searchCatalog,
-} from "./searchUtils";
+} from "@/components/searchPanel/searchUtils";
 
 describe("search utilities", () => {
   const catalog = buildSearchCatalog(SHOP_DATA);

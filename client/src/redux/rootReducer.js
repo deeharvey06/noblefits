@@ -2,22 +2,32 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { createTransform, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import userReducer from "./user/userReducer";
-import cartReducer from "./cart/cartReducer";
-import directoryReducer from "./directory/directoryReducer";
-import shopReducer from "./shop/shopReducer";
+import userReducer from "@/redux/user/userReducer";
+import cartReducer from "@/redux/cart/cartReducer";
+import directoryReducer from "@/redux/directory/directoryReducer";
+import shopReducer from "@/redux/shop/shopReducer";
 
 const sanitizeCartItems = (items) => {
   if (!Array.isArray(items)) return [];
 
   return items
-    .filter((item) => item && item.id != null && typeof item.name === "string")
+    .filter(
+      (item) =>
+        item &&
+        item.id != null &&
+        typeof item.name === "string" &&
+        item.price != null &&
+        item.price !== "" &&
+        Number.isFinite(Number(item.price)) &&
+        Number(item.price) >= 0,
+    )
     .map((item) => ({
       ...item,
-      price: Number.isFinite(Number(item.price)) ? Number(item.price) : 0,
-      quantity: Math.max(1, Math.floor(Number(item.quantity) || 1)),
-    }))
-    .filter((item) => item.price >= 0);
+      price: Number(item.price),
+      quantity: Number.isSafeInteger(Math.floor(Number(item.quantity)))
+        ? Math.max(1, Math.floor(Number(item.quantity)))
+        : 1,
+    }));
 };
 
 export const cartPersistTransform = createTransform(

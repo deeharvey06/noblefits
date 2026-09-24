@@ -1,5 +1,5 @@
-import Button from "./Button";
-import IconButton from "./IconButton";
+import Button from "@/design-system/Button";
+import IconButton from "@/design-system/IconButton";
 
 export const Notification = ({
   status = "info",

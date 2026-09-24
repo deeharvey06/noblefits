@@ -1,20 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useCatalog } from "@/hooks/useCatalog";
 
-import { Button, ErrorState } from "../../design-system";
-import { fetchCollectionsStart } from "../../redux/shop/actions";
-import {
-  selectCollections,
-  selectIsCollectionFetching,
-  selectShopError,
-} from "../../redux/shop/shopSelector";
-import Spinner from "../spinner/Spinner";
-import CollectionsOverview from "./CollectionsOverview";
+import { Button, ErrorState } from "@/design-system";
+import Spinner from "@/components/spinner/Spinner";
+import CollectionsOverview from "@/components/collectionsOverview/CollectionsOverview";
 
 const CollectionsOverviewContainer = () => {
-  const dispatch = useDispatch();
-  const collections = useSelector(selectCollections);
-  const isLoading = useSelector(selectIsCollectionFetching);
-  const errorMessage = useSelector(selectShopError);
+  const {
+    collections,
+    isFetching: isLoading,
+    errorMessage,
+    retry,
+  } = useCatalog();
 
   if (isLoading && !collections) return <Spinner />;
 
@@ -25,10 +21,7 @@ const CollectionsOverviewContainer = () => {
         title="We could not load the shop."
         description="Try loading the catalog again."
       >
-        <Button
-          variant="secondary"
-          onClick={() => dispatch(fetchCollectionsStart())}
-        >
+        <Button variant="secondary" onClick={retry}>
           Try again
         </Button>
       </ErrorState>

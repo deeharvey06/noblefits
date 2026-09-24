@@ -19,10 +19,10 @@
 }
 
 .home-hero {
-  min-height: min(760px, 76vh);
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
-  align-items: stretch;
+  align-items: center;
   border-bottom: 1px solid var(--color-divider);
 }
 
@@ -56,16 +56,20 @@
 }
 
 .home-hero__media {
-  min-height: 40rem;
+  width: 100%;
+  max-width: 31rem;
+  justify-self: center;
+  padding-block: var(--space-6);
   display: grid;
-  grid-template-columns: minmax(0, 1.36fr) minmax(13rem, 0.64fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: center;
   gap: var(--space-3);
 }
 
 .home-hero__side-stack {
   min-width: 0;
   display: grid;
-  grid-template-rows: 1.12fr 0.88fr;
+  grid-template-rows: repeat(2, auto);
   gap: var(--space-3);
 }
 
@@ -78,69 +82,44 @@
   padding: 0;
   border: 0;
   background: var(--color-surface-subtle);
-  color: var(--color-brand-contrast);
+  color: var(--color-text-primary);
   cursor: pointer;
   overflow: hidden;
   text-align: left;
 }
 
+// Catalog originals are mostly 350px tall. Keep their natural detail instead
+// of enlarging and cropping them to fill oversized merchandising panels.
 .home-hero-card img,
 .home-hero-card .ds-image-fallback,
 .home-journal-card img,
 .home-journal-card .ds-image-fallback {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform var(--duration-slow) var(--ease-standard);
+  height: 350px;
+  object-fit: scale-down;
 }
 
-.home-hero-card::after,
-.home-journal-card::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 42%;
-  background: linear-gradient(
-    to top,
-    color-mix(in srgb, var(--color-brand) 64%, transparent),
-    transparent
-  );
-  pointer-events: none;
-}
-
-.home-hero-card:hover img,
-.home-hero-card:hover .ds-image-fallback,
-.home-hero-card:focus-visible img,
-.home-hero-card:focus-visible .ds-image-fallback,
-.home-journal-card:hover img,
-.home-journal-card:hover .ds-image-fallback,
-.home-journal-card:focus-visible img,
-.home-journal-card:focus-visible .ds-image-fallback {
-  transform: scale(1.015);
+.home-hero__side-stack img,
+.home-hero__side-stack .ds-image-fallback {
+  height: 150px;
 }
 
 .home-media-label {
-  position: absolute;
-  z-index: 1;
-  right: var(--space-4);
-  bottom: var(--space-4);
-  left: var(--space-4);
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--space-4);
-  color: var(--color-brand-contrast);
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
 }
 
 .home-media-label > span:first-child {
-  max-width: 16ch;
   font-family: var(--font-family-display);
-  font-size: clamp(1.2rem, 2vw, 2rem);
-  line-height: 1.05;
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  line-height: 1.15;
 }
 
 .home-media-label > span:last-child {
-  flex: 0 0 auto;
+  color: var(--color-text-muted);
   font-size: var(--type-caption-size);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-wide);
@@ -212,46 +191,42 @@
 .home-visual-journal__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(18rem, 28rem));
+  width: 100%;
+  max-width: 38rem;
+  justify-self: center;
+  align-items: start;
   gap: var(--space-3);
-}
-
-.home-journal-card--1 {
-  grid-row: 1 / span 2;
-}
-
-.home-journal-card--4 {
-  grid-column: 2;
 }
 
 .home-editorial {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(20rem, 0.6fr);
-  min-height: 36rem;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 1fr);
+  align-items: center;
   background: var(--color-surface-subtle);
 }
 
 .home-editorial__media {
-  position: relative;
-  min-height: 36rem;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  width: 100%;
+  max-width: 32rem;
+  justify-self: center;
 }
 
 .home-editorial__media > img:first-child,
 .home-editorial__media > .ds-image-fallback:first-child {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 350px;
+  object-fit: scale-down;
 }
 
 .home-editorial__inset {
-  position: absolute;
-  right: var(--space-6);
-  bottom: var(--space-6);
-  width: min(30%, 13rem);
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border: var(--space-2) solid var(--color-surface-subtle);
+  width: 100%;
+  height: 240px;
+  object-fit: scale-down;
 }
 
 .home-editorial__copy {
@@ -317,10 +292,6 @@
     max-width: 10ch;
   }
 
-  .home-hero__media {
-    min-height: 34rem;
-  }
-
   .home-section__header,
   .home-visual-journal {
     grid-template-columns: 1fr;
@@ -331,18 +302,9 @@
     position: static;
   }
 
-  .home-visual-journal__grid {
-    grid-template-rows: repeat(2, minmax(16rem, 24rem));
-  }
-
   .home-editorial {
     grid-template-columns: 1fr;
     min-height: 0;
-  }
-
-  .home-editorial__media {
-    min-height: 28rem;
-    aspect-ratio: 16 / 10;
   }
 
   .home-editorial__copy {
@@ -376,28 +338,12 @@
   }
 
   .home-hero-card--primary {
-    aspect-ratio: 4 / 5;
-  }
-
-  .home-hero-card--secondary,
-  .home-hero-card--accent {
-    aspect-ratio: 4 / 5;
-  }
-
-  .home-media-label {
-    right: var(--space-3);
-    bottom: var(--space-3);
-    left: var(--space-3);
-    display: block;
+    width: min(100%, 263px);
+    justify-self: center;
   }
 
   .home-media-label > span:first-child {
-    display: block;
     font-size: 1rem;
-  }
-
-  .home-media-label > span:last-child {
-    display: none;
   }
 
   .home-section {
@@ -418,27 +364,23 @@
     padding-inline: var(--space-3);
   }
 
-  .home-visual-journal__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, 15rem);
-  }
-
-  .home-journal-card--1,
-  .home-journal-card--4 {
-    grid-row: auto;
-    grid-column: auto;
+  .home-journal-card img,
+  .home-journal-card .ds-image-fallback {
+    height: 220px;
   }
 
   .home-editorial__media {
-    min-height: 22rem;
-    aspect-ratio: 4 / 3;
+    gap: var(--space-2);
+    padding: var(--space-3);
+  }
+
+  .home-editorial__media > img:first-child,
+  .home-editorial__media > .ds-image-fallback:first-child {
+    height: 260px;
   }
 
   .home-editorial__inset {
-    right: var(--space-3);
-    bottom: var(--space-3);
-    width: 30%;
-    border-width: var(--space-1);
+    height: 180px;
   }
 
   .home-editorial__copy {

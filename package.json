@@ -16,11 +16,11 @@
     "dev:full": "node scripts/dev-full.mjs",
     "build": "npm run build --workspace=client",
     "preview": "npm run preview --workspace=client",
-    "test": "npm run test --workspace=client",
+    "test": "npm run test --workspace=client && npm run test:server",
     "test:watch": "npm run test:watch --workspace=client",
     "lint": "npm run lint:js && npm run lint:styles",
     "lint:fix": "npm run lint:js -- --fix && npm run lint:styles -- --fix",
-    "validate": "npm run lint && npm run format:check && npm run validate --workspace=client",
+    "validate": "npm run lint && npm run format:check && npm run validate --workspace=client && npm run test:server",
     "start": "node server.js",
     "heroku-postbuild": "npm run build --workspace=client",
     "prepare": "husky",
@@ -30,9 +30,12 @@
     "format:check": "prettier . --check",
     "lint:staged": "lint-staged",
     "test:coverage": "npm run test:coverage --workspace=client",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
+    "test:e2e": "node scripts/run-e2e.mjs",
     "cypress:run": "cypress run",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "test:server": "node --test server/*.test.cjs",
+    "test:e2e:run": "start-server-and-test preview:e2e http://127.0.0.1:4173 cypress:run",
+    "preview:e2e": "npm run preview --workspace=client -- --host 127.0.0.1 --port 4173 --strictPort"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

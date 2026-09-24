@@ -1,43 +1,19 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
-
-import { Button, InputField } from "../../design-system";
-import {
-  clearUserError,
-  emailSignInStart,
-  googleSignInStart,
-} from "../../redux/user/actions";
-import {
-  selectUserError,
-  selectUserErrorContext,
-  selectUserStatus,
-} from "../../redux/user/userSelector";
-import { getSignInErrorMessage } from "../../utils/authMessages";
-
+import { ROUTES } from "@/config/routes";
+import { AppLink as Link } from "@/components/navigation/AppLink";
+import { Button, InputField } from "@/design-system";
+import { useSignIn } from "@/components/signIn/useSignIn";
 import "./signIn.scss";
 
 const SignIn = () => {
-  const dispatch = useDispatch();
-  const authError = useSelector(selectUserError);
-  const errorContext = useSelector(selectUserErrorContext);
-  const status = useSelector(selectUserStatus);
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
-
-  const { email, password } = credentials;
-  const isSubmitting = status === "submitting";
-  const errorMessage =
-    errorContext === "sign-in" ? getSignInErrorMessage(authError) : "";
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(emailSignInStart({ email: email.trim(), password }));
-  };
-
-  const handleChange = ({ target: { name, value } }) => {
-    setCredentials((current) => ({ ...current, [name]: value }));
-    if (authError) dispatch(clearUserError());
-  };
+  const {
+    email,
+    password,
+    isSubmitting,
+    errorMessage,
+    handleSubmit,
+    handleChange,
+    signInWithGoogle,
+  } = useSignIn();
 
   return (
     <section
@@ -72,7 +48,7 @@ const SignIn = () => {
         />
 
         <div className="auth-form__support-row">
-          <Link to="/forgot-password">Forgot password?</Link>
+          <Link to={ROUTES.forgotPassword}>Forgot password?</Link>
         </div>
 
         {errorMessage && (
@@ -99,7 +75,7 @@ const SignIn = () => {
           variant="secondary"
           fullWidth
           disabled={isSubmitting}
-          onClick={() => dispatch(googleSignInStart())}
+          onClick={signInWithGoogle}
         >
           Continue with Google
         </Button>

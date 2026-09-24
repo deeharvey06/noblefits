@@ -1,4 +1,4 @@
-import SHOP_DATA from "./shopData";
+import SHOP_DATA from "@/redux/shop/shopData";
 
 const normalizeCollection = (key, collection) => ({
   ...collection,

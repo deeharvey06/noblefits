@@ -1,25 +1,23 @@
+import { CATEGORY_LINKS, ROUTES } from "@/config/routes";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router";
+import {
+  AppLink as Link,
+  AppNavLink as NavLink,
+} from "@/components/navigation/AppLink";
 
-import logoUrl from "../../assets/crown.svg";
-import { Drawer, IconButton } from "../../design-system";
-import { selectCartHidden } from "../../redux/cart/cartSelectors";
-import { signOutStart } from "../../redux/user/actions";
-import { selectCurrentUser } from "../../redux/user/userSelector";
-import CartDropdown from "../cartDropdown/CartDropdown";
-import CartIcon from "../cartIcon/CartIcon";
-import SearchPanel from "../searchPanel/SearchPanel";
+import logoUrl from "@/assets/crown.svg";
+import { Drawer, IconButton } from "@/design-system";
+import { selectCartHidden } from "@/redux/cart/cartSelectors";
+import { signOutStart } from "@/redux/user/actions";
+import { selectCurrentUser } from "@/redux/user/userSelector";
+import CartDropdown from "@/components/cartDropdown/CartDropdown";
+import CartIcon from "@/components/cartIcon/CartIcon";
+import SearchPanel from "@/components/searchPanel/SearchPanel";
 
 import "./header.scss";
 
-const categories = [
-  ["Men", "/shop/mens"],
-  ["Women", "/shop/womens"],
-  ["Jackets", "/shop/jackets"],
-  ["Sneakers", "/shop/sneakers"],
-  ["Hats", "/shop/hats"],
-];
+const categories = CATEGORY_LINKS;
 
 const MenuIcon = () => (
   <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -88,7 +86,7 @@ const Header = () => {
       <div className="announcement-bar">
         <div className="announcement-bar__inner ds-container">
           <span>Noble Fits</span>
-          <Link to="/shop">
+          <Link to={ROUTES.shop}>
             Shop the collection <span aria-hidden="true">→</span>
           </Link>
         </div>
@@ -111,7 +109,7 @@ const Header = () => {
 
           <Link
             className="site-header__brand"
-            to="/"
+            to={ROUTES.home}
             aria-label="Noble Fits home"
           >
             <img
@@ -128,14 +126,14 @@ const Header = () => {
             aria-label="Primary navigation"
           >
             <NavLink
-              to="/"
+              to={ROUTES.home}
               className={({ isActive }) => (isActive ? "is-active" : undefined)}
               end
             >
               Home
             </NavLink>
             <NavLink
-              to="/shop"
+              to={ROUTES.shop}
               className={({ isActive }) => (isActive ? "is-active" : undefined)}
             >
               Shop
@@ -157,7 +155,7 @@ const Header = () => {
 
             <Link
               className="site-header__text-action site-header__account-action"
-              to={currentUser ? "/account" : "/signin"}
+              to={currentUser ? ROUTES.account : ROUTES.signIn}
             >
               <AccountIcon />
               <span>{currentUser ? "Account" : "Sign in"}</span>
@@ -200,7 +198,7 @@ const Header = () => {
         <nav className="mobile-navigation" aria-label="Mobile navigation">
           <div className="mobile-navigation__primary">
             <NavLink
-              to="/"
+              to={ROUTES.home}
               onClick={closeMobileMenu}
               className={({ isActive }) => (isActive ? "is-active" : undefined)}
               end
@@ -208,7 +206,7 @@ const Header = () => {
               Home
             </NavLink>
             <NavLink
-              to="/shop"
+              to={ROUTES.shop}
               onClick={closeMobileMenu}
               className={({ isActive }) => (isActive ? "is-active" : undefined)}
             >
@@ -245,7 +243,7 @@ const Header = () => {
             <p>Account</p>
             {currentUser ? (
               <>
-                <Link to="/account" onClick={closeMobileMenu}>
+                <Link to={ROUTES.account} onClick={closeMobileMenu}>
                   Account
                 </Link>
                 <button type="button" onClick={handleSignOut}>
@@ -253,11 +251,11 @@ const Header = () => {
                 </button>
               </>
             ) : (
-              <Link to="/signin" onClick={closeMobileMenu}>
+              <Link to={ROUTES.signIn} onClick={closeMobileMenu}>
                 Sign in
               </Link>
             )}
-            <Link to="/checkout" onClick={closeMobileMenu}>
+            <Link to={ROUTES.checkout} onClick={closeMobileMenu}>
               Bag & checkout
             </Link>
           </div>

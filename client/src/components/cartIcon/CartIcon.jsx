@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import shoppingBagUrl from "../../assets/shopping-bag.svg";
-import { toggleCartHidden } from "../../redux/cart/actions";
+import shoppingBagUrl from "@/assets/shopping-bag.svg";
+import { toggleCartHidden } from "@/redux/cart/actions";
 import {
   selectCartHidden,
   selectCartItemsCount,
-} from "../../redux/cart/cartSelectors";
+} from "@/redux/cart/cartSelectors";
 
 import "./cartIcon.scss";
 

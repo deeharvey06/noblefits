@@ -19,7 +19,7 @@ export default [
   },
   ...client.map((config) => ({ ...config, basePath: "client" })),
   {
-    files: ["client/**/*.cjs"],
+    files: ["client/**/*.cjs", "server/**/*.cjs"],
     languageOptions: { sourceType: "commonjs", globals: globals.node },
   },
   {
@@ -31,6 +31,7 @@ export default [
         ...globals.mocha,
         cy: "readonly",
         Cypress: "readonly",
+        expect: "readonly",
       },
     },
   },

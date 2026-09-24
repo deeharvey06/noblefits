@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
@@ -19,10 +20,7 @@ const reactFiles = walk(sourceRoot).filter((file) => /\.jsx?$/.test(file));
 const source = reactFiles
   .map((file) => fs.readFileSync(file, "utf8"))
   .join("\n");
-const home = fs.readFileSync(
-  path.join(sourceRoot, "pages/home/Home.jsx"),
-  "utf8",
-);
+const home = readFeature("src/pages/home");
 const homeMediaSource = fs.readFileSync(
   path.join(sourceRoot, "pages/home/homeMedia.js"),
   "utf8",

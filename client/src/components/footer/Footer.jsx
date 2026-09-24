@@ -1,20 +1,14 @@
+import { CATEGORY_LINKS, ROUTES } from "@/config/routes";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import { AppLink as Link } from "@/components/navigation/AppLink";
 
-import logoUrl from "../../assets/crown.svg";
-import { signOutStart } from "../../redux/user/actions";
-import { selectCurrentUser } from "../../redux/user/userSelector";
+import logoUrl from "@/assets/crown.svg";
+import { signOutStart } from "@/redux/user/actions";
+import { selectCurrentUser } from "@/redux/user/userSelector";
 
 import "./footer.scss";
 
-const shopLinks = [
-  ["Shop", "/shop"],
-  ["Men", "/shop/mens"],
-  ["Women", "/shop/womens"],
-  ["Jackets", "/shop/jackets"],
-  ["Sneakers", "/shop/sneakers"],
-  ["Hats", "/shop/hats"],
-];
+const shopLinks = [["Shop", ROUTES.shop], ...CATEGORY_LINKS];
 
 const Footer = () => {
   const dispatch = useDispatch();
@@ -23,7 +17,11 @@ const Footer = () => {
   return (
     <footer className="site-footer">
       <div className="site-footer__bar ds-container">
-        <Link className="site-footer__logo" to="/" aria-label="Noble Fits home">
+        <Link
+          className="site-footer__logo"
+          to={ROUTES.home}
+          aria-label="Noble Fits home"
+        >
           <img src={logoUrl} alt="" aria-hidden="true" />
           <span>Noble Fits</span>
         </Link>
@@ -40,10 +38,10 @@ const Footer = () => {
           className="site-footer__account"
           aria-label="Footer account navigation"
         >
-          <Link to={currentUser ? "/account" : "/signin"}>
+          <Link to={currentUser ? ROUTES.account : ROUTES.signIn}>
             {currentUser ? "Account" : "Sign in"}
           </Link>
-          <Link to="/checkout">Bag</Link>
+          <Link to={ROUTES.checkout}>Bag</Link>
           {currentUser && (
             <button type="button" onClick={() => dispatch(signOutStart())}>
               Sign out

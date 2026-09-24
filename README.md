@@ -1,149 +1,93 @@
 # Noble Fits
 
-## Local development — start here
+A responsive React storefront built as a portfolio project: browse a 35-product catalog, filter and search collections, inspect products, and manage a persistent shopping bag. Firebase powers account access; Stripe integration is restricted to test payments.
 
-This repository is an npm workspace. **Run install from the project root, not from `client/`.**
+![Noble Fits storefront](docs/screenshots/home.png)
 
-### Requirements
+[View the mobile layout](docs/screenshots/mobile.png)
 
-- Node.js 20.19+ or 22.12+ (Node 22 LTS recommended)
-- npm 10+
+## What you can explore
 
-If you use nvm:
+- Home-page merchandising with unique product imagery and linked collections.
+- Collection and price filters, sorting, typo-tolerant search, and recent searches.
+- Product details, quantity controls, availability states, and related products.
+- A browser-persisted bag with quantity changes, removal, and checkout totals.
+- Email/Google sign-in, registration, password recovery, and protected account routes.
+- Responsive navigation, keyboard-accessible drawers, image fallbacks, error recovery, and 404 pages.
+
+## Run locally
+
+Use **Node 24** (`nvm use`) and npm 10+. This repository is an npm workspace; run commands from the project root.
 
 ```bash
-nvm use
-```
-
-### First-time setup
-
-From the folder that contains this README and the root `package.json`:
-
-```bash
-npm install
+npm ci
 npm run doctor
-```
-
-`npm install` installs both the Express/server dependencies and the Vite frontend workspace dependencies.
-
-### Start the frontend
-
-```bash
 npm run dev
 ```
 
-Open:
+Open [localhost:3000](http://localhost:3000). The frontend runs independently; the Express server is only needed for test payment requests.
 
-```text
-http://localhost:3000
+For first-time configuration, copy `client/.env.example` to `client/.env.local`. Keep any existing environment values when updating your setup. To explore the bundled catalog without depending on a remote catalog service, set:
+
+```dotenv
+VITE_CATALOG_SOURCE=local
 ```
 
-The frontend can run by itself. Only checkout payment requests require the Express server.
+Leave this unset to load Firestore collections with a bundled-data fallback. Account features still use Firebase; configure your own `VITE_FIREBASE_*` values and authorized domains to test authentication against a project you control. No credentials are needed for the automated test suites.
 
-### Start frontend + Express server
+### Optional Stripe test checkout
 
-Create a root `.env` containing your server-side Stripe test secret if you want to exercise payments:
-
-```text
-STRIPE_SECRET_KEY=sk_test_...
-```
-
-Then run:
+Set `VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...` in `client/.env.local`, and `STRIPE_SECRET_KEY=sk_test_...` in the root `.env` (see the root `.env.example`). Then run:
 
 ```bash
 npm run dev:full
 ```
 
-The Vite frontend runs on port 3000 and proxies `/payment` to Express on port 5000.
+Vite runs on port 3000 and proxies `/payment` to Express on port 5000. The server starts without a Stripe key, but returns a controlled unavailable response for payment requests. It refuses live Stripe keys. Never put server secrets in `VITE_*` variables.
 
-### Client environment
+## Architecture
 
-Copy the example file when you want to configure Stripe/Firebase client values:
+| Area                          | Responsibility                                          |
+| ----------------------------- | ------------------------------------------------------- |
+| `client/src/pages`            | Small page compositions and feature-local hooks/styles  |
+| `client/src/components`       | Reusable feature UI and external-component wrappers     |
+| `client/src/design-system`    | Shared, accessible UI primitives and design tokens      |
+| `client/src/hooks`            | Shared catalog, cart, search-history, and browser hooks |
+| `client/src/api`              | Domain services and HTTP/Firebase adapters              |
+| `client/src/redux`            | Store, selectors, persistence, and saga orchestration   |
+| `client/src/config/routes.js` | Centralized navigation paths and route builders         |
+| `server`                      | Test-payment endpoint and its validation                |
 
-```bash
-cp client/.env.example client/.env.local
-```
+The frontend uses React, React Router, Redux Toolkit/Saga, Vite, SCSS, Firebase, and Stripe Elements. Application startup triggers catalog/session loading once; pages subscribe through hooks. User actions initiate mutations directly, and filters/totals are derived from current data. Vendor integrations stay behind app-owned adapters.
 
-At minimum, Stripe payment UI requires a valid publishable key:
+See the [frontend style guide](client/md/FRONTEND_STYLE_GUIDE.md) for implementation conventions and the [testing guide](client/md/TESTING.md) for the test strategy and remaining verification boundaries.
 
-```text
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
-```
+## Quality checks
 
-### Commands
+| Command                 | Purpose                                                                                   |
+| ----------------------- | ----------------------------------------------------------------------------------------- |
+| `npm run validate`      | Lint, formatting, feature checks, Jest coverage gates, production build, and server tests |
+| `npm test`              | Frontend unit/component/integration tests and server contract tests                       |
+| `npm run test:coverage` | Coverage report in `client/coverage`                                                      |
+| `npm run test:e2e`      | Build a deterministic demo and run desktop/mobile browser journeys                        |
+| `npm run build`         | Production frontend build in `client/build`                                               |
+| `npm run preview`       | Preview the current production build                                                      |
+| `npm run dev:full`      | Start the frontend and test-payment server together                                       |
 
-Run these from the **project root**:
+[GitHub Actions](.github/workflows/ci.yml) runs validation and browser journeys on pushes and pull requests, and uploads coverage and screenshot evidence. Local pre-commit hooks run lint-staged; CI runs independently of those hooks.
 
-```bash
-npm run dev          # frontend only (recommended for normal UI work)
-npm run dev:full     # frontend + Express server
-npm run build        # production frontend build
-npm run preview      # preview built frontend
-npm run lint
-npm run lint:fix
-npm run test
-npm run test:watch
-npm run validate
-npm run doctor
-```
+Browser tests use the bundled catalog and disable the payment UI; they do not create accounts or submit charges. `test:e2e` rebuilds `client/build` with that configuration, so run `npm run build` again with your intended environment before deployment. If the browser binary is missing, run `npx cypress install`. The test runner clears an inherited `ELECTRON_RUN_AS_NODE` flag automatically.
 
-You can also use:
+## Portfolio demo scope
 
-```bash
-npm run vite
-```
+This is a demonstrable storefront, **not a production commerce backend**. The test-payment flow accepts a client-supplied amount and does not implement server-owned pricing, orders, fulfillment, shipping/tax calculation, webhooks, or payment idempotency. The bag is local to one browser, not synchronized to accounts. Firebase security rules and project configuration are managed outside this repository.
 
-as an alias for the frontend dev server.
+Product photos are externally hosted demo assets. Broken images have accessible fallbacks; the original images are small, so the larger homepage panels display them without enlargement. Asset ownership/licensing is not documented in this repository and should be established before redistribution or commercial use.
 
-> `npm vite` is not valid npm syntax. Use `npm run dev` or `npm run vite`.
+## Build and deployment
 
-### If you see `vite: command not found`
+For a static portfolio deployment, build with `VITE_CATALOG_SOURCE=local`, upload `client/build`, and configure SPA fallback to `index.html` for client-side routes. Vite environment variables are compiled into the bundle. Static hosting supports catalog and bag exploration; `/payment` needs a separately hosted backend.
 
-You have not installed the frontend workspace dependencies yet. From the root:
+For Express hosting, build first, then run `NODE_ENV=production npm start`. Express serves the build and handles direct links to frontend routes. Keep Stripe in test mode. The build currently reports a large vendor bundle warning; bundle-size optimization remains an opportunity.
 
-```bash
-rm -rf node_modules client/node_modules
-npm install
-npm run dev
-```
-
-On Windows PowerShell, delete `node_modules` folders manually (or use `Remove-Item -Recurse -Force`) before reinstalling.
-
-### Lockfile
-
-Commit `package-lock.json` with dependency changes. Use `npm ci` for reproducible installs in CI.
-
-### Vite 8 + JSX
-
-React files that contain JSX use the `.jsx` extension. This is intentional: Vite 8 uses Oxc for JavaScript parsing and dependency scanning, and `.js` files are treated as plain JavaScript. The project validator will fail if JSX is added back into a `.js` source file.
-
-### Code quality and tests
-
-Run all commands from the repository root:
-
-| Command                 | Purpose                                                      |
-| ----------------------- | ------------------------------------------------------------ |
-| `npm run lint`          | Check JavaScript/JSX with ESLint and SCSS/CSS with Stylelint |
-| `npm run lint:fix`      | Apply available lint fixes                                   |
-| `npm run format`        | Format supported project files with Prettier                 |
-| `npm run format:check`  | Check formatting without changing files                      |
-| `npm test`              | Run Jest unit and component tests with Testing Library       |
-| `npm run test:watch`    | Watch unit tests during development                          |
-| `npm run test:coverage` | Generate unit-test coverage in `client/coverage`             |
-| `npm run test:e2e`      | Start Vite, run Cypress headlessly, and stop Vite            |
-| `npm run cypress:open`  | Open Cypress (start `npm run dev` separately)                |
-
-`npm install` / `npm ci` runs Husky's `prepare` script to activate the
-pre-commit hook. On commit, lint-staged runs ESLint and Stylelint autofixes
-and Prettier on staged files, then includes the fixes in the commit. Unresolved
-lint errors or warnings stop the commit. Tests run separately to keep commits
-fast. Local hooks can be bypassed; CI should run the checks independently.
-
-Jest uses jsdom, Babel for JSX, and Testing Library's DOM matchers. Unit tests
-live next to source files as `*.test.js` or `*.test.jsx`. Cypress browser tests
-live in `cypress/e2e`. If the Cypress binary is missing, run `npx cypress install`.
-Cypress needs a supported desktop/browser environment. If it reports `bad option: --smoke-test`, unset `ELECTRON_RUN_AS_NODE` before running Cypress.
-
-For CI, run `npm ci`, `npm run lint`, `npm run format:check`, `npm test`,
-`npm run build`, and `npm run test:e2e`. Set `HUSKY=0` in CI to skip installing
-local Git hooks.
+See [production-readiness notes](client/md/PRODUCTION_READINESS.md) for the boundary between this demo and a real-money store. No live deployment is configured or published by this repository's CI workflow.

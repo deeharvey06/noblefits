@@ -1,9 +1,10 @@
+import { ROUTES, collectionPath } from "@/config/routes";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
 
-import { Breadcrumbs } from "../../design-system";
-import { selectCollections } from "../../redux/shop/shopSelector";
-import { findProductByRoute } from "../../utils/productRoutes";
+import { Breadcrumbs } from "@/design-system";
+import { selectCollections } from "@/redux/shop/shopSelector";
+import { findProductByRoute } from "@/utils/productRoutes";
 
 import "./breadcrumbTrail.scss";
 
@@ -20,17 +21,17 @@ const BreadcrumbTrail = () => {
   const navigate = useNavigate();
   const collections = useSelector(selectCollections);
 
-  if (pathname === "/") return null;
+  if (pathname === ROUTES.home) return null;
 
-  const items = [{ label: "Home", href: "/" }];
+  const items = [{ label: "Home", href: ROUTES.home }];
 
-  if (pathname.startsWith("/shop")) {
-    items.push({ label: "Shop", href: "/shop" });
+  if (pathname.startsWith(ROUTES.shop)) {
+    items.push({ label: "Shop", href: ROUTES.shop });
     const [, , collectionId, productId] = pathname.split("/");
     if (collectionId) {
       items.push({
         label: collectionLabels[collectionId] || collectionId,
-        href: `/shop/${collectionId}`,
+        href: collectionPath(collectionId),
       });
     }
     if (collectionId && productId) {
@@ -44,16 +45,16 @@ const BreadcrumbTrail = () => {
         href: pathname,
       });
     }
-  } else if (pathname === "/search") {
-    items.push({ label: "Search", href: "/search" });
-  } else if (pathname === "/checkout") {
-    items.push({ label: "Bag & checkout", href: "/checkout" });
-  } else if (pathname === "/signin") {
-    items.push({ label: "Sign in", href: "/signin" });
-  } else if (pathname === "/forgot-password") {
-    items.push({ label: "Password reset", href: "/forgot-password" });
-  } else if (pathname === "/account") {
-    items.push({ label: "Account", href: "/account" });
+  } else if (pathname === ROUTES.search) {
+    items.push({ label: "Search", href: ROUTES.search });
+  } else if (pathname === ROUTES.checkout) {
+    items.push({ label: "Bag & checkout", href: ROUTES.checkout });
+  } else if (pathname === ROUTES.signIn) {
+    items.push({ label: "Sign in", href: ROUTES.signIn });
+  } else if (pathname === ROUTES.forgotPassword) {
+    items.push({ label: "Password reset", href: ROUTES.forgotPassword });
+  } else if (pathname === ROUTES.account) {
+    items.push({ label: "Account", href: ROUTES.account });
   }
 
   const routerItems = items.map((item, index) => ({

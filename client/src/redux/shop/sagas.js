@@ -1,13 +1,16 @@
+import { useLocalCatalog } from "@/config/clientConfig";
 import { call, put, takeLatest } from "redux-saga/effects";
 
-import { fetchCollections } from "../../firebase/firebase.utils";
-import { fetchCollectionsSuccess } from "./actions";
-import { mergeCatalogWithFallback } from "./catalogFallback";
-import ShopActionTypes from "./types";
+import { catalogApi } from "@/api/catalogApi";
+import { fetchCollectionsSuccess } from "@/redux/shop/actions";
+import { mergeCatalogWithFallback } from "@/redux/shop/catalogFallback";
+import ShopActionTypes from "@/redux/shop/types";
 
 export function* fetchCollectionsAsync() {
   try {
-    const remoteCollections = yield call(fetchCollections);
+    const remoteCollections = useLocalCatalog
+      ? null
+      : yield call(catalogApi.getCollections);
     yield put(
       fetchCollectionsSuccess(mergeCatalogWithFallback(remoteCollections)),
     );

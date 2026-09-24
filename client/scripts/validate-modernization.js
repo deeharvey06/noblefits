@@ -119,7 +119,7 @@ for (const file of requiredFiles) {
 }
 
 const signup = fs.readFileSync(
-  path.join(sourceRoot, "components/signUp/SignUp.jsx"),
+  path.join(sourceRoot, "components/signUp/useSignUp.js"),
   "utf8",
 );
 if (!/setCredentials\(\((currentCredentials|current)\)/.test(signup)) {
@@ -143,15 +143,15 @@ if (!directoryReducer.includes('title: "mens"')) {
 }
 
 const stripeButton = fs.readFileSync(
-  path.join(sourceRoot, "components/stripeButton/StripeButton.jsx"),
+  path.join(sourceRoot, "components/stripeButton/PaymentProvider.jsx"),
   "utf8",
 );
-if (!stripeButton.includes("VITE_STRIPE_PUBLISHABLE_KEY")) {
+if (!stripeButton.includes("stripePublishableKey")) {
   failures.push(
     "Stripe publishable key is not using Vite environment variables.",
   );
 }
-if (!stripeButton.includes("stripe.createToken(cardElement)")) {
+if (!stripeButton.includes("stripe.createToken(card)")) {
   failures.push(
     "Stripe adapter no longer preserves the existing token-based /payment contract.",
   );

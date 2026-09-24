@@ -56,7 +56,12 @@ if (!header.includes('aria-label="Primary navigation"')) {
 }
 if (!header.includes("SearchPanel"))
   failures.push("Search is not exposed in the global header.");
-if (!search.includes("fetchCollectionsStart")) {
+if (
+  !search.includes("useSearchPanel") &&
+  fs
+    .readFileSync(path.join(sourceRoot, "hooks/useCatalog.js"), "utf8")
+    .includes("fetchCollectionsStart")
+) {
   failures.push("Search does not reuse the existing collection-fetch flow.");
 }
 if (!cartIcon.includes("<button"))

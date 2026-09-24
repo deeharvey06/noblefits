@@ -1,7 +1,6 @@
-import ProductListing, {
-  normalizeCollectionTitle,
-} from "../../components/productListing/ProductListing";
-import { EmptyState } from "../../design-system";
+import ProductListing from "@/components/productListing/ProductListing";
+import { normalizeCollectionTitle } from "@/components/productListing/catalogControls";
+import { EmptyState } from "@/design-system";
 
 const CollectionPage = ({ collection, collectionKey, collections }) => {
   if (!collection) {

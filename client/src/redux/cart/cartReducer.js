@@ -1,6 +1,6 @@
-import CartActionTypes from "./types";
+import CartActionTypes from "@/redux/cart/types";
 
-import { addItemToCart, decrementItemInCart } from "./cartUtils";
+import { addItemToCart, decrementItemInCart } from "@/redux/cart/cartUtils";
 
 const INITIAL_STATE = {
   hidden: true,

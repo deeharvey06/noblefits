@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -9,7 +10,7 @@ const requiredFiles = [
   "src/pages/search/SearchPage.jsx",
   "src/pages/search/searchPage.scss",
   "src/components/searchPanel/searchUtils.test.js",
-  "SEARCH.md",
+  "md/SEARCH.md",
 ];
 
 const missing = requiredFiles.filter(
@@ -21,18 +22,11 @@ if (missing.length) {
 }
 
 const app = fs.readFileSync(path.join(root, "src/App.jsx"), "utf8");
-const panel = fs.readFileSync(
-  path.join(root, "src/components/searchPanel/SearchPanel.jsx"),
-  "utf8",
-);
-const page = fs.readFileSync(
-  path.join(root, "src/pages/search/SearchPage.jsx"),
-  "utf8",
-);
-const utils = fs.readFileSync(
-  path.join(root, "src/components/searchPanel/searchUtils.js"),
-  "utf8",
-);
+const panel = readFeature("src/components/searchPanel");
+const page = readFeature("src/pages/search");
+const utils = ["src/utils/searchCatalog.js", "src/services/recentSearches.js"]
+  .map((file) => fs.readFileSync(path.join(root, file), "utf8"))
+  .join("\n");
 const styles = [
   "src/components/searchPanel/searchPanel.scss",
   "src/pages/search/searchPage.scss",
@@ -41,7 +35,7 @@ const styles = [
   .join("\n");
 
 const checks = [
-  [app.includes('path="/search"'), "Dedicated /search route is missing"],
+  [app.includes("path={ROUTES.search}"), "Dedicated /search route is missing"],
   [
     panel.includes("Recent searches"),
     "Recent searches are missing from quick search",

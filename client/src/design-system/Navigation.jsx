@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import IconButton from "./IconButton";
+import IconButton from "@/design-system/IconButton";
 
 export const Breadcrumbs = ({ items, className = "" }) => (
   <nav className={`ds-breadcrumbs ${className}`.trim()} aria-label="Breadcrumb">

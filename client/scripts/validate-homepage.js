@@ -1,11 +1,9 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
 const root = path.resolve(__dirname, "..");
-const home = fs.readFileSync(
-  path.join(root, "src/pages/home/Home.jsx"),
-  "utf8",
-);
+const home = readFeature("src/pages/home");
 const homeStyles = fs.readFileSync(
   path.join(root, "src/pages/home/home.scss"),
   "utf8",

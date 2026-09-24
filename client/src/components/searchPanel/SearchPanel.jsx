@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useSearchPanel } from "@/components/searchPanel/useSearchPanel";
+import { ROUTES } from "@/config/routes";
 
 import {
   Drawer,
@@ -9,78 +8,29 @@ import {
   PriceDisplay,
   SearchField,
   ResilientImage,
-} from "../../design-system";
-import { fetchCollectionsStart } from "../../redux/shop/actions";
-import { getProductPath } from "../../utils/productRoutes";
-import {
-  selectCollections,
-  selectIsCollectionFetching,
-  selectShopError,
-} from "../../redux/shop/shopSelector";
-import {
-  buildSearchCatalog,
-  clearRecentSearches,
-  getRecentSearches,
-  saveRecentSearch,
-  searchCatalog,
-} from "./searchUtils";
+} from "@/design-system";
 
 import "./searchPanel.scss";
 
 const SearchPanel = ({ open, onClose }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const collections = useSelector(selectCollections);
-  const isFetching = useSelector(selectIsCollectionFetching);
-  const errorMessage = useSelector(selectShopError);
-  const [query, setQuery] = useState("");
-  const [recentSearches, setRecentSearches] = useState([]);
-
-  useEffect(() => {
-    if (open && !collections && !isFetching && !errorMessage) {
-      dispatch(fetchCollectionsStart());
-    }
-  }, [collections, dispatch, errorMessage, isFetching, open]);
-
-  useEffect(() => {
-    // Refresh the external localStorage snapshot whenever the panel opens.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (open) setRecentSearches(getRecentSearches());
-  }, [open]);
-
-  const catalog = useMemo(() => buildSearchCatalog(collections), [collections]);
-  const search = useMemo(
-    () => searchCatalog({ ...catalog, query }),
-    [catalog, query],
-  );
-  const hasQuery = Boolean(search.normalizedQuery);
-  const previewProducts = search.products.slice(0, 5);
-  const previewCategories = search.categories.slice(0, 3);
-
-  const navigateTo = (path) => {
-    navigate(path);
-    onClose();
-  };
-
-  const submitSearch = (searchQuery = query) => {
-    const trimmed = searchQuery.trim();
-    if (!trimmed) return;
-
-    setRecentSearches(saveRecentSearch(trimmed));
-    navigateTo(`/search?q=${encodeURIComponent(trimmed)}`);
-  };
-
-  const openCollection = (routeName, searchQuery = query) => {
-    if (searchQuery.trim()) setRecentSearches(saveRecentSearch(searchQuery));
-    navigateTo(`/shop/${routeName}`);
-  };
-
-  const openProduct = (product) => {
-    if (query.trim()) setRecentSearches(saveRecentSearch(query));
-    navigateTo(getProductPath(product.routeName, product.id));
-  };
-
-  const handleClearRecent = () => setRecentSearches(clearRecentSearches());
+  const {
+    query,
+    setQuery,
+    recentSearches,
+    isFetching,
+    errorMessage,
+    retry,
+    catalog,
+    hasQuery,
+    previewProducts,
+    previewCategories,
+    search,
+    navigateTo,
+    submitSearch,
+    openCollection,
+    openProduct,
+    handleClearRecent,
+  } = useSearchPanel(onClose);
 
   return (
     <Drawer
@@ -189,7 +139,7 @@ const SearchPanel = ({ open, onClose }) => {
             title="Search is unavailable"
             description="We could not load the product catalog. Try loading it again."
             actionLabel="Try again"
-            onAction={() => dispatch(fetchCollectionsStart())}
+            onAction={retry}
             className="site-search__state"
           />
         )}
@@ -320,7 +270,7 @@ const SearchPanel = ({ open, onClose }) => {
                   <button type="button" onClick={() => submitSearch()}>
                     Search anyway
                   </button>
-                  <button type="button" onClick={() => navigateTo("/shop")}>
+                  <button type="button" onClick={() => navigateTo(ROUTES.shop)}>
                     Browse all collections
                   </button>
                 </div>

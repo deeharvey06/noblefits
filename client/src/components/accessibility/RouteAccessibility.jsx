@@ -1,3 +1,4 @@
+import { ROUTES } from "@/config/routes";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 
@@ -9,13 +10,13 @@ const titleCase = (value) =>
     .join(" ");
 
 export const getRouteLabel = (pathname) => {
-  if (pathname === "/") return "Home";
-  if (pathname === "/shop") return "Shop";
-  if (pathname === "/checkout") return "Bag and checkout";
-  if (pathname === "/search") return "Search";
-  if (pathname === "/account") return "Account";
-  if (pathname === "/signin") return "Sign in";
-  if (pathname === "/forgot-password") return "Password recovery";
+  if (pathname === ROUTES.home) return "Home";
+  if (pathname === ROUTES.shop) return "Shop";
+  if (pathname === ROUTES.checkout) return "Bag and checkout";
+  if (pathname === ROUTES.search) return "Search";
+  if (pathname === ROUTES.account) return "Account";
+  if (pathname === ROUTES.signIn) return "Sign in";
+  if (pathname === ROUTES.forgotPassword) return "Password recovery";
 
   const parts = pathname.split("/").filter(Boolean);
   if (parts[0] === "shop" && parts.length >= 3) return "Product details";

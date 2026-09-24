@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -26,9 +27,7 @@ const requiredFiles = [
 ];
 const missingFiles = requiredFiles.filter((file) => !fs.existsSync(file));
 
-const listing = fs.existsSync(listingPath)
-  ? fs.readFileSync(listingPath, "utf8")
-  : "";
+const listing = readFeature("src/components/productListing");
 const styles = fs.existsSync(listingStylePath)
   ? fs.readFileSync(listingStylePath, "utf8")
   : "";

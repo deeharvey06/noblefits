@@ -1,14 +1,15 @@
+import { ROUTES } from "@/config/routes";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import { AppLink as Link } from "@/components/navigation/AppLink";
 
-import { Button } from "../../design-system";
-import { signOutStart } from "../../redux/user/actions";
+import { Button } from "@/design-system";
+import { signOutStart } from "@/redux/user/actions";
 import {
   selectCurrentUser,
   selectUserError,
   selectUserErrorContext,
   selectUserStatus,
-} from "../../redux/user/userSelector";
+} from "@/redux/user/userSelector";
 
 import "./accountPage.scss";
 
@@ -87,7 +88,7 @@ const AccountPage = () => {
                   persistence layer; it is not currently synchronized to your
                   account.
                 </p>
-                <Link to="/checkout">Review bag & checkout</Link>
+                <Link to={ROUTES.checkout}>Review bag & checkout</Link>
               </div>
               <div>
                 <h3>Orders & fulfillment</h3>

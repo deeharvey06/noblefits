@@ -2,7 +2,7 @@ import {
   getPasswordResetErrorMessage,
   getSignInErrorMessage,
   getSignUpErrorMessage,
-} from "./authMessages";
+} from "@/utils/authMessages";
 
 describe("auth messages", () => {
   it("keeps sign-in credential errors generic", () => {

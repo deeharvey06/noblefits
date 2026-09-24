@@ -1,14 +1,9 @@
+import { formatMoney } from "@/utils/formatMoney";
 import { memo } from "react";
 
-import { ResilientImage } from "../../design-system";
+import { ResilientImage } from "@/design-system";
 
 import "./cartItem.scss";
-
-const formatMoney = (value) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(Number(value) || 0);
 
 const CartItem = ({ item: { imageUrl, price, name, quantity } }) => (
   <div className="cart-item">

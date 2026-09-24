@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -8,9 +9,9 @@ const fail = (message) => {
   process.exit(1);
 };
 
-const checkout = read("src/pages/checkout/Checkout.jsx").replace(/\s+/g, " ");
+const checkout = readFeature("src/pages/checkout").replace(/\s+/g, " ");
 const checkoutStyles = read("src/pages/checkout/checkout.scss");
-const stripe = read("src/components/stripeButton/StripeButton.jsx");
+const stripe = readFeature("src/components/stripeButton");
 const stripeStyles = read("src/components/stripeButton/stripeButton.scss");
 
 const requiredCheckoutCopy = [
@@ -57,10 +58,16 @@ if (!stripe.includes('paymentState.status === "success"')) {
 if (!stripe.includes("isStripeTestMode")) {
   fail("test payment instructions are not scoped to Stripe test keys");
 }
-if (!stripe.includes('axios.post("/payment"')) {
+if (
+  !read("src/api/paymentApi.js").includes("httpClient.post(PAYMENT_ENDPOINT") ||
+  !read("src/api/paymentApi.js").includes('"/payment"')
+) {
   fail("existing /payment endpoint is not preserved");
 }
-if (!stripe.includes("amount: priceForStripe") || !stripe.includes("token,")) {
+if (
+  !stripe.includes("submitPayment({ amount, token })") ||
+  !read("src/api/paymentApi.js").includes("{ amount, token }")
+) {
   fail("existing payment payload shape is not preserved");
 }
 if (!stripe.includes("Card details are collected by Stripe Elements")) {

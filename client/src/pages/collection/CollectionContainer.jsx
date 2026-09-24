@@ -1,24 +1,21 @@
+import { useCatalog } from "@/hooks/useCatalog";
 import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
-import Spinner from "../../components/spinner/Spinner";
-import { Button, ErrorState } from "../../design-system";
-import { fetchCollectionsStart } from "../../redux/shop/actions";
-import {
-  selectCollection,
-  selectCollections,
-  selectIsCollectionFetching,
-  selectShopError,
-} from "../../redux/shop/shopSelector";
-import CollectionPage from "./Collection";
+import Spinner from "@/components/spinner/Spinner";
+import { Button, ErrorState } from "@/design-system";
+import { selectCollection } from "@/redux/shop/shopSelector";
+import CollectionPage from "@/pages/collection/Collection";
 
 const CollectionContainer = () => {
-  const dispatch = useDispatch();
+  const {
+    collections,
+    isFetching: isLoading,
+    errorMessage,
+    retry,
+  } = useCatalog();
   const { collectionId } = useParams();
-  const collections = useSelector(selectCollections);
-  const isLoading = useSelector(selectIsCollectionFetching);
-  const errorMessage = useSelector(selectShopError);
   const collectionSelector = useMemo(
     () => selectCollection(collectionId),
     [collectionId],
@@ -34,10 +31,7 @@ const CollectionContainer = () => {
         title="We could not load this collection."
         description="Try loading the catalog again."
       >
-        <Button
-          variant="secondary"
-          onClick={() => dispatch(fetchCollectionsStart())}
-        >
+        <Button variant="secondary" onClick={retry}>
           Try again
         </Button>
       </ErrorState>

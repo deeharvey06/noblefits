@@ -1,3 +1,4 @@
+import { ROUTES } from "@/config/routes";
 import { Component } from "react";
 
 import "./errorBoundary.scss";
@@ -48,7 +49,7 @@ class ErrorBoundary extends Component {
               <span className="ds-button__label">Try again</span>
             </button>
             <a
-              href="/shop"
+              href={ROUTES.shop}
               className="ds-button ds-button--secondary ds-button--md"
             >
               <span className="ds-button__label">Return to shop</span>

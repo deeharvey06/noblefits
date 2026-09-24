@@ -1,4 +1,4 @@
-import ProductListing from "../productListing/ProductListing";
+import ProductListing from "@/components/productListing/ProductListing";
 
 const CollectionsOverview = ({ collections }) => {
   const productCount = collections

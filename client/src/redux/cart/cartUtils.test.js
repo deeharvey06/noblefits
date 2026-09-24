@@ -1,4 +1,4 @@
-import { addItemToCart, decrementItemInCart } from "./cartUtils";
+import { addItemToCart, decrementItemInCart } from "@/redux/cart/cartUtils";
 
 const item = { id: 1, name: "Sneakers", price: 90 };
 

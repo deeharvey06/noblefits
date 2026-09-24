@@ -1,4 +1,4 @@
-import IconButton from "./IconButton";
+import IconButton from "@/design-system/IconButton";
 
 const SearchField = ({
   id = "site-search",

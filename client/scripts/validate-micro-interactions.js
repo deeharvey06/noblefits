@@ -1,3 +1,4 @@
+const { readFeature } = require("./source-files");
 const fs = require("fs");
 const path = require("path");
 
@@ -9,7 +10,7 @@ const fail = (message) => {
 };
 
 const requiredFiles = [
-  "MICRO_INTERACTIONS.md",
+  "md/MICRO_INTERACTIONS.md",
   "src/styles/design-system.scss",
   "src/design-system/components.scss",
   "src/design-system/Overlays.jsx",
@@ -113,7 +114,7 @@ if (
   fail("submitted search-result feedback is missing");
 }
 
-const pdp = read("src/pages/productDetail/ProductDetailPage.jsx");
+const pdp = readFeature("src/pages/productDetail");
 const pdpStyles = read("src/pages/productDetail/productDetailPage.scss");
 if (
   !pdp.includes("key={activeImage.src}") ||
@@ -147,7 +148,7 @@ for (const file of scssFiles) {
   }
 }
 
-const docs = read("MICRO_INTERACTIONS.md");
+const docs = read("md/MICRO_INTERACTIONS.md");
 for (const section of [
   "Motion principles",
   "Button feedback",

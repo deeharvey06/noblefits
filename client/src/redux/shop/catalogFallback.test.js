@@ -1,4 +1,4 @@
-import { mergeCatalogWithFallback } from "./catalogFallback";
+import { mergeCatalogWithFallback } from "@/redux/shop/catalogFallback";
 
 describe("mergeCatalogWithFallback", () => {
   it("keeps every core collection populated when remote data is missing", () => {
